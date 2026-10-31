@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/mehran9675/sonora/internal/audio/opusfile"
@@ -67,6 +68,12 @@ type Recorder struct {
 	levels   []float32
 }
 
+// active counts recordings capturing from a microphone.
+var active atomic.Int32
+
+// Active reports whether a recording is running.
+func Active() bool { return active.Load() > 0 }
+
 // Start opens the microphone o.Device and records into o.Path.
 func Start(o Options) (*Recorder, error) {
 	r, err := newRecorder(o)
@@ -79,6 +86,7 @@ func Start(o Options) (*Recorder, error) {
 		return nil, err
 	}
 	r.dev = dev
+	active.Add(1)
 	return r, nil
 }
 
@@ -176,6 +184,7 @@ func (r *Recorder) Levels() []float32 {
 func (r *Recorder) Stop() (string, time.Duration, error) {
 	if r.dev != nil {
 		r.dev.stop()
+		active.Add(-1)
 	}
 	length := r.Elapsed()
 	r.mu.Lock()

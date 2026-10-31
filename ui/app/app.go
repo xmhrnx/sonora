@@ -5,6 +5,10 @@ import (
 	"cmp"
 	"image"
 	"log"
+	"os"
+
+	gioapp "gioui.org/app"
+	"gioui.org/io/event"
 
 	"github.com/mehran9675/giode"
 
@@ -71,6 +75,22 @@ func Run() error {
 			if store.Get().Theme == "system" {
 				theme.Apply("system")
 				giode.InvalidateCaches()
+			}
+		},
+		// Android can destroy the screen while the app sits in the
+		// background - after a dark-mode, language or font-size change,
+		// or to reclaim memory - and keep the process. Launching again
+		// then hangs on the splash screen while Gio attaches a new view
+		// to the old window. With nothing running, end the process
+		// instead: the next launch starts clean. Work in progress keeps
+		// it alive to finish.
+		OnEvent: func(ev event.Event) {
+			if v, ok := ev.(gioapp.ViewEvent); ok && core.Mobile && !v.Valid() && !c.Busy() {
+				if studioPage != nil {
+					studioPage.SaveDraft()
+				}
+				log.Print("sonora: the screen was destroyed while idle; exiting so the next launch starts clean")
+				os.Exit(0)
 			}
 		},
 		OnShutdown: func() {
