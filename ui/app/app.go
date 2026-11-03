@@ -10,7 +10,7 @@ import (
 	gioapp "gioui.org/app"
 	"gioui.org/io/event"
 
-	"github.com/mehran9675/giode"
+	"github.com/xmhrnx/giode"
 
 	"github.com/mehran9675/sonora/assets"
 	"github.com/mehran9675/sonora/internal/audio/playback"
@@ -93,6 +93,11 @@ func Run() error {
 				os.Exit(0)
 			}
 		},
+		// Audio and video shared from another app, or dropped on the
+		// window, open on the Transcribe page; documents and text
+		// become the Studio's script.
+		OnShareReceived: c.Receive,
+		OnFileDrop:      c.ReceivePaths,
 		OnShutdown: func() {
 			if studioPage != nil {
 				studioPage.SaveDraft()

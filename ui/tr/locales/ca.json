@@ -503,5 +503,8 @@
   "Portuguese (Brazil)": "Portuguès (Brasil)",
   "Spanish (Mexico)": "Espanyol (Mèxic)",
   "Spanish (Spain)": "Espanyol (Espanya)",
-  "on device": "al dispositiu"
+  "on device": "al dispositiu",
+  "Save to Downloads": "Desa a Baixades",
+  "Saved to Downloads": "Desat a Baixades",
+  "Sonora can't open {file}: it reads audio, video and documents": "Sonora no pot obrir {file}: llegeix àudio, vídeo i documents"
 }

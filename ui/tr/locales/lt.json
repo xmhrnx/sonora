@@ -502,5 +502,8 @@
   "Portuguese (Brazil)": "Portugalų (Brazilija)",
   "Spanish (Mexico)": "Ispanų (Meksika)",
   "Spanish (Spain)": "Ispanų (Ispanija)",
-  "on device": "įrenginyje"
+  "on device": "įrenginyje",
+  "Save to Downloads": "Įrašyti į atsisiuntimus",
+  "Saved to Downloads": "Įrašyta į atsisiuntimus",
+  "Sonora can't open {file}: it reads audio, video and documents": "Sonora negali atidaryti {file}: ji skaito garsą, vaizdo įrašus ir dokumentus"
 }

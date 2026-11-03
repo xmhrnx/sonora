@@ -502,5 +502,8 @@
   "Portuguese (Brazil)": "Portugalčina (Brazília)",
   "Spanish (Mexico)": "Španielčina (Mexiko)",
   "Spanish (Spain)": "Španielčina (Španielsko)",
-  "on device": "v zariadení"
+  "on device": "v zariadení",
+  "Save to Downloads": "Uložiť do Stiahnutých",
+  "Saved to Downloads": "Uložené do Stiahnutých",
+  "Sonora can't open {file}: it reads audio, video and documents": "Sonora nemôže otvoriť {file}: číta zvuk, video a dokumenty"
 }

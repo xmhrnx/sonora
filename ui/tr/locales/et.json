@@ -491,5 +491,8 @@
   "Portuguese (Brazil)": "Portugali (Brasiilia)",
   "Spanish (Mexico)": "Hispaania (Mehhiko)",
   "Spanish (Spain)": "Hispaania (Hispaania)",
-  "on device": "seadmes"
+  "on device": "seadmes",
+  "Save to Downloads": "Salvesta allalaadimistesse",
+  "Saved to Downloads": "Salvestatud allalaadimistesse",
+  "Sonora can't open {file}: it reads audio, video and documents": "Sonora ei saa faili {file} avada: see loeb heli, videot ja dokumente"
 }

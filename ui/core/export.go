@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/mehran9675/giode"
+	"github.com/xmhrnx/giode"
 
 	"github.com/mehran9675/sonora/ui/icons"
 
@@ -30,6 +30,61 @@ func (c *Ctx) SaveText(name, text string) {
 }
 
 func (c *Ctx) save(name string, open func() (io.ReadCloser, error)) {
+	if Mobile {
+		c.saveToDownloads(name, open)
+		return
+	}
+	c.saveAs(name, open)
+}
+
+// saveToDownloads puts the file in Downloads/Sonora on a phone, no
+// questions asked; where that isn't possible (Android before 10) the
+// system asks where, as on desktops.
+func (c *Ctx) saveToDownloads(name string, open func() (io.ReadCloser, error)) {
+	tmp := filepath.Join(CacheDir(), name)
+	c.Background(func() error {
+		defer os.Remove(tmp)
+		if err := copyTo(tmp, open); err != nil {
+			return err
+		}
+		_, err := c.App.SaveToDownloads(context.Background(), tmp, "Sonora")
+		return err
+	}, func(err error) {
+		switch {
+		case errors.Is(err, giode.ErrNotSupported):
+			c.saveAs(name, open)
+		case err != nil:
+			c.Error(err)
+		default:
+			c.Success(tr.T("Saved to Downloads"))
+		}
+	})
+}
+
+// copyTo writes what open returns to a new file at path.
+func copyTo(path string, open func() (io.ReadCloser, error)) error {
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		return err
+	}
+	in, err := open()
+	if err != nil {
+		return err
+	}
+	defer in.Close()
+	out, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	if _, err := io.Copy(out, in); err != nil {
+		out.Close()
+		return err
+	}
+	return out.Close()
+}
+
+// saveAs asks where to save with the system's dialog; a desktop
+// without one saves into Downloads.
+func (c *Ctx) saveAs(name string, open func() (io.ReadCloser, error)) {
 	var fallback string
 	c.Background(func() error {
 		w, err := c.App.SaveFile(context.Background(), name)

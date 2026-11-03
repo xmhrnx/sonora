@@ -1,4 +1,4 @@
-# Build settings for the giode CLI (https://github.com/mehran9675/giode-cli):
+# Build settings for the giode CLI (https://github.com/xmhrnx/giode-cli):
 #   giode run                 run on this computer
 #   giode run android         build, install and run on a connected phone
 #   giode build android       dist/android/Sonora.apk (see README for the
@@ -17,6 +17,13 @@ publisher = "Sonora"
 description = "A speech studio: text to speech and speech to text."
 website = "https://github.com/Mehran9675/sonora"
 ldflags = "-X github.com/mehran9675/sonora/ui/pages/settings.Version=1.0.3"
+# The launch screen, until the first frame: the app's background in dark
+# and light mode (Android 12+ shows the icon on it).
+splash_color = "#0b0c12"
+splash_color_light = "#f4f5fa"
+# In the share sheet: audio and video to transcribe, documents and text
+# to speak (Config.OnShareReceived).
+share_target = true
 
 [android]
 min_sdk = 26

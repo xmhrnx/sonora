@@ -491,5 +491,8 @@
   "Portuguese (Brazil)": "Portugali (Brasilia)",
   "Spanish (Mexico)": "Espanja (Meksiko)",
   "Spanish (Spain)": "Espanja (Espanja)",
-  "on device": "laitteella"
+  "on device": "laitteella",
+  "Save to Downloads": "Tallenna Latauksiin",
+  "Saved to Downloads": "Tallennettu Latauksiin",
+  "Sonora can't open {file}: it reads audio, video and documents": "Sonora ei voi avata tiedostoa {file}: se lukee ääntä, videota ja asiakirjoja"
 }

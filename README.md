@@ -26,8 +26,10 @@ on your computer, or use a cloud speech or transcription API, and add it under
 desktop only: they need PyTorch or CTranslate2, which don't run on Android. Recording
 works on phones too (Sonora asks for the microphone the first time). Phones read
 WAV, MP3, FLAC, Ogg Vorbis and Opus audio; other formats (M4A, video) need ffmpeg, which
-desktops can use when it's installed. Clips, recordings and transcripts are saved through
-the system file picker or sent to other apps with the share sheet; Back closes dialogs and returns to the
+desktops can use when it's installed. Clips, recordings and transcripts are saved to
+Downloads/Sonora (the system file picker on Android 8 and 9) or sent to other apps with the
+share sheet, and Sonora is in the share sheet itself: share a voice memo or video to
+transcribe it, or a document or text to speak it. Back closes dialogs and returns to the
 Studio; your script is kept when you switch away.
 
 ![Studio](docs/screenshots/studio.png)
@@ -63,6 +65,9 @@ Studio; your script is kept when you switch away.
 - **Library.** Every clip is kept with its text, engine and voice. Search, replay, export
   or share the audio file as it is, or load a clip's settings back into the Studio. The
   *Recordings* tab lists your recordings to play, transcribe, export or delete.
+- **Drop and go.** Drop an audio or video file on the window to transcribe it, or a
+  document to load it as the script. Ctrl+1 to Ctrl+5 (⌘ on macOS) switch pages, and
+  Ctrl+, opens Settings.
 - **Any model.** Built-in engines, Python plugins, API servers and command-line tools all
   appear in the same list and work the same way.
 - **Your language.** Sonora speaks English, Bulgarian, Catalan, Croatian, Czech, Danish,
@@ -135,7 +140,7 @@ Builds use the [giode CLI](https://github.com/Mehran9675/giode-cli), which reads
 [`giode.toml`](giode.toml):
 
 ```sh
-go install github.com/mehran9675/giode-cli/cmd/giode@latest
+go install github.com/xmhrnx/giode-cli/cmd/giode@latest
 giode doctor          # what's installed and what each target still needs
 giode run             # run on this computer
 giode build linux     # dist/linux: the executable, a .desktop entry and the icon

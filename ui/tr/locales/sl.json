@@ -513,5 +513,8 @@
   "Portuguese (Brazil)": "Portugalščina (Brazilija)",
   "Spanish (Mexico)": "Španščina (Mehika)",
   "Spanish (Spain)": "Španščina (Španija)",
-  "on device": "v napravi"
+  "on device": "v napravi",
+  "Save to Downloads": "Shrani v Prenose",
+  "Saved to Downloads": "Shranjeno v Prenose",
+  "Sonora can't open {file}: it reads audio, video and documents": "Sonora ne more odpreti datoteke {file}: bere zvok, video in dokumente"
 }

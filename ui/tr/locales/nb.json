@@ -491,5 +491,8 @@
   "Portuguese (Brazil)": "Portugisisk (Brasil)",
   "Spanish (Mexico)": "Spansk (Mexico)",
   "Spanish (Spain)": "Spansk (Spania)",
-  "on device": "på enheten"
+  "on device": "på enheten",
+  "Save to Downloads": "Lagre i Nedlastinger",
+  "Saved to Downloads": "Lagret i Nedlastinger",
+  "Sonora can't open {file}: it reads audio, video and documents": "Sonora kan ikke åpne {file}: den leser lyd, video og dokumenter"
 }

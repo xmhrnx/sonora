@@ -503,5 +503,8 @@
   "Portuguese (Brazil)": "Português (Brasil)",
   "Spanish (Mexico)": "Espanhol (México)",
   "Spanish (Spain)": "Espanhol (Espanha)",
-  "on device": "no dispositivo"
+  "on device": "no dispositivo",
+  "Save to Downloads": "Guardar em Transferências",
+  "Saved to Downloads": "Guardado em Transferências",
+  "Sonora can't open {file}: it reads audio, video and documents": "O Sonora não consegue abrir {file}: lê áudio, vídeo e documentos"
 }

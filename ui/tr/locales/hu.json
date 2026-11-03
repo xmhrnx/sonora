@@ -491,5 +491,8 @@
   "Portuguese (Brazil)": "Portugál (Brazília)",
   "Spanish (Mexico)": "Spanyol (Mexikó)",
   "Spanish (Spain)": "Spanyol (Spanyolország)",
-  "on device": "az eszközön"
+  "on device": "az eszközön",
+  "Save to Downloads": "Mentés a Letöltésekbe",
+  "Saved to Downloads": "Mentve a Letöltésekbe",
+  "Sonora can't open {file}: it reads audio, video and documents": "A Sonora nem tudja megnyitni ezt: {file}. Hangot, videót és dokumentumokat olvas"
 }

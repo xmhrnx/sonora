@@ -3,9 +3,9 @@ package studio
 import (
 	"path/filepath"
 
-	"github.com/mehran9675/giode"
-	"github.com/mehran9675/giode/components/input"
-	"github.com/mehran9675/giode/components/slider"
+	"github.com/xmhrnx/giode"
+	"github.com/xmhrnx/giode/components/input"
+	"github.com/xmhrnx/giode/components/slider"
 
 	"github.com/mehran9675/sonora/internal/engines"
 	"github.com/mehran9675/sonora/internal/manager"

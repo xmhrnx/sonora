@@ -3,7 +3,7 @@ package library
 import (
 	"strings"
 
-	"github.com/mehran9675/giode"
+	"github.com/xmhrnx/giode"
 
 	lib "github.com/mehran9675/sonora/internal/library"
 	"github.com/mehran9675/sonora/ui/components/chip"

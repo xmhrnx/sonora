@@ -15,7 +15,7 @@ permissions:
 env:
   # The giode CLI version the Android and Linux builds use (it patches Gio
   # so held keys, like backspace, keep repeating on Android).
-  GIODE_CLI: v0.1.5-alpha.1
+  GIODE_CLI: v0.1.11-alpha.1
 
 jobs:
   build:
@@ -69,7 +69,7 @@ jobs:
 
       - name: Install the giode CLI
         if: matrix.goos == 'linux'
-        run: go install github.com/mehran9675/giode-cli/cmd/giode@${GIODE_CLI}
+        run: go install github.com/xmhrnx/giode-cli/cmd/giode@${GIODE_CLI}
 
       - name: Build (giode CLI)
         if: matrix.goos == 'linux'
@@ -195,7 +195,7 @@ jobs:
         run: go run ./tools/fetchsherpa android
 
       - name: Install the giode CLI
-        run: go install github.com/mehran9675/giode-cli/cmd/giode@${GIODE_CLI}
+        run: go install github.com/xmhrnx/giode-cli/cmd/giode@${GIODE_CLI}
 
       # giode adds the manifest entries in giode.toml (microphone,
       # notifications, the KeepAlive service) and signs with the debug key.

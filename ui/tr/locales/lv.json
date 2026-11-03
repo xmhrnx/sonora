@@ -502,5 +502,8 @@
   "Portuguese (Brazil)": "Portugāļu (Brazīlija)",
   "Spanish (Mexico)": "Spāņu (Meksika)",
   "Spanish (Spain)": "Spāņu (Spānija)",
-  "on device": "ierīcē"
+  "on device": "ierīcē",
+  "Save to Downloads": "Saglabāt lejupielādēs",
+  "Saved to Downloads": "Saglabāts lejupielādēs",
+  "Sonora can't open {file}: it reads audio, video and documents": "Sonora nevar atvērt {file}: tā lasa audio, video un dokumentus"
 }

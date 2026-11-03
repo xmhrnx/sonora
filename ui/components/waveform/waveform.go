@@ -17,7 +17,7 @@ import (
 	"gioui.org/op/paint"
 	"gioui.org/unit"
 
-	"github.com/mehran9675/giode/styles/properties"
+	"github.com/xmhrnx/giode/styles/properties"
 
 	"github.com/mehran9675/sonora/ui/theme"
 )

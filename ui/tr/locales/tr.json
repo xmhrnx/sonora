@@ -491,5 +491,8 @@
   "Portuguese (Brazil)": "Portekizce (Brezilya)",
   "Spanish (Mexico)": "İspanyolca (Meksika)",
   "Spanish (Spain)": "İspanyolca (İspanya)",
-  "on device": "cihazda"
+  "on device": "cihazda",
+  "Save to Downloads": "İndirilenler’e kaydet",
+  "Saved to Downloads": "İndirilenler’e kaydedildi",
+  "Sonora can't open {file}: it reads audio, video and documents": "Sonora {file} dosyasını açamıyor: ses, video ve belgeleri okur"
 }

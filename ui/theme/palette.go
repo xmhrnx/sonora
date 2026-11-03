@@ -2,7 +2,7 @@
 // mode, fonts, and the shared style tokens components build on.
 package theme
 
-import "github.com/mehran9675/giode"
+import "github.com/xmhrnx/giode"
 
 // Dark is the default palette: deep ink surfaces with a violet-to-cyan
 // accent.

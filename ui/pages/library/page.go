@@ -5,9 +5,9 @@ package library
 import (
 	"strings"
 
-	"github.com/mehran9675/giode"
-	"github.com/mehran9675/giode/components/input"
-	"github.com/mehran9675/giode/components/scroll"
+	"github.com/xmhrnx/giode"
+	"github.com/xmhrnx/giode/components/input"
+	"github.com/xmhrnx/giode/components/scroll"
 
 	lib "github.com/mehran9675/sonora/internal/library"
 	"github.com/mehran9675/sonora/ui/components/emptystate"

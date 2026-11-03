@@ -491,5 +491,8 @@
   "Portuguese (Brazil)": "Πορτογαλικά (Βραζιλία)",
   "Spanish (Mexico)": "Ισπανικά (Μεξικό)",
   "Spanish (Spain)": "Ισπανικά (Ισπανία)",
-  "on device": "στη συσκευή"
+  "on device": "στη συσκευή",
+  "Save to Downloads": "Αποθήκευση στις Λήψεις",
+  "Saved to Downloads": "Αποθηκεύτηκε στις Λήψεις",
+  "Sonora can't open {file}: it reads audio, video and documents": "Το Sonora δεν μπορεί να ανοίξει το {file}: διαβάζει ήχο, βίντεο και έγγραφα"
 }

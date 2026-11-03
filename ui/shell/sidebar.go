@@ -9,7 +9,7 @@ import (
 	"image/png"
 	"sync"
 
-	"github.com/mehran9675/giode"
+	"github.com/xmhrnx/giode"
 	"golang.org/x/image/draw"
 
 	"github.com/mehran9675/sonora/assets"

@@ -491,5 +491,8 @@
   "Portuguese (Brazil)": "Portugees (Brazilië)",
   "Spanish (Mexico)": "Spaans (Mexico)",
   "Spanish (Spain)": "Spaans (Spanje)",
-  "on device": "op het apparaat"
+  "on device": "op het apparaat",
+  "Save to Downloads": "Opslaan in Downloads",
+  "Saved to Downloads": "Opgeslagen in Downloads",
+  "Sonora can't open {file}: it reads audio, video and documents": "Sonora kan {file} niet openen: het leest audio, video en documenten"
 }

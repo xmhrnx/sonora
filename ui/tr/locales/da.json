@@ -491,5 +491,8 @@
   "Portuguese (Brazil)": "Portugisisk (Brasilien)",
   "Spanish (Mexico)": "Spansk (Mexico)",
   "Spanish (Spain)": "Spansk (Spanien)",
-  "on device": "på enheden"
+  "on device": "på enheden",
+  "Save to Downloads": "Gem i Overførsler",
+  "Saved to Downloads": "Gemt i Overførsler",
+  "Sonora can't open {file}: it reads audio, video and documents": "Sonora kan ikke åbne {file}: den læser lyd, video og dokumenter"
 }
