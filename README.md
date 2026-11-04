@@ -155,9 +155,11 @@ giode build linux     # dist/linux: the executable, a .desktop entry and the ico
 ```
 
 On Windows and macOS, plain `go build` works too
-(`go build -ldflags "-H windowsgui" -o sonora.exe ./cmd/sonora` on Windows). The CLI's
-`windows` target isn't used: Sonora embeds its own Windows manifest and icon
-(`cmd/sonora/winres`), with per-monitor DPI awareness, which would clash with the CLI's.
+(`go build -ldflags "-H windowsgui" -o sonora.exe ./cmd/sonora` on Windows); it embeds
+Sonora's own Windows resources (`cmd/sonora/winres`: icon, version, a manifest with
+per-monitor DPI awareness). `giode build windows` uses the CLI's resources instead, and
+Sonora asks for per-monitor DPI awareness when it starts, so both builds stay sharp on
+mixed-scale monitors.
 
 ## Using it
 
@@ -281,7 +283,7 @@ and the Windows resources:
 ```sh
 go run ./tools/makeicon assets/icon
 go install github.com/tc-hib/go-winres@v0.3.3
-(cd cmd/sonora && go-winres make --in winres/winres.json --arch amd64,arm64)
+(cd cmd/sonora/winres && go-winres make --in winres.json --arch amd64,arm64)
 ```
 
 ## Credits

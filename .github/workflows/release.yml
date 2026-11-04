@@ -3,8 +3,8 @@ name: release
 # Builds Sonora for every platform when a GitHub release is published
 # and attaches the archives to that release. Android and Linux are built
 # with the giode CLI from giode.toml; macOS and Windows with go build
-# (Windows keeps the resources in cmd/sonora/winres, whose manifest the
-# CLI's would clash with).
+# (which embeds Sonora's own Windows resources from cmd/sonora/winres;
+# CLI builds use the CLI's instead).
 on:
   release:
     types: [published]
