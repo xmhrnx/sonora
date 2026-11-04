@@ -5,18 +5,18 @@ import (
 	"sync"
 	"time"
 
-	"github.com/mehran9675/giode"
-	"github.com/mehran9675/giode/components/input"
-	"github.com/mehran9675/giode/elements"
-	"github.com/mehran9675/giode/styles/properties"
+	"github.com/xmhrnx/giode"
+	"github.com/xmhrnx/giode/components/input"
+	"github.com/xmhrnx/giode/elements"
+	"github.com/xmhrnx/giode/styles/properties"
 
 	"github.com/mehran9675/sonora/internal/manager"
 	"github.com/mehran9675/sonora/internal/textfile"
 	"github.com/mehran9675/sonora/ui/components/chip"
 	"github.com/mehran9675/sonora/ui/core"
+	"github.com/mehran9675/sonora/ui/format"
 	"github.com/mehran9675/sonora/ui/icons"
 	"github.com/mehran9675/sonora/ui/theme"
-
 	"github.com/mehran9675/sonora/ui/tr"
 )
 
@@ -118,7 +118,7 @@ func (e *editor) element(rt *manager.Runtime, height int) giode.Element {
 	words := len(strings.Fields(text))
 	secs := float64(words) / 2.6
 	stats := tr.N("{n} characters", len([]rune(text))) + " · " + tr.N("{n} words", words) + " · ≈ " +
-		core.Clock(time.Duration(secs*float64(time.Second)))
+		format.Clock(time.Duration(secs*float64(time.Second)))
 	footer := []giode.Element{giode.Box(giode.Styles{FlexGrow: 1}, giode.Text(stats, theme.Caption))}
 	// On a phone the hint shows in the voice panel instead: beside the
 	// stats it squeezes them, and the text field, to nothing.

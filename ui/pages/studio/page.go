@@ -3,8 +3,8 @@
 package studio
 
 import (
-	"github.com/mehran9675/giode"
-	"github.com/mehran9675/giode/components/scroll"
+	"github.com/xmhrnx/giode"
+	"github.com/xmhrnx/giode/components/scroll"
 
 	"github.com/mehran9675/sonora/internal/engines"
 	"github.com/mehran9675/sonora/internal/library"
@@ -15,7 +15,6 @@ import (
 	"github.com/mehran9675/sonora/ui/core"
 	"github.com/mehran9675/sonora/ui/icons"
 	"github.com/mehran9675/sonora/ui/theme"
-
 	"github.com/mehran9675/sonora/ui/tr"
 )
 
@@ -26,6 +25,7 @@ type Page struct {
 	engines *enginePicker
 	forms   map[string]*engineForm
 	panel   *voicePanel
+	cloner  *cloner
 	player  *playerbar.Bar
 	// column scrolls the one-column layout used on narrow screens.
 	column *scroll.Scroll
@@ -40,6 +40,7 @@ func New(c *core.Ctx) *Page {
 	p.editor = newEditor(c)
 	p.engines = newEnginePicker(c, p.selectEngine)
 	p.player = playerbar.New(c)
+	p.cloner = newCloner(c)
 	p.panel = newVoicePanel(p)
 	p.column = giode.Scroll(p.compactColumn, theme.Scrolling(4))
 	p.addEngine = giode.Button("", giode.Styles{BackgroundGradient: theme.Brand(90), Color: "#ffffff", FontSize: 13,
@@ -50,6 +51,7 @@ func New(c *core.Ctx) *Page {
 		p.selectEngine(id)
 		c.Go(core.PageStudio)
 	}
+	c.UseProfile = p.useProfile
 	c.Speak = func(text string) {
 		p.editor.setText(text)
 		c.Go(core.PageStudio)
@@ -86,6 +88,37 @@ func (p *Page) selectEngine(id string) {
 	if rt := p.c.Manager.Get(id); rt != nil {
 		p.c.Manager.LoadVoices(rt, false)
 	}
+}
+
+// useProfile clones the voice profile with id: it switches to the Clone
+// tab, or to an engine that can clone when the current one can't, and
+// shows the Studio.
+func (p *Page) useProfile(id string) {
+	p.c.Settings.Update(func(s *settings.Settings) { s.Profile = id })
+	rt := p.engine()
+	if rt == nil || rt.Manifest().Clone == engines.CloneNone {
+		rt = p.cloningEngine()
+		if rt == nil {
+			p.c.Info(tr.T("Install an engine that clones voices, such as ZipVoice, to use this profile."))
+			p.c.ShowEngines(engines.TaskSpeak)
+			return
+		}
+		p.selectEngine(rt.Manifest().ID)
+	}
+	p.form(rt).cloneMode = true
+	p.c.Go(core.PageStudio)
+}
+
+// cloningEngine returns an engine that can clone, ready ones first.
+func (p *Page) cloningEngine() *manager.Runtime {
+	for _, list := range [][]*manager.Runtime{p.c.Manager.ReadyFor(engines.TaskSpeak), p.c.Manager.EnginesFor(engines.TaskSpeak)} {
+		for _, rt := range list {
+			if rt.Manifest().Clone != engines.CloneNone {
+				return rt
+			}
+		}
+	}
+	return nil
 }
 
 // form returns the cached settings form for rt.

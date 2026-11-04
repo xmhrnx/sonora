@@ -2,21 +2,19 @@ package studio
 
 import (
 	"fmt"
-	"time"
 
-	"github.com/mehran9675/giode"
-	"github.com/mehran9675/giode/components/scroll"
+	"github.com/xmhrnx/giode"
+	"github.com/xmhrnx/giode/components/scroll"
 
 	"github.com/mehran9675/sonora/internal/manager"
 	"github.com/mehran9675/sonora/ui/components/badge"
-	"github.com/mehran9675/sonora/ui/components/chip"
+	"github.com/mehran9675/sonora/ui/components/group"
 	"github.com/mehran9675/sonora/ui/components/picker"
-	"github.com/mehran9675/sonora/ui/components/progressbar"
 	"github.com/mehran9675/sonora/ui/components/statuspill"
 	"github.com/mehran9675/sonora/ui/core"
+	"github.com/mehran9675/sonora/ui/format"
 	"github.com/mehran9675/sonora/ui/icons"
 	"github.com/mehran9675/sonora/ui/theme"
-
 	"github.com/mehran9675/sonora/ui/tr"
 )
 
@@ -38,7 +36,7 @@ func newVoicePanel(p *Page) *voicePanel {
 	c := p.c
 	v.engine = picker.NewTrigger(tr.Msg("Engine"), func() (string, string) {
 		label, _ := statuspill.Describe(v.rt)
-		return v.rt.Manifest().Name, joinNonEmpty(core.Parts(v.rt.Manifest().Vendor), tr.T(label))
+		return v.rt.Manifest().Name, format.Join(format.Parts(v.rt.Manifest().Vendor), tr.T(label))
 	}, func() giode.Element { return badge.Engine(v.rt.Manifest(), 32) }, p.engines.Open)
 	v.install = giode.Button("", giode.Styles{BackgroundGradient: theme.Brand(90), Color: "#ffffff", FontSize: 13,
 		Padding: giode.SymmetricInset(14, 8), BorderRadius: theme.RadiusSm}).
@@ -52,15 +50,9 @@ func newVoicePanel(p *Page) *voicePanel {
 				c.Error(err)
 			}
 		}
-		// Engines with a model choice download the model the panel's
-		// selector shows.
-		if o := rt.Manifest().ModelOption(); o != nil {
-			c.InstallModel(rt, c.Manager.Values(rt.Manifest()).String(o.ID), done)
-			return
-		}
-		c.Install(rt, done)
+		c.Setup(rt, done)
 	})
-	tr.Bind(func(s string) { v.install.Label(s) }, "Install")
+	// callout sets Install's text every frame (core.SetupLabel).
 	v.manage = giode.Button("", giode.Styles{Color: "theme.text", Background: "theme.border", BorderColor: "theme.border",
 		FontSize: 13, Padding: giode.SymmetricInset(14, 8), BorderRadius: theme.RadiusSm}).
 		Variant(giode.VariantOutlined).OnClick(func() { c.Go(core.PageEngines) })
@@ -108,7 +100,7 @@ func (v *voicePanel) content() giode.Element {
 	rt := v.rt
 	m := rt.Manifest()
 	f := v.p.form(rt)
-	els := []giode.Element{section(tr.T("Engine"), v.engineSection())}
+	els := []giode.Element{group.New(tr.T("Engine"), v.engineSection())}
 	if callout := v.callout(); callout != nil {
 		els = append(els, callout)
 	}
@@ -119,7 +111,7 @@ func (v *voicePanel) content() giode.Element {
 	}
 	ready := rt.State == manager.StateReady || rt.State == manager.StateWorking
 	if ready {
-		els = append(els, section(tr.T("Voice"), voiceChoice(f)))
+		els = append(els, group.New(tr.T("Voice"), voiceChoice(v.p.cloner, f)))
 		if m.Speed {
 			els = append(els, giode.Stack(giode.Styles{Width: -1, Gap: 8},
 				giode.Row(giode.Styles{Width: -1, Wrap: giode.WrapNoWrap},
@@ -142,112 +134,4 @@ func syncSlider(f *engineForm) giode.Element {
 		f.speed.SetValue(speedToSlider(f.speedValue()))
 	}
 	return giode.Box(giode.Styles{Width: -1}, f.speed)
-}
-
-// callout explains engines that can't generate yet.
-func (v *voicePanel) callout() giode.Element {
-	rt := v.rt
-	m := rt.Manifest()
-	var body []giode.Element
-	switch rt.State {
-	case manager.StateNotInstalled:
-		msg := tr.T("{name} needs a one-time setup. Sonora downloads everything it needs automatically.", "name", m.Name)
-		body = append(body, giode.Text(msg, giode.Styles{Color: "theme.text", FontSize: 13, LineHeight: 19}))
-		if m.Size != "" {
-			body = append(body, chip.Chip(m.Size))
-		}
-		if fl := v.p.form(rt).modelField(); fl != nil {
-			body = append(body, fl.Element())
-		}
-		if rt.Err != "" {
-			body = append(body, giode.Text(tr.T(firstLine(rt.Err)), giode.Styles{Color: "theme.danger", FontSize: 12, MaxLines: 3}))
-		}
-		body = append(body, giode.Row(giode.Styles{Gap: 8}, v.install, v.manage))
-	case manager.StateInstalling:
-		body = append(body,
-			giode.Text(tr.T("Installing {name}…", "name", m.Name), giode.Styles{Color: "theme.text", FontSize: 13, FontWeight: giode.FontWeightBold}),
-			progressbar.New(rt.Progress),
-			giode.Text(tr.T(rt.Status), giode.Styles{Color: "theme.muted", FontSize: 12, TextOverflow: giode.TextOverflowEllipsis}),
-		)
-	case manager.StateUnavailable:
-		body = append(body, giode.Text(tr.T(m.Hint), giode.Styles{Color: "theme.text", FontSize: 13, LineHeight: 19}))
-	default:
-		return nil
-	}
-	return giode.Stack(giode.Styles{Width: -1, Gap: 12, Padding: giode.UniformInset(14),
-		Background: "theme.primary/0.08", BorderRadius: theme.RadiusMd, BorderWidth: 1, BorderColor: "theme.primary/0.25"}, body...)
-}
-
-func (v *voicePanel) footer() giode.Element {
-	rt := v.rt
-	c := v.p.c
-	busy := c.Manager.Job != nil
-	ready := rt.State == manager.StateReady || rt.State == manager.StateWorking
-	st := giode.Styles{Width: -1, Justify: giode.JustifyCenter, BackgroundGradient: theme.Brand(90), Color: "#ffffff", FontSize: 15, BorderRadius: theme.RadiusMd,
-		Padding: giode.SymmetricInset(16, 13), BoxShadow: giode.BoxShadow{Y: 8, Blur: 24, Color: "#8b5cf650"}}
-	if busy {
-		st.BackgroundGradient = nil
-		st.Background = "theme.danger"
-		st.BoxShadow = giode.BoxShadow{}
-		v.generate.Label(tr.T("Stop")).Icon(icons.Solid(icons.Stop, 14, ""))
-	} else {
-		v.generate.Label(tr.T("Generate speech")).Icon(icons.Icon(icons.Sparkles, 18, ""))
-	}
-	v.generate.Styles(st).Disabled(!busy && (!ready || v.p.editor.text() == ""))
-
-	var status giode.Element
-	switch {
-	case busy:
-		job := c.Manager.Job
-		line := giode.Row(giode.Styles{Width: -1, Gap: 8, Align: giode.AlignCenter, Wrap: giode.WrapNoWrap},
-			giode.Spinner(giode.Styles{Width: 14, Height: 14, Color: "theme.primary"}),
-			giode.Box(giode.Styles{FlexGrow: 1}, giode.Text(tr.T(job.Runtime.Status),
-				giode.Styles{Color: "theme.muted", FontSize: 12, TextOverflow: giode.TextOverflowEllipsis})),
-			giode.Text(core.Clock(time.Since(job.Started)), giode.Styles{Color: "theme.muted", FontSize: 12, FontFamily: theme.Mono}),
-		)
-		if job.Runtime.Progress >= 0 {
-			status = giode.Stack(giode.Styles{Width: -1, Gap: 8}, progressbar.New(job.Runtime.Progress), line)
-		} else {
-			status = line
-		}
-	case rt.Err != "" && rt.State == manager.StateReady:
-		status = giode.Text(tr.T(firstLine(rt.Err)), giode.Styles{Color: "theme.danger", FontSize: 12, MaxLines: 3})
-	case !ready:
-		status = giode.Text(tr.T("Install the engine to start generating."), theme.Caption)
-	default:
-		status = giode.Text(tr.T("Audio is saved to your Library automatically."), theme.Caption)
-	}
-	return giode.Stack(giode.Styles{Width: -1, Gap: 10, Padding: giode.UniformInset(20)},
-		giode.Box(giode.Styles{Width: -1}, v.generate),
-		status,
-	)
-}
-
-// engineSection is the engine picker, plus an Eject control while the
-// engine's model is held in memory.
-func (v *voicePanel) engineSection() giode.Element {
-	if !v.rt.Engine.Loaded() || v.rt.Busy() {
-		return v.engine.Element()
-	}
-	return giode.Stack(giode.Styles{Width: -1, Gap: 6},
-		v.engine.Element(),
-		giode.Row(giode.Styles{Width: -1, Gap: 8, Align: giode.AlignCenter, Wrap: giode.WrapNoWrap, Padding: giode.Inset{Left: 4}},
-			giode.Box(giode.Styles{Width: 8, Height: 8, BorderRadius: 99, Background: "theme.success"}),
-			giode.Box(giode.Styles{FlexGrow: 1}, giode.Text(tr.T("Model loaded in memory"), theme.Caption)),
-			v.eject,
-		),
-	)
-}
-
-func section(title string, body giode.Element) giode.Element {
-	return giode.Stack(giode.Styles{Width: -1, Gap: 8}, giode.Text(title, theme.Overline), body)
-}
-
-func firstLine(s string) string {
-	for i, r := range s {
-		if r == '\n' {
-			return s[:i]
-		}
-	}
-	return s
 }

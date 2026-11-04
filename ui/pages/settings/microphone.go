@@ -5,6 +5,7 @@ import (
 	st "github.com/mehran9675/sonora/internal/settings"
 	"github.com/mehran9675/sonora/ui/components/picker"
 	"github.com/mehran9675/sonora/ui/core"
+	"github.com/mehran9675/sonora/ui/platform"
 	"github.com/mehran9675/sonora/ui/tr"
 )
 
@@ -47,7 +48,7 @@ func (m *microphone) refresh() {
 	var found []record.Device
 	m.c.Background(func() error {
 		var err error
-		found, err = core.Microphones()
+		found, err = platform.Microphones()
 		return err
 	}, func(error) {
 		// A failed listing still leaves the default to choose.

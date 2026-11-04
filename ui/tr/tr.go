@@ -16,7 +16,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/mehran9675/giode/i18n"
+	"github.com/xmhrnx/giode/i18n"
 )
 
 //go:embed locales/*.json

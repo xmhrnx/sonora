@@ -15,10 +15,11 @@ func (c *Ctx) ExportFile(path, title string) {
 	if !Mobile {
 		share = actionsheet.Action{Icon: icons.Folder, Label: tr.T("Show in folder"), Do: func() { c.ShareClip(path) }}
 	}
-	c.Sheet.Show(title,
-		actionsheet.Action{Icon: icons.Download, Label: tr.T("Save a copy…"), Detail: tr.T("Choose where to keep the file"), Do: func() { c.SaveClip(path, title) }},
-		share,
-	)
+	save := actionsheet.Action{Icon: icons.Download, Label: tr.T("Save a copy…"), Detail: tr.T("Choose where to keep the file"), Do: func() { c.SaveClip(path, title) }}
+	if Mobile {
+		save.Label, save.Detail = tr.T("Save to Downloads"), "Downloads/Sonora"
+	}
+	c.Sheet.Show(title, save, share)
 }
 
 // ExportTranscript opens the sheet to save or share a transcript as

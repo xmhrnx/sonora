@@ -4,7 +4,7 @@
 package actionsheet
 
 import (
-	"github.com/mehran9675/giode"
+	"github.com/xmhrnx/giode"
 
 	"github.com/mehran9675/sonora/ui/components/overlay"
 	"github.com/mehran9675/sonora/ui/icons"
@@ -34,11 +34,7 @@ func New() *Sheet {
 	s := &Sheet{}
 	s.close = giode.Button("", giode.Styles{Color: "theme.muted", Background: "theme.text", Padding: giode.UniformInset(6), BorderRadius: 8}).
 		Variant(giode.VariantGhost).Icon(icons.Icon(icons.Close, 16, "")).OnClick(func() { s.open = false })
-	overlay.Add(giode.Dialog(&s.open, s.content, giode.Styles{
-		Background: "theme.surface", BorderRadius: theme.RadiusLg, Padding: giode.UniformInset(20),
-		BorderWidth: 1, BorderColor: "theme.border",
-		BoxShadow: giode.BoxShadow{Y: 24, Blur: 60, Color: "#00000080"},
-	}))
+	overlay.Add(giode.Dialog(&s.open, s.content, theme.Dialog()))
 	return s
 }
 

@@ -11,8 +11,7 @@ import (
 	"gioui.org/op/clip"
 	"gioui.org/op/paint"
 	"gioui.org/unit"
-
-	"github.com/mehran9675/giode/styles/properties"
+	"github.com/xmhrnx/giode/styles/properties"
 )
 
 // Meter is stateless apart from its data source.

@@ -4,8 +4,8 @@
 package engines
 
 import (
-	"github.com/mehran9675/giode"
-	"github.com/mehran9675/giode/components/scroll"
+	"github.com/xmhrnx/giode"
+	"github.com/xmhrnx/giode/components/scroll"
 
 	"github.com/mehran9675/sonora/internal/engines"
 	"github.com/mehran9675/sonora/internal/manager"
@@ -48,6 +48,15 @@ func New(c *core.Ctx) *Page {
 	}, func() string { return string(p.task) }, func(v string) { p.task = engines.Task(v) })
 	c.ShowEngines = func(task engines.Task) {
 		p.task = task
+		c.Go(core.PageEngines)
+	}
+	c.ChooseModel = func(id string) {
+		rt := c.Manager.Get(id)
+		if rt == nil {
+			return
+		}
+		p.task = rt.Manifest().Task
+		p.card(rt).choose()
 		c.Go(core.PageEngines)
 	}
 	return p

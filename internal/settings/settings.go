@@ -43,6 +43,15 @@ type Settings struct {
 	Microphone     string `json:"microphone,omitempty"`
 	MicrophoneName string `json:"microphone_name,omitempty"`
 
+	// Profile is the voice profile the Studio clones ("" until one is
+	// chosen).
+	Profile string `json:"profile,omitempty"`
+
+	// ContextMenu is set when Sonora's actions are in the file
+	// manager's right-click menu (installed for this user from
+	// Settings; installers add them on their own).
+	ContextMenu bool `json:"context_menu,omitempty"`
+
 	// UILanguage is the language Sonora's own text is in ("de"; "" is
 	// the system's).
 	UILanguage string `json:"ui_language,omitempty"`

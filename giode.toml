@@ -1,4 +1,4 @@
-# Build settings for the giode CLI (https://github.com/mehran9675/giode-cli):
+# Build settings for the giode CLI (https://github.com/xmhrnx/giode-cli):
 #   giode run                 run on this computer
 #   giode run android         build, install and run on a connected phone
 #   giode build android       dist/android/Sonora.apk (see README for the
@@ -17,6 +17,28 @@ publisher = "Sonora"
 description = "A speech studio: text to speech and speech to text."
 website = "https://github.com/Mehran9675/sonora"
 ldflags = "-X github.com/mehran9675/sonora/ui/pages/settings.Version=1.0.3"
+# The launch screen, until the first frame: the icon's navy in dark and
+# light mode alike. Android 12+ draws the adaptive icon on it, whose navy
+# background (android.icon_background) melts into it, leaving the
+# glowing S; earlier Androids and iOS show the colour.
+splash_color = "#15163a"
+splash_color_light = "#15163a"
+# In the share sheet: audio and video to transcribe, documents and text
+# to speak (Config.OnShareReceived).
+share_target = true
+
+# Entries in the file manager's right-click menu (the Windows installer
+# and the macOS app register them; Settings adds them on Linux). The app
+# shows the same, translated, in core.ContextActions.
+[[context_actions]]
+id = "transcribe"
+label = "Transcribe with Sonora"
+extensions = [".wav", ".mp3", ".flac", ".ogg", ".oga", ".opus", ".m4a", ".aac", ".webm", ".mp4", ".aiff", ".wma"]
+
+[[context_actions]]
+id = "speak"
+label = "Read aloud with Sonora"
+extensions = [".txt", ".md", ".markdown", ".srt", ".vtt", ".html", ".htm", ".xhtml", ".docx", ".odt", ".epub", ".pdf", ".rtf"]
 
 [android]
 min_sdk = 26

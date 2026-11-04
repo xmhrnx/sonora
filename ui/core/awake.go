@@ -3,6 +3,7 @@ package core
 import (
 	"sync/atomic"
 
+	"github.com/mehran9675/sonora/internal/audio/record"
 	"github.com/mehran9675/sonora/internal/manager"
 
 	"github.com/mehran9675/sonora/ui/tr"
@@ -45,6 +46,11 @@ func (c *Ctx) StayAwake(reason string) (done func()) {
 		}
 	}
 }
+
+// Busy reports whether long work is running (generating, transcribing,
+// downloading: whatever holds StayAwake) or a recording. Call it on the
+// UI goroutine.
+func (c *Ctx) Busy() bool { return c.awake > 0 || record.Active() }
 
 // NotifyIfAway shows a system notification when the app is in the
 // background, so the user learns that long work finished.

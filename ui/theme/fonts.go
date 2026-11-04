@@ -6,8 +6,8 @@ import (
 	"gioui.org/font"
 	"gioui.org/font/gofont"
 	"gioui.org/font/opentype"
+	"github.com/xmhrnx/giode"
 
-	"github.com/mehran9675/giode"
 	"github.com/mehran9675/sonora/assets"
 )
 

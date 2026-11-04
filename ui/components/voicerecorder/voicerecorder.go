@@ -10,12 +10,14 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/mehran9675/giode"
+	"github.com/xmhrnx/giode"
 
 	"github.com/mehran9675/sonora/internal/audio/record"
 	"github.com/mehran9675/sonora/ui/components/levelmeter"
 	"github.com/mehran9675/sonora/ui/core"
+	"github.com/mehran9675/sonora/ui/format"
 	"github.com/mehran9675/sonora/ui/icons"
+	"github.com/mehran9675/sonora/ui/platform"
 	"github.com/mehran9675/sonora/ui/theme"
 	"github.com/mehran9675/sonora/ui/tr"
 )
@@ -113,7 +115,7 @@ func (r *Recorder) begin() {
 	var rec *record.Recorder
 	r.c.Background(func() error {
 		// Android asks the user for the microphone the first time.
-		if err := r.c.RequestMicrophone(context.Background()); err != nil {
+		if err := platform.RequestMicrophone(r.c.App, context.Background()); err != nil {
 			return err
 		}
 		var err error
@@ -181,7 +183,7 @@ func (r *Recorder) Element() giode.Element {
 	}
 	giode.HandleBack(func() { r.finish(false) }) // Back discards the take
 	elapsed := r.rec.Elapsed()
-	clock := fmt.Sprintf("%s / %s", core.Clock(elapsed), core.Clock(r.limit()))
+	clock := fmt.Sprintf("%s / %s", format.Clock(elapsed), format.Clock(r.limit()))
 	hint := tr.T(r.opts.Hint)
 	if elapsed >= r.opts.Min {
 		hint = tr.T(r.opts.Ready)

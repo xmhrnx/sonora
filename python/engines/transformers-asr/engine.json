@@ -15,7 +15,10 @@
   "translate": true,
   "options": [
     {"id": "model", "label": "Model ID", "type": "text", "scope": "load", "default": "openai/whisper-large-v3-turbo",
-     "suggestions": ["openai/whisper-large-v3-turbo", "openai/whisper-small", "distil-whisper/distil-large-v3.5", "UsefulSensors/moonshine-base", "facebook/wav2vec2-base-960h"],
+     "suggestions": ["openai/whisper-large-v3-turbo", "openai/whisper-small", "distil-whisper/distil-large-v3.5",
+      "UsefulSensors/moonshine-base", "facebook/wav2vec2-base-960h", "openai/whisper-large-v3",
+      "openai/whisper-medium", "openai/whisper-base", "distil-whisper/distil-small.en",
+      "UsefulSensors/moonshine-tiny"],
      "help": "Any automatic-speech-recognition model ID from huggingface.co"}
   ]
 }

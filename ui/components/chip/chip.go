@@ -1,7 +1,7 @@
 // Package chip draws small pill labels for tags and metadata.
 package chip
 
-import "github.com/mehran9675/giode"
+import "github.com/xmhrnx/giode"
 
 // Chip is a neutral pill.
 func Chip(text string) giode.Element {

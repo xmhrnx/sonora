@@ -7,8 +7,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/mehran9675/giode"
-	"github.com/mehran9675/giode/components/scroll"
+	"github.com/xmhrnx/giode"
+	"github.com/xmhrnx/giode/components/scroll"
 
 	"github.com/mehran9675/sonora/internal/engines"
 	"github.com/mehran9675/sonora/internal/manager"
@@ -19,7 +19,6 @@ import (
 	"github.com/mehran9675/sonora/ui/core"
 	"github.com/mehran9675/sonora/ui/icons"
 	"github.com/mehran9675/sonora/ui/theme"
-
 	"github.com/mehran9675/sonora/ui/tr"
 )
 

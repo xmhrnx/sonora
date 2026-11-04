@@ -7,6 +7,7 @@ const (
 	PageStudio Page = iota
 	PageTranscribe
 	PageLibrary
+	PageProfiles
 	PageEngines
 	PageSettings
 )

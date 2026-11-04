@@ -3,12 +3,13 @@
 package core
 
 import (
-	"github.com/mehran9675/giode"
+	"github.com/xmhrnx/giode"
 
 	"github.com/mehran9675/sonora/internal/audio/playback"
 	"github.com/mehran9675/sonora/internal/engines"
 	"github.com/mehran9675/sonora/internal/library"
 	"github.com/mehran9675/sonora/internal/manager"
+	"github.com/mehran9675/sonora/internal/profiles"
 	"github.com/mehran9675/sonora/internal/settings"
 	"github.com/mehran9675/sonora/internal/transcripts"
 	"github.com/mehran9675/sonora/ui/components/actionsheet"
@@ -22,8 +23,10 @@ type Ctx struct {
 	Library  *library.Library
 	// Transcripts holds every transcription.
 	Transcripts *transcripts.Store
-	Player      *playback.Player
-	Toasts      *giode.ToasterElement
+	// Profiles holds the voices to clone.
+	Profiles *profiles.Store
+	Player   *playback.Player
+	Toasts   *giode.ToasterElement
 	// Sheet lists actions for an item (export, share).
 	Sheet *actionsheet.Sheet
 	Now   *NowPlaying
@@ -41,9 +44,15 @@ type Ctx struct {
 	UseTranscriber func(id string)
 	// Speak puts text into the Studio's script (set by the Studio).
 	Speak func(text string)
+	// UseProfile clones the voice profile with id in the Studio (set by
+	// the Studio).
+	UseProfile func(id string)
 	// Transcribe opens an audio file on the Transcribe page (set by that
 	// page).
 	Transcribe func(path, title string)
+	// ChooseModel opens the Engines page with an engine's model chooser
+	// (set by that page).
+	ChooseModel func(id string)
 	// ShowEngines opens the Engines page on the voice or transcription
 	// tab (set by that page).
 	ShowEngines func(task engines.Task)

@@ -3,8 +3,8 @@ package engines
 import (
 	"strings"
 
-	"github.com/mehran9675/giode"
-	"github.com/mehran9675/giode/components/input"
+	"github.com/xmhrnx/giode"
+	"github.com/xmhrnx/giode/components/input"
 
 	"github.com/mehran9675/sonora/internal/engines"
 	"github.com/mehran9675/sonora/internal/engines/command"
@@ -175,9 +175,7 @@ func (d *addDialog) content() giode.Element {
 }
 
 func dialogStyle() giode.Styles {
-	return giode.Styles{
-		Background: "theme.surface", BorderRadius: theme.RadiusLg, Padding: giode.UniformInset(24),
-		BorderWidth: 1, BorderColor: "theme.border",
-		BoxShadow: giode.BoxShadow{Y: 24, Blur: 60, Color: "#00000080"},
-	}
+	st := theme.Dialog()
+	st.Padding = giode.UniformInset(24)
+	return st
 }

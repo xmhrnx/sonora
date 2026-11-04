@@ -3,7 +3,9 @@
 package navitem
 
 import (
-	"github.com/mehran9675/giode"
+	"cmp"
+
+	"github.com/xmhrnx/giode"
 
 	"github.com/mehran9675/sonora/ui/icons"
 	"github.com/mehran9675/sonora/ui/theme"
@@ -14,6 +16,7 @@ import (
 type Item struct {
 	p       *giode.PressableElement
 	compact bool
+	tab     string // the bottom-bar label; the sidebar's when empty
 }
 
 // New returns an item showing icon and label; active reports whether
@@ -36,10 +39,12 @@ func New(icon, label string, active func() bool, badge func() string, onClick fu
 		}
 		if it.compact {
 			// A bottom-bar tab: icon over a short label, no badge.
+			// Six tabs share a phone's width: the label keeps to one line.
 			return giode.Stack(giode.Styles{
-				Width: -1, Gap: 4, Align: giode.AlignCenter, Padding: giode.SymmetricInset(4, 8),
+				Width: -1, Gap: 4, Align: giode.AlignCenter, Padding: giode.SymmetricInset(2, 8),
 				BorderRadius: theme.RadiusSm + 2, Background: bg,
-			}, icons.Icon(icon, 20, iconColor), giode.Text(tr.T(label), giode.Styles{Color: fg, FontSize: 11, FontWeight: giode.FontWeightMedium}))
+			}, icons.Icon(icon, 20, iconColor), giode.Text(tr.T(cmp.Or(it.tab, label)), giode.Styles{Color: fg, FontSize: 10, FontWeight: giode.FontWeightMedium,
+				MaxLines: 1, TextOverflow: giode.TextOverflowEllipsis}))
 		}
 		row := []giode.Element{
 			icons.Icon(icon, 18, iconColor),
@@ -59,6 +64,13 @@ func New(icon, label string, active func() bool, badge func() string, onClick fu
 		}, row...)
 	}).OnClick(func(giode.ClickEvent) { onClick() })
 	tr.Bind(func(s string) { it.p.Label(s) }, label)
+	return it
+}
+
+// TabLabel sets a shorter label for the bottom bar, English (tr.Msg):
+// "Settings (tab)" can read "Optionen" where "Einstellungen" won't fit.
+func (it *Item) TabLabel(label string) *Item {
+	it.tab = label
 	return it
 }
 

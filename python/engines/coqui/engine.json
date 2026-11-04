@@ -16,7 +16,17 @@
   "options": [
     {"id": "model", "label": "Model", "type": "text", "scope": "load",
      "default": "tts_models/multilingual/multi-dataset/xtts_v2",
-     "suggestions": ["tts_models/multilingual/multi-dataset/xtts_v2", "tts_models/en/ljspeech/vits", "tts_models/en/vctk/vits", "tts_models/multilingual/multi-dataset/your_tts"]},
+     "suggestions": ["tts_models/multilingual/multi-dataset/xtts_v2", "tts_models/en/ljspeech/vits",
+      "tts_models/en/vctk/vits", "tts_models/multilingual/multi-dataset/your_tts",
+      "tts_models/en/jenny/jenny", "tts_models/multilingual/multi-dataset/bark",
+      "tts_models/multilingual/multi-dataset/xtts_v1.1", "tts_models/de/thorsten/vits",
+      "tts_models/fr/css10/vits", "tts_models/es/css10/vits", "tts_models/it/mai_female/vits",
+      "tts_models/nl/css10/vits", "tts_models/pl/mai_female/vits", "tts_models/pt/cv/vits",
+      "tts_models/uk/mai/vits", "tts_models/sv/cv/vits", "tts_models/da/cv/vits",
+      "tts_models/fi/css10/vits", "tts_models/hu/css10/vits", "tts_models/cs/cv/vits",
+      "tts_models/sk/cv/vits", "tts_models/sl/cv/vits", "tts_models/hr/cv/vits", "tts_models/ro/cv/vits",
+      "tts_models/el/cv/vits", "tts_models/bg/cv/vits", "tts_models/et/cv/vits", "tts_models/lt/cv/vits",
+      "tts_models/lv/cv/vits", "tts_models/ca/custom/vits", "tts_models/tr/common-voice/glow-tts"]},
     {"id": "language", "label": "Language", "type": "select", "default": "en",
      "choices": [
        {"value": "en", "label": "English"}, {"value": "es", "label": "Spanish"}, {"value": "fr", "label": "French"},

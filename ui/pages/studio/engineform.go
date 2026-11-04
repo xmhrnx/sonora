@@ -1,11 +1,8 @@
 package studio
 
 import (
-	"path/filepath"
-
-	"github.com/mehran9675/giode"
-	"github.com/mehran9675/giode/components/input"
-	"github.com/mehran9675/giode/components/slider"
+	"github.com/xmhrnx/giode"
+	"github.com/xmhrnx/giode/components/slider"
 
 	"github.com/mehran9675/sonora/internal/engines"
 	"github.com/mehran9675/sonora/internal/manager"
@@ -13,11 +10,9 @@ import (
 	"github.com/mehran9675/sonora/ui/components/optionfield"
 	"github.com/mehran9675/sonora/ui/components/picker"
 	"github.com/mehran9675/sonora/ui/components/segmented"
-	"github.com/mehran9675/sonora/ui/components/voicerecorder"
 	"github.com/mehran9675/sonora/ui/core"
+	"github.com/mehran9675/sonora/ui/format"
 	"github.com/mehran9675/sonora/ui/icons"
-	"github.com/mehran9675/sonora/ui/theme"
-
 	"github.com/mehran9675/sonora/ui/tr"
 )
 
@@ -32,14 +27,8 @@ type engineForm struct {
 	speed        *slider.Slider
 
 	// cloneMode is set when the user chose "Clone a voice".
-	cloneMode  bool
-	modes      *segmented.Control
-	reference  string
-	refPick    *giode.ButtonElement
-	refPlay    *giode.PressableElement
-	recorder   *voicerecorder.Recorder
-	refClear   *giode.ButtonElement
-	transcript *input.Input
+	cloneMode bool
+	modes     *segmented.Control
 }
 
 func newEngineForm(c *core.Ctx, rt *manager.Runtime) *engineForm {
@@ -64,9 +53,9 @@ func newEngineForm(c *core.Ctx, rt *manager.Runtime) *engineForm {
 			return tr.T("Loading voices…"), tr.T("Starting {name}", "name", m.Name)
 		}
 		v := f.voice()
-		detail := core.Parts(v.Group)
+		detail := format.Parts(v.Group)
 		if v.Description != "" {
-			detail = joinNonEmpty(core.Parts(v.Group), core.Parts(v.Description))
+			detail = format.Join(format.Parts(v.Group), format.Parts(v.Description))
 		}
 		return v.Label(), detail
 	}, func() giode.Element {
@@ -84,36 +73,6 @@ func newEngineForm(c *core.Ctx, rt *manager.Runtime) *engineForm {
 		})
 	f.speed.SetValue(speedToSlider(f.speedValue()))
 
-	small := giode.Styles{Color: "theme.text", Background: "theme.border", BorderColor: "theme.border", FontSize: 13,
-		Padding: giode.SymmetricInset(12, 7), BorderRadius: theme.RadiusSm}
-	f.refPick = giode.Button("", small).Variant(giode.VariantOutlined).
-		Icon(icons.Icon(icons.Upload, 15, "")).OnClick(f.pickReference)
-	tr.Bind(func(s string) { f.refPick.Label(s) }, "Choose file…")
-	f.refClear = giode.Button("", giode.Styles{Color: "theme.muted", Background: "theme.text", Padding: giode.UniformInset(5), BorderRadius: 8}).
-		Variant(giode.VariantGhost).Icon(icons.Icon(icons.Close, 14, "")).OnClick(func() { f.reference = "" })
-	f.recorder = voicerecorder.New(c, func(path string) {
-		f.reference = path
-		f.transcript.SetText("")
-		c.Success(tr.T("Recording saved — it will be used as the voice"))
-	})
-	f.refPlay = giode.Pressable(func(s giode.PressState) giode.Element {
-		icon := icons.Solid(icons.Play, 12, "theme.primary")
-		if c.IsPlaying(f.reference) {
-			icon = icons.Solid(icons.Pause, 12, "theme.primary")
-		}
-		bg := "theme.primary/0.14"
-		if s.Hovered {
-			bg = "theme.primary/0.26"
-		}
-		return giode.Box(giode.Styles{Width: 28, Height: 28, BorderRadius: 99, Background: bg,
-			Align: giode.AlignCenter, Justify: giode.JustifyCenter}, icon)
-	}).OnClick(func(giode.ClickEvent) {
-		c.PlayPause(f.reference, tr.T("Voice sample"), filepath.Base(f.reference))
-	})
-	tr.Bind(func(s string) { f.refPlay.Label(s) }, "Play recording")
-	f.transcript = giode.Input.Text("", theme.Field())
-	tr.Bind(func(s string) { f.transcript.Placeholder(s) }, "What is said in the recording")
-	tr.Bind(func(s string) { f.transcript.Label(s) }, "Reference transcript")
 	f.cloneMode = m.Clone == engines.CloneRequired
 	f.modes = segmented.New([]segmented.Option{{Value: "voice", Label: tr.Msg("Built-in voice")}, {Value: "clone", Label: tr.Msg("Clone a voice")}},
 		func() string {
@@ -150,7 +109,7 @@ func (f *engineForm) voiceList() []engines.Voice {
 func (f *engineForm) voiceItems() []picker.Item {
 	var out []picker.Item
 	for _, v := range f.voiceList() {
-		out = append(out, picker.Item{ID: v.ID, Label: v.Label(), Group: core.Parts(v.Group), Detail: core.Parts(v.Description)})
+		out = append(out, picker.Item{ID: v.ID, Label: v.Label(), Group: format.Parts(v.Group), Detail: format.Parts(v.Description)})
 	}
 	return out
 }
@@ -180,27 +139,6 @@ func (f *engineForm) speedValue() float64 {
 	return 1
 }
 
-// pickReference asks for a recording and copies it into the references
-// folder so the library entry keeps working if the original moves.
-func (f *engineForm) pickReference() {
-	var picked string
-	f.c.Background(func() error {
-		file, err := f.c.PickFile([]string{"wav", "mp3", "flac", "ogg", "m4a"}, tr.Msg("Record your voice instead."))
-		if err != nil {
-			return err
-		}
-		defer file.Close()
-		picked, err = core.SavePicked(file, core.ReferencesDir(), "voice")
-		return err
-	}, func(err error) {
-		if err != nil {
-			f.c.Error(err)
-			return
-		}
-		f.reference = picked
-	})
-}
-
 func sliderToSpeed(v float32) float64 { return float64(int((0.5+float64(v)*1.5)*20+0.5)) / 20 }
 func speedToSlider(s float64) float32 { return float32((s - 0.5) / 1.5) }
 
@@ -209,14 +147,4 @@ func orDefault(s string) string {
 		return tr.T("Default voice")
 	}
 	return s
-}
-
-func joinNonEmpty(a, b string) string {
-	switch {
-	case a == "":
-		return b
-	case b == "":
-		return a
-	}
-	return a + " · " + b
 }

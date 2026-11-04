@@ -39,9 +39,9 @@ func newRecognizer(m *engines.Manifest, dir string, models []model) *Recognizer 
 
 func (e *Recognizer) Manifest() *engines.Manifest { return e.m }
 
-func (e *Recognizer) defaultModel() model {
-	return e.pick(engines.Resolve(e.m.Options, nil))
-}
+// Models lists the packages to choose from when the manifest has no
+// model option (an engine with a single model).
+func (e *Recognizer) Models() []engines.Choice { return choices(e.models) }
 
 // Installed reports whether any of the engine's models is downloaded.
 func (e *Recognizer) Installed() bool { return anyDownloaded(e.dir, e.models) }
@@ -54,11 +54,8 @@ func (e *Recognizer) InstallModel(ctx context.Context, id string, log engines.Lo
 	return fetchModel(ctx, e.dir, e.models, id, log)
 }
 
-// Install downloads the default model.
-func (e *Recognizer) Install(ctx context.Context, log engines.Logger) error {
-	_, err := fetch(ctx, e.dir, e.defaultModel(), log)
-	return err
-}
+// Install downloads nothing; see Engine.Install.
+func (e *Recognizer) Install(context.Context, engines.Logger) error { return errChooseModel }
 
 // Uninstall unloads and deletes every package this engine downloaded.
 func (e *Recognizer) Uninstall() error {
@@ -157,6 +154,10 @@ func recognizerConfig(dir string, m model) (sherpa.RecognizerConfig, error) {
 			find(&cfg.Joiner, "joiner*.onnx"), find(&cfg.Tokens, "tokens.txt"))
 	case sherpa.SenseVoice:
 		errs = append(errs, find(&cfg.Model, "model*.onnx"), find(&cfg.Tokens, "tokens.txt"))
+	case sherpa.Moonshine:
+		errs = append(errs, find(&cfg.Preprocessor, "preprocess*.onnx"), find(&cfg.Encoder, "encode*.onnx"),
+			find(&cfg.Decoder, "uncached_decode*.onnx"), find(&cfg.CachedDecoder, "cached_decode*.onnx"),
+			find(&cfg.Tokens, "tokens.txt"))
 	}
 	return cfg, errors.Join(errs...)
 }

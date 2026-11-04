@@ -1,6 +1,6 @@
 package theme
 
-import "github.com/mehran9675/giode"
+import "github.com/xmhrnx/giode"
 
 // Brand gradient stops.
 const (
@@ -26,6 +26,15 @@ func Gradient(angle float32, colors []string) *giode.LinearGradient {
 		return Brand(angle)
 	}
 	return giode.Linear(angle, colors[0], colors[1])
+}
+
+// Dialog is the style of modal dialogs.
+func Dialog() giode.Styles {
+	return giode.Styles{
+		Background: "theme.surface", BorderRadius: RadiusLg, Padding: giode.UniformInset(20),
+		BorderWidth: 1, BorderColor: "theme.border",
+		BoxShadow: giode.BoxShadow{Y: 24, Blur: 60, Color: "#00000080"},
+	}
 }
 
 // Card is the panel style used across pages.

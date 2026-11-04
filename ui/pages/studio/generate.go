@@ -24,17 +24,19 @@ func (p *Page) toggleGenerate() {
 		return
 	}
 	f := p.form(rt)
-	reference := ""
-	if f.cloneMode && rt.Manifest().Clone != engines.CloneNone {
-		if f.reference == "" {
-			c.Error(errors.New(tr.T("Choose a recording of the voice to clone")))
+	m := rt.Manifest()
+	var reference, referenceText string
+	if m.Clone == engines.CloneRequired || (f.cloneMode && m.Clone != engines.CloneNone) {
+		profile, ok := p.cloner.selected()
+		if !ok {
+			c.Error(errors.New(tr.T("Make a voice profile to clone first")))
 			return
 		}
-		if rt.Manifest().Transcript == engines.CloneRequired && strings.TrimSpace(f.transcript.Text()) == "" {
-			c.Error(errors.New(tr.T("{name} needs the transcript of the recording", "name", rt.Manifest().Name)))
+		if m.Transcript == engines.CloneRequired && strings.TrimSpace(profile.Transcript) == "" {
+			c.Error(errors.New(tr.T("{engine} needs to know what is said in this recording.", "engine", m.Name)))
 			return
 		}
-		reference = f.reference
+		reference, referenceText = c.Profiles.Path(profile), profile.Transcript
 	}
 	text := p.editor.text()
 	c.Settings.Update(func(s *settings.Settings) { s.Draft = text })
@@ -43,7 +45,7 @@ func (p *Page) toggleGenerate() {
 		Voice:         f.voice(),
 		Speed:         f.speedValue(),
 		Reference:     reference,
-		ReferenceText: f.transcript.Text(),
+		ReferenceText: referenceText,
 	}
 	awake := c.StayAwake(tr.T("Generating speech"))
 	c.Manager.Generate(rt, in, func(e library.Entry, err error) {

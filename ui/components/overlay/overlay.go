@@ -2,7 +2,7 @@
 // root can lay them out above every page.
 package overlay
 
-import "github.com/mehran9675/giode"
+import "github.com/xmhrnx/giode"
 
 var layers []giode.Element
 

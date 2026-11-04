@@ -20,7 +20,10 @@
        {"value": "tiny", "label": "Tiny · 75 MB"}, {"value": "base", "label": "Base · 145 MB"},
        {"value": "small", "label": "Small · 480 MB"}, {"value": "medium", "label": "Medium · 1.5 GB"},
        {"value": "large-v3-turbo", "label": "Large v3 Turbo · 1.6 GB"}, {"value": "large-v3", "label": "Large v3 · 3 GB"},
-       {"value": "distil-large-v3", "label": "Distil Large v3 (English) · 1.5 GB"}
+       {"value": "distil-large-v3", "label": "Distil Large v3 (English) · 1.5 GB"}, {"value": "large-v2", "label": "Large v2 · 3 GB"},
+       {"value": "tiny.en", "label": "Tiny (English) · 75 MB"}, {"value": "base.en", "label": "Base (English) · 145 MB"},
+       {"value": "small.en", "label": "Small (English) · 480 MB"}, {"value": "distil-small.en", "label": "Distil Small (English) · 330 MB"},
+       {"value": "medium.en", "label": "Medium (English) · 1.5 GB"}, {"value": "distil-medium.en", "label": "Distil Medium (English) · 790 MB"}
      ]},
     {"id": "vad", "label": "Skip silence", "type": "bool", "default": true,
      "help": "Finds the speech first; faster, and avoids made-up text in silent parts."},

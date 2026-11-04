@@ -51,8 +51,9 @@ func All(dataDir string) []engines.Engine {
 		}},
 		&Engine{m: zipvoiceManifest(), dir: dir, pick: byOption(zipvoiceModels), models: zipvoiceModels},
 		newRecognizer(whisperManifest(), dir, whisperModels),
-		newRecognizer(parakeetManifest(), dir, []model{parakeetModel}),
-		newRecognizer(senseVoiceManifest(), dir, []model{senseVoiceModel}),
+		newRecognizer(parakeetManifest(), dir, parakeetModels),
+		newRecognizer(senseVoiceManifest(), dir, senseVoiceModels),
+		newRecognizer(moonshineManifest(), dir, moonshineModels),
 	}
 }
 
@@ -70,19 +71,16 @@ func byOption(models []model) func(string, engines.Values) model {
 
 func (e *Engine) Manifest() *engines.Manifest { return e.m }
 
-// defaultModel is what Install downloads.
-func (e *Engine) defaultModel() model {
-	return e.pick(e.m.DefaultVoice, engines.Resolve(e.m.Options, nil))
-}
+// Models lists the packages to choose from when the manifest has no
+// model option (Piper: one per voice).
+func (e *Engine) Models() []engines.Choice { return choices(e.models) }
 
 // Installed reports whether any of the engine's models is downloaded.
 func (e *Engine) Installed() bool { return anyDownloaded(e.dir, e.models) }
 
-// Install downloads the default model.
-func (e *Engine) Install(ctx context.Context, log engines.Logger) error {
-	_, err := fetch(ctx, e.dir, e.defaultModel(), log)
-	return err
-}
+// Install downloads nothing: on-device engines are their models, and
+// the user picks which to download (InstallModel).
+func (e *Engine) Install(context.Context, engines.Logger) error { return errChooseModel }
 
 // DownloadedModels reports which packages are on this device.
 func (e *Engine) DownloadedModels() map[string]bool { return downloaded(e.dir, e.models) }
@@ -96,47 +94,6 @@ func (e *Engine) InstallModel(ctx context.Context, id string, log engines.Logger
 func (e *Engine) Uninstall() error {
 	e.Close()
 	return removeModels(e.dir, e.models)
-}
-
-// downloaded reports which of models are unpacked in dir.
-func downloaded(dir string, models []model) map[string]bool {
-	out := map[string]bool{}
-	for _, m := range models {
-		if _, err := os.Stat(filepath.Join(dir, m.ID)); err == nil {
-			out[m.ID] = true
-		}
-	}
-	return out
-}
-
-func anyDownloaded(dir string, models []model) bool { return len(downloaded(dir, models)) > 0 }
-
-// fetchModel downloads the package of models with the given id.
-func fetchModel(ctx context.Context, dir string, models []model, id string, log engines.Logger) error {
-	for _, m := range models {
-		if m.ID == id {
-			_, err := fetch(ctx, dir, m, log)
-			return err
-		}
-	}
-	return fmt.Errorf("unknown model %q", id)
-}
-
-// removeModels deletes downloaded packages and their extra files.
-func removeModels(dir string, models []model) error {
-	var paths []string
-	for _, m := range models {
-		paths = append(paths, filepath.Join(dir, m.ID))
-		for _, url := range m.Extra {
-			paths = append(paths, extraPath(dir, url))
-		}
-	}
-	for _, p := range paths {
-		if err := os.RemoveAll(p); err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // Voices returns the fixed voice list.

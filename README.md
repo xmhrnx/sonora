@@ -14,20 +14,22 @@ Linux and Android. The layout adapts to the window: narrow windows and phones ge
 single scrolling column with a bottom tab bar.
 
 **On Android** models run on the phone itself, offline: install **Kitten TTS Lite**,
-**Kokoro**, **Piper** or **ZipVoice** to speak, and **Whisper**, **Parakeet** or
-**SenseVoice** to transcribe, from the Engines page. Sonora downloads the model (30 MB for
-the smallest, about 600 MB for the largest) and runs it with
-[sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx). ZipVoice clones a voice from a
-recording right on the phone; Kokoro has a full-precision model and Piper high-quality
-voices for phones with memory to spare; Whisper goes up to Large v3 Turbo. API servers
+**Kokoro**, **Piper** or **ZipVoice** to speak, and **Whisper**, **Parakeet**,
+**SenseVoice** or **Moonshine** to transcribe, from the Engines page. Sonora downloads the
+model you pick (from 26 MB to about 2 GB; nothing downloads until you choose) and runs it
+with [sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx). ZipVoice clones a voice profile
+right on the phone; Piper has 74 voices in 33 languages; Kokoro has a full-precision model
+for phones with memory to spare; Whisper goes up to Large v3 and Medium. API servers
 work too — run a server such as [Kokoro-FastAPI](https://github.com/remsky/Kokoro-FastAPI)
 on your computer, or use a cloud speech or transcription API, and add it under
 *Engines → Add engine*. The Python engines (IndexTTS, Chatterbox, faster-whisper…) are
 desktop only: they need PyTorch or CTranslate2, which don't run on Android. Recording
 works on phones too (Sonora asks for the microphone the first time). Phones read
 WAV, MP3, FLAC, Ogg Vorbis and Opus audio; other formats (M4A, video) need ffmpeg, which
-desktops can use when it's installed. Clips, recordings and transcripts are saved through
-the system file picker or sent to other apps with the share sheet; Back closes dialogs and returns to the
+desktops can use when it's installed. Clips, recordings and transcripts are saved to
+Downloads/Sonora (the system file picker on Android 8 and 9) or sent to other apps with the
+share sheet, and Sonora is in the share sheet itself: share a voice memo or video to
+transcribe it, or a document or text to speak it. Back closes dialogs and returns to the
 Studio; your script is kept when you switch away.
 
 ![Studio](docs/screenshots/studio.png)
@@ -54,15 +56,25 @@ Studio; your script is kept when you switch away.
   unplugged one falls back to the system default), the quality (16 to 128 kbps; standard
   is about 14 MB an hour), the longest recording (15 minutes to 8 hours, 1 hour by
   default) and, on desktops, the folder they're kept in.
-- **Voice cloning.** On engines that can clone (Kitten TTS 2, Audio8, IndexTTS, Chatterbox, Coqui, ZipVoice),
-  switch to *Clone a voice* and record yourself right in the app — live level meter,
-  auto-stop at 30 s — or pick an audio file.
+- **Voice profiles.** A profile is a voice to clone: record yourself reading a short text
+  Sonora shows (22 to choose from), or import a recording of one person. The text read
+  becomes the profile's transcript, and an imported file's is filled in by a
+  transcription engine, so engines get the recording and its words without anyone
+  typing. The *Profiles* page lists them to play, rename, delete or use.
+- **Voice cloning.** On engines that can clone (Kitten TTS 2, Audio8, IndexTTS, Chatterbox,
+  Coqui, ZipVoice), switch to *Clone a voice* and pick a profile, or record a new one right
+  there.
 - **Memory control.** A model stays loaded between generations for speed; **Eject** stops
   its Python process and frees the RAM (or VRAM) whenever you want it back.
 - **Player.** A waveform you can click to seek, play/pause, save as WAV, show in folder.
 - **Library.** Every clip is kept with its text, engine and voice. Search, replay, export
   or share the audio file as it is, or load a clip's settings back into the Studio. The
   *Recordings* tab lists your recordings to play, transcribe, export or delete.
+- **Drop and go.** Drop an audio or video file on the window to transcribe it, or a
+  document to load it as the script; *Transcribe with Sonora* and *Read aloud with Sonora*
+  do the same from the file manager's right-click menu (the installers add them; on Linux,
+  turn them on in *Settings → Desktop*). Ctrl+1 to Ctrl+6 (⌘ on macOS) switch pages, and
+  Ctrl+, opens Settings.
 - **Any model.** Built-in engines, Python plugins, API servers and command-line tools all
   appear in the same list and work the same way.
 - **Your language.** Sonora speaks English, Bulgarian, Catalan, Croatian, Czech, Danish,
@@ -88,7 +100,7 @@ Studio; your script is kept when you switch away.
 | **Hugging Face models** | Any Transformers TTS model by ID (MMS, Bark, VITS…) | – | CPU · GPU |
 | **System voices** | Your OS's built-in voices, offline, instant | – | – |
 | **Kitten TTS Lite · Kokoro · Piper** *(on device)* | The same models running inside the app, no Python | – | Android |
-| **ZipVoice** *(on device)* | Cloning from a recording and its transcript, English and Chinese | ✓ | Android |
+| **ZipVoice** *(on device)* | Cloning a voice profile, English and Chinese | ✓ | Android |
 | **API server** *(add your own)* | OpenAI, Kokoro-FastAPI, LocalAI, Audio8's server… | – | remote |
 | **Command line** *(add your own)* | espeak-ng, piper CLI, `say`, anything that writes WAV | – | local |
 
@@ -98,9 +110,10 @@ Speech to text:
 | --- | --- | --- |
 | **Whisper** (OpenAI, via faster-whisper) | ~100 languages, timestamps, translation to English; Tiny to Large v3 | CPU · NVIDIA GPU |
 | **Hugging Face speech recognition** | Any Transformers ASR model by ID (Whisper variants, Moonshine, wav2vec 2.0, MMS…) | CPU · GPU |
-| **Whisper** *(on device)* | Tiny, Base, Small or Large v3 Turbo inside the app | Android |
-| **Parakeet** (NVIDIA) *(on device)* | Fast and accurate, English + 24 European languages, punctuated | Android |
+| **Whisper** *(on device)* | Tiny, Base, Small, Medium, Large v3 or Large v3 Turbo inside the app | Android |
+| **Parakeet** (NVIDIA) *(on device)* | Fast and accurate, English + 24 European languages (v3) or English (v2), punctuated | Android |
 | **SenseVoice** *(on device)* | Very fast Chinese, Cantonese, English, Japanese, Korean | Android |
+| **Moonshine** *(on device)* | Small, fast English recognition for older phones | Android |
 | **Transcription API** *(add your own)* | OpenAI, Groq, a local Whisper server… | remote |
 
 Each model has its own license (some, like XTTS-v2, are non-commercial). The engine card
@@ -135,7 +148,7 @@ Builds use the [giode CLI](https://github.com/Mehran9675/giode-cli), which reads
 [`giode.toml`](giode.toml):
 
 ```sh
-go install github.com/mehran9675/giode-cli/cmd/giode@latest
+go install github.com/xmhrnx/giode-cli/cmd/giode@latest
 giode doctor          # what's installed and what each target still needs
 giode run             # run on this computer
 giode build linux     # dist/linux: the executable, a .desktop entry and the icon
@@ -149,8 +162,8 @@ On Windows and macOS, plain `go build` works too
 ## Using it
 
 1. **Engines** → press **Install** on an engine (or use *System Voices* right away). Engines
-   with several models ask which to download, right in the card; **Add model** fetches
-   more later.
+   with models (or Piper's voices) ask which to download, right in the card, and download
+   nothing until you pick one; **Add model** fetches more later.
 2. **Studio** → write or paste text, choose the engine and voice, press **Generate speech**.
 3. Click the waveform to seek; use the download button to save a WAV.
 4. **Library** keeps every clip; ↺ loads one back into the Studio.
@@ -175,16 +188,19 @@ cmd/sonora/            entry point
 ui/
   app/                 wiring: services, pages, window
   shell/               title bar, sidebar, frame
-  pages/               studio/ engines/ library/ settings/ (one file per part)
-  components/          one package per component (picker, waveform, playerbar, …)
-  core/ theme/ icons/  shared context, palette & fonts, icon paths
+  pages/               studio/ transcribe/ library/ profiles/ engines/ settings/ (one file per part)
+  components/          one package per component (picker, waveform, playerbar, profiledialog, …)
+  core/                shared context: services, navigation, saving, sharing, receiving files
+  format/ platform/    display formatting; what differs by OS (the microphone)
+  theme/ icons/ tr/    palette & fonts, icon paths, translations
 internal/
   engines/             Engine interface + python/ openai/ command/ system/ onnx/ backends
   manager/             engine state for the UI, jobs, friendly errors
   catalog/             finds built-in engines and plugins
   pyenv/               uv toolchain, virtualenvs, downloads
   audio/               clip ops, wav/, playback/, record/, convert/
-  library/ settings/ paths/
+  library/ profiles/   generated clips; voice profiles and the passages to read
+  transcripts/ settings/ paths/
 python/
   runtime/             worker.py + the `sonora` helper package
   engines/<id>/        engine.json + adapter.py for each built-in engine

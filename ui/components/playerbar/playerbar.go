@@ -5,10 +5,11 @@ package playerbar
 import (
 	"time"
 
-	"github.com/mehran9675/giode"
+	"github.com/xmhrnx/giode"
 
 	"github.com/mehran9675/sonora/ui/components/waveform"
 	"github.com/mehran9675/sonora/ui/core"
+	"github.com/mehran9675/sonora/ui/format"
 	"github.com/mehran9675/sonora/ui/icons"
 	"github.com/mehran9675/sonora/ui/theme"
 	"github.com/mehran9675/sonora/ui/tr"
@@ -86,7 +87,7 @@ func (b *Bar) Element() giode.Element {
 	} else if c.Now != nil {
 		title, sub = c.Now.Title, c.Now.Subtitle
 		pos := float32(c.Now.Duration) * c.Player.Progress()
-		clock = core.Clock(time.Duration(pos)) + " / " + core.Clock(c.Now.Duration)
+		clock = format.Clock(time.Duration(pos)) + " / " + format.Clock(c.Now.Duration)
 	}
 	card := theme.Card()
 	card.FlexDirection, card.Align, card.Gap, card.Width = giode.FlexDirectionRow, giode.AlignCenter, 18, -1

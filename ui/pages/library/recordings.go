@@ -8,14 +8,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/mehran9675/giode"
+	"github.com/xmhrnx/giode"
 
 	"github.com/mehran9675/sonora/internal/audio/opusfile"
 	"github.com/mehran9675/sonora/ui/components/chip"
+	"github.com/mehran9675/sonora/ui/components/playbutton"
 	"github.com/mehran9675/sonora/ui/core"
+	"github.com/mehran9675/sonora/ui/format"
 	"github.com/mehran9675/sonora/ui/icons"
 	"github.com/mehran9675/sonora/ui/theme"
-
 	"github.com/mehran9675/sonora/ui/tr"
 )
 
@@ -86,7 +87,7 @@ type recRow struct {
 
 func newRecRow(c *core.Ctx, l *recordingList, r recording) *recRow {
 	row := &recRow{c: c, r: r}
-	row.play = playButton(c, r.Path, r.Name, tr.T("Recording"))
+	row.play = playbutton.New(c, r.Path, r.Name, tr.T("Recording"))
 	ghost := giode.Styles{Color: "theme.muted", Background: "theme.text", Padding: giode.UniformInset(8), BorderRadius: 8}
 	row.transcribe = giode.Button("", ghost).Variant(giode.VariantGhost).Icon(icons.Icon(icons.Captions, 16, "")).
 		OnClick(func() { c.Transcribe(r.Path, r.Name) })
@@ -116,9 +117,9 @@ func (row *recRow) element() giode.Element {
 	card.Padding = giode.SymmetricInset(16, 14)
 	card.Wrap = giode.WrapNoWrap
 	meta := []giode.Element{chip.Chip(strings.ToUpper(strings.TrimPrefix(filepath.Ext(r.Path), ".")))}
-	info := sizeLabel(r.Size) + "  ·  " + core.Ago(r.Modified)
+	info := sizeLabel(r.Size) + "  ·  " + format.Ago(r.Modified)
 	if r.Duration > 0 {
-		info = core.Clock(r.Duration) + "  ·  " + info
+		info = format.Clock(r.Duration) + "  ·  " + info
 	}
 	meta = append(meta, giode.Text(info, theme.Caption))
 	return giode.Row(card,
