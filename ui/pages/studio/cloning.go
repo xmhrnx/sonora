@@ -7,7 +7,6 @@ import (
 
 	"github.com/mehran9675/sonora/internal/engines"
 	"github.com/mehran9675/sonora/ui/theme"
-
 	"github.com/mehran9675/sonora/ui/tr"
 )
 

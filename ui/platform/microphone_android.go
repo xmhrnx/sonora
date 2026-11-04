@@ -1,4 +1,4 @@
-package core
+package platform
 
 import (
 	"context"
@@ -10,6 +10,7 @@ import (
 	"gioui.org/app"
 	_ "gioui.org/app/permission/microphone" // RECORD_AUDIO in the manifest
 	"git.wow.st/gmp/jni"
+	"github.com/xmhrnx/giode"
 
 	"github.com/mehran9675/sonora/internal/audio/record"
 	"github.com/mehran9675/sonora/ui/tr"
@@ -24,17 +25,17 @@ var errMicDenied = errors.New(tr.Msg("Sonora needs the microphone to record. All
 // the system prompt the first time, and waits up to a minute for the
 // answer. Gio doesn't hand the activity's permission result to apps, so
 // the grant is polled. Call it off the UI goroutine.
-func (c *Ctx) RequestMicrophone(ctx context.Context) error {
+func RequestMicrophone(a *giode.App, ctx context.Context) error {
 	vm := jni.JVMFor(app.JavaVM())
 	if micGranted(vm) {
 		return nil
 	}
-	view := c.App.NativeHandle()
+	view := a.NativeHandle()
 	if view == 0 {
 		return errMicDenied
 	}
 	var err error
-	c.App.Window().Run(func() { err = requestMic(vm, view) })
+	a.Window().Run(func() { err = requestMic(vm, view) })
 	if err != nil {
 		return err
 	}

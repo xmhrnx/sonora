@@ -10,13 +10,14 @@ import (
 	"github.com/mehran9675/sonora/internal/manager"
 	"github.com/mehran9675/sonora/ui/components/badge"
 	"github.com/mehran9675/sonora/ui/components/chip"
+	"github.com/mehran9675/sonora/ui/components/group"
 	"github.com/mehran9675/sonora/ui/components/picker"
 	"github.com/mehran9675/sonora/ui/components/progressbar"
 	"github.com/mehran9675/sonora/ui/components/statuspill"
 	"github.com/mehran9675/sonora/ui/core"
+	"github.com/mehran9675/sonora/ui/format"
 	"github.com/mehran9675/sonora/ui/icons"
 	"github.com/mehran9675/sonora/ui/theme"
-
 	"github.com/mehran9675/sonora/ui/tr"
 )
 
@@ -38,7 +39,7 @@ func newVoicePanel(p *Page) *voicePanel {
 	c := p.c
 	v.engine = picker.NewTrigger(tr.Msg("Engine"), func() (string, string) {
 		label, _ := statuspill.Describe(v.rt)
-		return v.rt.Manifest().Name, joinNonEmpty(core.Parts(v.rt.Manifest().Vendor), tr.T(label))
+		return v.rt.Manifest().Name, format.Join(format.Parts(v.rt.Manifest().Vendor), tr.T(label))
 	}, func() giode.Element { return badge.Engine(v.rt.Manifest(), 32) }, p.engines.Open)
 	v.install = giode.Button("", giode.Styles{BackgroundGradient: theme.Brand(90), Color: "#ffffff", FontSize: 13,
 		Padding: giode.SymmetricInset(14, 8), BorderRadius: theme.RadiusSm}).
@@ -108,7 +109,7 @@ func (v *voicePanel) content() giode.Element {
 	rt := v.rt
 	m := rt.Manifest()
 	f := v.p.form(rt)
-	els := []giode.Element{section(tr.T("Engine"), v.engineSection())}
+	els := []giode.Element{group.New(tr.T("Engine"), v.engineSection())}
 	if callout := v.callout(); callout != nil {
 		els = append(els, callout)
 	}
@@ -119,7 +120,7 @@ func (v *voicePanel) content() giode.Element {
 	}
 	ready := rt.State == manager.StateReady || rt.State == manager.StateWorking
 	if ready {
-		els = append(els, section(tr.T("Voice"), voiceChoice(f)))
+		els = append(els, group.New(tr.T("Voice"), voiceChoice(f)))
 		if m.Speed {
 			els = append(els, giode.Stack(giode.Styles{Width: -1, Gap: 8},
 				giode.Row(giode.Styles{Width: -1, Wrap: giode.WrapNoWrap},
@@ -160,7 +161,7 @@ func (v *voicePanel) callout() giode.Element {
 			body = append(body, fl.Element())
 		}
 		if rt.Err != "" {
-			body = append(body, giode.Text(tr.T(firstLine(rt.Err)), giode.Styles{Color: "theme.danger", FontSize: 12, MaxLines: 3}))
+			body = append(body, giode.Text(tr.T(format.FirstLine(rt.Err)), giode.Styles{Color: "theme.danger", FontSize: 12, MaxLines: 3}))
 		}
 		body = append(body, giode.Row(giode.Styles{Gap: 8}, v.install, v.manage))
 	case manager.StateInstalling:
@@ -203,7 +204,7 @@ func (v *voicePanel) footer() giode.Element {
 			giode.Spinner(giode.Styles{Width: 14, Height: 14, Color: "theme.primary"}),
 			giode.Box(giode.Styles{FlexGrow: 1}, giode.Text(tr.T(job.Runtime.Status),
 				giode.Styles{Color: "theme.muted", FontSize: 12, TextOverflow: giode.TextOverflowEllipsis})),
-			giode.Text(core.Clock(time.Since(job.Started)), giode.Styles{Color: "theme.muted", FontSize: 12, FontFamily: theme.Mono}),
+			giode.Text(format.Clock(time.Since(job.Started)), giode.Styles{Color: "theme.muted", FontSize: 12, FontFamily: theme.Mono}),
 		)
 		if job.Runtime.Progress >= 0 {
 			status = giode.Stack(giode.Styles{Width: -1, Gap: 8}, progressbar.New(job.Runtime.Progress), line)
@@ -211,7 +212,7 @@ func (v *voicePanel) footer() giode.Element {
 			status = line
 		}
 	case rt.Err != "" && rt.State == manager.StateReady:
-		status = giode.Text(tr.T(firstLine(rt.Err)), giode.Styles{Color: "theme.danger", FontSize: 12, MaxLines: 3})
+		status = giode.Text(tr.T(format.FirstLine(rt.Err)), giode.Styles{Color: "theme.danger", FontSize: 12, MaxLines: 3})
 	case !ready:
 		status = giode.Text(tr.T("Install the engine to start generating."), theme.Caption)
 	default:
@@ -237,17 +238,4 @@ func (v *voicePanel) engineSection() giode.Element {
 			v.eject,
 		),
 	)
-}
-
-func section(title string, body giode.Element) giode.Element {
-	return giode.Stack(giode.Styles{Width: -1, Gap: 8}, giode.Text(title, theme.Overline), body)
-}
-
-func firstLine(s string) string {
-	for i, r := range s {
-		if r == '\n' {
-			return s[:i]
-		}
-	}
-	return s
 }

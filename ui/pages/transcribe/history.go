@@ -4,10 +4,9 @@ import (
 	"github.com/xmhrnx/giode"
 
 	"github.com/mehran9675/sonora/internal/transcripts"
-	"github.com/mehran9675/sonora/ui/core"
+	"github.com/mehran9675/sonora/ui/format"
 	"github.com/mehran9675/sonora/ui/icons"
 	"github.com/mehran9675/sonora/ui/theme"
-
 	"github.com/mehran9675/sonora/ui/tr"
 )
 
@@ -65,7 +64,7 @@ func newRow(p *Page, e transcripts.Entry) *row {
 				giode.Text(cur.Title, giode.Styles{Color: "theme.text", FontSize: 13, FontWeight: giode.FontWeightMedium, TextOverflow: giode.TextOverflowEllipsis}),
 				giode.Text(cur.Text, giode.Styles{Color: "theme.muted", FontSize: 12, MaxLines: 1, TextOverflow: giode.TextOverflowEllipsis}),
 			),
-			giode.Text(core.Clock(cur.Duration)+"  ·  "+core.Ago(cur.Created), theme.Caption),
+			giode.Text(format.Clock(cur.Duration)+"  ·  "+format.Ago(cur.Created), theme.Caption),
 		)
 	}).OnClick(func(giode.ClickEvent) {
 		if cur, ok := c.Transcripts.Get(r.id); ok {

@@ -8,9 +8,9 @@ import (
 	lib "github.com/mehran9675/sonora/internal/library"
 	"github.com/mehran9675/sonora/ui/components/chip"
 	"github.com/mehran9675/sonora/ui/core"
+	"github.com/mehran9675/sonora/ui/format"
 	"github.com/mehran9675/sonora/ui/icons"
 	"github.com/mehran9675/sonora/ui/theme"
-
 	"github.com/mehran9675/sonora/ui/tr"
 )
 
@@ -66,7 +66,7 @@ func (r *row) element() giode.Element {
 			giode.Row(giode.Styles{Gap: 8, Align: giode.AlignCenter},
 				chip.Chip(e.EngineName),
 				chip.Chip(e.VoiceName),
-				giode.Text(core.Clock(e.Duration)+"  ·  "+core.Ago(e.Created), theme.Caption),
+				giode.Text(format.Clock(e.Duration)+"  ·  "+format.Ago(e.Created), theme.Caption),
 			),
 		),
 		r.actions(),

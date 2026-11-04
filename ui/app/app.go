@@ -9,7 +9,6 @@ import (
 
 	gioapp "gioui.org/app"
 	"gioui.org/io/event"
-
 	"github.com/xmhrnx/giode"
 
 	"github.com/mehran9675/sonora/assets"

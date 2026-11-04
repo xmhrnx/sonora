@@ -13,9 +13,9 @@ import (
 	"github.com/mehran9675/sonora/internal/audio/opusfile"
 	"github.com/mehran9675/sonora/ui/components/chip"
 	"github.com/mehran9675/sonora/ui/core"
+	"github.com/mehran9675/sonora/ui/format"
 	"github.com/mehran9675/sonora/ui/icons"
 	"github.com/mehran9675/sonora/ui/theme"
-
 	"github.com/mehran9675/sonora/ui/tr"
 )
 
@@ -116,9 +116,9 @@ func (row *recRow) element() giode.Element {
 	card.Padding = giode.SymmetricInset(16, 14)
 	card.Wrap = giode.WrapNoWrap
 	meta := []giode.Element{chip.Chip(strings.ToUpper(strings.TrimPrefix(filepath.Ext(r.Path), ".")))}
-	info := sizeLabel(r.Size) + "  ·  " + core.Ago(r.Modified)
+	info := sizeLabel(r.Size) + "  ·  " + format.Ago(r.Modified)
 	if r.Duration > 0 {
-		info = core.Clock(r.Duration) + "  ·  " + info
+		info = format.Clock(r.Duration) + "  ·  " + info
 	}
 	meta = append(meta, giode.Text(info, theme.Caption))
 	return giode.Row(card,

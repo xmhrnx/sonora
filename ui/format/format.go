@@ -1,4 +1,6 @@
-package core
+// Package format writes durations, times and engine detail lines for
+// display, translated.
+package format
 
 import (
 	"fmt"
@@ -49,4 +51,25 @@ func Parts(s string) string {
 		parts[i] = tr.T(p)
 	}
 	return strings.Join(parts, " · ")
+}
+
+// FirstLine returns s up to its first line break: the gist of an
+// engine's error.
+func FirstLine(s string) string {
+	if i := strings.IndexByte(s, '\n'); i >= 0 {
+		return s[:i]
+	}
+	return s
+}
+
+// Join joins the non-empty parts with " · ", the separator of detail
+// lines.
+func Join(parts ...string) string {
+	var kept []string
+	for _, p := range parts {
+		if p != "" {
+			kept = append(kept, p)
+		}
+	}
+	return strings.Join(kept, " · ")
 }

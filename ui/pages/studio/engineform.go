@@ -15,9 +15,9 @@ import (
 	"github.com/mehran9675/sonora/ui/components/segmented"
 	"github.com/mehran9675/sonora/ui/components/voicerecorder"
 	"github.com/mehran9675/sonora/ui/core"
+	"github.com/mehran9675/sonora/ui/format"
 	"github.com/mehran9675/sonora/ui/icons"
 	"github.com/mehran9675/sonora/ui/theme"
-
 	"github.com/mehran9675/sonora/ui/tr"
 )
 
@@ -64,9 +64,9 @@ func newEngineForm(c *core.Ctx, rt *manager.Runtime) *engineForm {
 			return tr.T("Loading voices…"), tr.T("Starting {name}", "name", m.Name)
 		}
 		v := f.voice()
-		detail := core.Parts(v.Group)
+		detail := format.Parts(v.Group)
 		if v.Description != "" {
-			detail = joinNonEmpty(core.Parts(v.Group), core.Parts(v.Description))
+			detail = format.Join(format.Parts(v.Group), format.Parts(v.Description))
 		}
 		return v.Label(), detail
 	}, func() giode.Element {
@@ -150,7 +150,7 @@ func (f *engineForm) voiceList() []engines.Voice {
 func (f *engineForm) voiceItems() []picker.Item {
 	var out []picker.Item
 	for _, v := range f.voiceList() {
-		out = append(out, picker.Item{ID: v.ID, Label: v.Label(), Group: core.Parts(v.Group), Detail: core.Parts(v.Description)})
+		out = append(out, picker.Item{ID: v.ID, Label: v.Label(), Group: format.Parts(v.Group), Detail: format.Parts(v.Description)})
 	}
 	return out
 }
@@ -209,14 +209,4 @@ func orDefault(s string) string {
 		return tr.T("Default voice")
 	}
 	return s
-}
-
-func joinNonEmpty(a, b string) string {
-	switch {
-	case a == "":
-		return b
-	case b == "":
-		return a
-	}
-	return a + " · " + b
 }

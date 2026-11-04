@@ -13,7 +13,6 @@ import (
 	"gioui.org/op/clip"
 	"gioui.org/op/paint"
 	"gioui.org/unit"
-
 	"github.com/xmhrnx/giode/styles/properties"
 
 	"github.com/mehran9675/sonora/ui/theme"

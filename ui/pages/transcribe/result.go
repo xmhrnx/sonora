@@ -11,10 +11,9 @@ import (
 	"github.com/mehran9675/sonora/internal/engines"
 	"github.com/mehran9675/sonora/internal/transcripts"
 	"github.com/mehran9675/sonora/ui/components/chip"
-	"github.com/mehran9675/sonora/ui/core"
+	"github.com/mehran9675/sonora/ui/format"
 	"github.com/mehran9675/sonora/ui/icons"
 	"github.com/mehran9675/sonora/ui/theme"
-
 	"github.com/mehran9675/sonora/ui/tr"
 )
 
@@ -123,7 +122,7 @@ func (r *result) element(height int) giode.Element {
 		meta = append(meta, chip.Chip(label))
 	}
 	words := len(strings.Fields(r.text.Text()))
-	meta = append(meta, giode.Text(core.Clock(e.Duration)+"  ·  "+tr.N("{n} words", words)+"  ·  "+core.Ago(e.Created), theme.Caption))
+	meta = append(meta, giode.Text(format.Clock(e.Duration)+"  ·  "+tr.N("{n} words", words)+"  ·  "+format.Ago(e.Created), theme.Caption))
 
 	// A phone has room for the buttons' icons only.
 	for _, b := range []struct {
