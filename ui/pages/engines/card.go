@@ -3,6 +3,7 @@ package engines
 import (
 	"github.com/xmhrnx/giode"
 
+	"github.com/mehran9675/sonora/internal/engines"
 	"github.com/mehran9675/sonora/internal/manager"
 	"github.com/mehran9675/sonora/internal/paths"
 	"github.com/mehran9675/sonora/ui/components/badge"
@@ -53,7 +54,8 @@ func newCard(c *core.Ctx, rt *manager.Runtime, cfg *configDialog, logs *logdialo
 		Padding: giode.SymmetricInset(10, 8), BorderRadius: theme.RadiusSm}
 
 	cd.install = giode.Button("", primary).Icon(icons.Icon(icons.Download, 15, "")).OnClick(func() {
-		if m.ModelOption() != nil {
+		// Engines that are their models download the one the user picks.
+		if len(engines.Models(rt.Engine)) > 0 {
 			cd.choose()
 			return
 		}
@@ -67,49 +69,8 @@ func newCard(c *core.Ctx, rt *manager.Runtime, cfg *configDialog, logs *logdialo
 		})
 	})
 	tr.Bind(func(s string) { cd.install.Label(s) }, "Install")
-	if o := m.ModelOption(); o != nil {
-		cd.models = picker.New(tr.Msg("Choose a model"), func() []picker.Item {
-			have := c.Manager.Downloaded(m.ID)
-			var items []picker.Item
-			for _, ch := range o.Choices {
-				it := picker.Item{ID: ch.Value, Label: tr.T(ch.Label)}
-				if have[ch.Value] {
-					it.Detail = tr.T("Downloaded")
-				}
-				items = append(items, it)
-			}
-			return items
-		}, func() string { return cd.choice }, func(it picker.Item) { cd.choice = it.ID })
-		cd.model = picker.NewTrigger(tr.Msg("Model"), func() (string, string) {
-			detail := ""
-			if c.Manager.Downloaded(m.ID)[cd.choice] {
-				detail = tr.T("Already downloaded")
-			}
-			for _, ch := range o.Choices {
-				if ch.Value == cd.choice {
-					return tr.T(ch.Label), detail
-				}
-			}
-			return cd.choice, detail
-		}, nil, cd.models.Open)
-		cd.download = giode.Button("", primary).Icon(icons.Icon(icons.Download, 15, "")).OnClick(func() {
-			cd.choosing = false
-			c.InstallModel(rt, cd.choice, func(err error) {
-				if err != nil {
-					c.Error(err)
-					logs.Show(rt)
-					return
-				}
-				c.Success(tr.T("{engine} is ready with {model}", "engine", m.Name, "model", choiceLabel(o, cd.choice)))
-			})
-		})
-		cd.back = giode.Button("", outline).Variant(giode.VariantOutlined).OnClick(func() { cd.choosing = false })
-		cd.addModel = giode.Button("", giode.Styles{Color: "theme.primary", Background: "theme.primary", FontSize: 12,
-			Padding: giode.SymmetricInset(8, 5), BorderRadius: theme.RadiusSm}).Variant(giode.VariantGhost).
-			Icon(icons.Icon(icons.Plus, 13, "")).OnClick(cd.choose)
-		tr.Bind(func(s string) { cd.download.Label(s) }, "Download")
-		tr.Bind(func(s string) { cd.back.Label(s) }, "Cancel")
-		tr.Bind(func(s string) { cd.addModel.Label(s) }, "Add model")
+	if len(engines.Models(rt.Engine)) > 0 {
+		cd.initChooser(primary, outline, logs)
 	}
 	cd.cancel = giode.Button("", outline).Variant(giode.VariantOutlined).OnClick(func() { c.Manager.Cancel(rt) })
 	tr.Bind(func(s string) { cd.cancel.Label(s) }, "Cancel")

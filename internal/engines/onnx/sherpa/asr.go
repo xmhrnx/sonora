@@ -82,6 +82,11 @@ func NewRecognizer(cfg RecognizerConfig) (*Recognizer, error) {
 		}
 		m.sense_voice.language = s.str(lang)
 		m.sense_voice.use_itn = 1
+	case Moonshine:
+		m.moonshine.preprocessor = s.str(cfg.Preprocessor)
+		m.moonshine.encoder = s.str(cfg.Encoder)
+		m.moonshine.uncached_decoder = s.str(cfg.Decoder)
+		m.moonshine.cached_decoder = s.str(cfg.CachedDecoder)
 	default:
 		return nil, errors.New("unknown model family " + string(cfg.Family))
 	}

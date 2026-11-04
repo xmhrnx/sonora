@@ -41,12 +41,13 @@ func (m *Manager) Install(rt *Runtime, done func(error)) {
 }
 
 // InstallModel installs the engine if needed and downloads one of its
-// models, then makes that model the engine's setting, so the Studio
-// and Transcribe pages use it.
+// models (see engines.Models); a model chosen with the model option
+// becomes the engine's setting, so the Studio and Transcribe pages use
+// it.
 func (m *Manager) InstallModel(rt *Runtime, model string, done func(error)) {
 	store, ok := rt.Engine.(engines.ModelStore)
 	o := rt.Manifest().ModelOption()
-	if !ok || o == nil {
+	if !ok || len(engines.Models(rt.Engine)) == 0 {
 		m.Install(rt, done)
 		return
 	}
@@ -65,7 +66,9 @@ func (m *Manager) InstallModel(rt *Runtime, model string, done func(error)) {
 			rt.Progress = -1
 			switch {
 			case err == nil:
-				m.settings.SetValue(rt.Manifest().ID, o.ID, model)
+				if o != nil {
+					m.settings.SetValue(rt.Manifest().ID, o.ID, model)
+				}
 				rt.State, rt.Status = StateReady, "Model downloaded"
 				rt.VoicesLoaded = false
 			case errors.Is(err, context.Canceled):

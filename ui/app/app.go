@@ -16,12 +16,14 @@ import (
 	"github.com/mehran9675/sonora/internal/library"
 	"github.com/mehran9675/sonora/internal/manager"
 	"github.com/mehran9675/sonora/internal/paths"
+	"github.com/mehran9675/sonora/internal/profiles"
 	"github.com/mehran9675/sonora/internal/settings"
 	"github.com/mehran9675/sonora/internal/transcripts"
 	"github.com/mehran9675/sonora/ui/components/actionsheet"
 	"github.com/mehran9675/sonora/ui/core"
 	enginespage "github.com/mehran9675/sonora/ui/pages/engines"
 	librarypage "github.com/mehran9675/sonora/ui/pages/library"
+	profilespage "github.com/mehran9675/sonora/ui/pages/profiles"
 	settingspage "github.com/mehran9675/sonora/ui/pages/settings"
 	"github.com/mehran9675/sonora/ui/pages/studio"
 	"github.com/mehran9675/sonora/ui/pages/transcribe"
@@ -35,11 +37,15 @@ func Run() error {
 	theme.LoadFonts()
 	store := settings.Open()
 	theme.Apply(store.Get().Theme)
+	// The language first, so text made before the window (the file
+	// manager actions' labels) is in it.
+	tr.Use(store.Get().UILanguage)
 
 	c := &core.Ctx{
 		Settings:    store,
 		Library:     library.Open(paths.Sub("library")),
 		Transcripts: transcripts.Open(paths.Sub("transcripts")),
+		Profiles:    profiles.Open(paths.Sub("profiles")),
 		Player:      playback.New(),
 		Toasts:      giode.Toaster().Placement(giode.ToastBottomRight),
 		Sheet:       actionsheet.New(),
@@ -97,6 +103,15 @@ func Run() error {
 		// become the Studio's script.
 		OnShareReceived: c.Receive,
 		OnFileDrop:      c.ReceivePaths,
+		// Files sent from the file manager's menu go the same way.
+		ContextActions:  core.ContextActions(),
+		OnContextAction: func(_ string, paths []string) { c.ReceivePaths(paths) },
+		OnStartup: func() {
+			// Refresh the menu entries, in case the app moved.
+			if store.Get().ContextMenu {
+				go c.ContextMenu(true)
+			}
+		},
 		OnShutdown: func() {
 			if studioPage != nil {
 				studioPage.SaveDraft()
@@ -129,12 +144,14 @@ func Run() error {
 	studioPage = studio.New(c)
 	transcribePage := transcribe.New(c)
 	libraryPage := librarypage.New(c)
+	profilesPage := profilespage.New(c)
 	enginesPage := enginespage.New(c)
 	settingsPage := settingspage.New(c, applyTheme)
 	frame := shell.New(c, map[core.Page]func() giode.Element{
 		core.PageStudio:     studioPage.Element,
 		core.PageTranscribe: transcribePage.Element,
 		core.PageLibrary:    libraryPage.Element,
+		core.PageProfiles:   profilesPage.Element,
 		core.PageEngines:    enginesPage.Element,
 		core.PageSettings:   settingsPage.Element,
 	}, toggleTheme)

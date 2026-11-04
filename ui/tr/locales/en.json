@@ -9,5 +9,11 @@
   "{n} hours": {"one": "{n} hour", "other": "{n} hours"},
   "{n} min ago": {"one": "{n} min ago", "other": "{n} min ago"},
   "{n} minutes": {"one": "{n} minute", "other": "{n} minutes"},
-  "{n} words": {"one": "{n} word", "other": "{n} words"}
+  "{n} words": {"one": "{n} word", "other": "{n} words"},
+  "Studio (tab)": "Studio",
+  "Transcribe (tab)": "Transcribe",
+  "Library (tab)": "Library",
+  "Profiles (tab)": "Profiles",
+  "Engines (tab)": "Engines",
+  "Settings (tab)": "Settings"
 }

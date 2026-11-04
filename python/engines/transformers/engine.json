@@ -14,7 +14,11 @@
   "voices": [{"id": "", "name": "Model default", "group": "Built-in"}],
   "options": [
     {"id": "model", "label": "Model ID", "type": "text", "scope": "load", "default": "facebook/mms-tts-eng",
-     "suggestions": ["facebook/mms-tts-eng", "facebook/mms-tts-fra", "facebook/mms-tts-deu", "facebook/mms-tts-spa", "suno/bark-small", "kakao-enterprise/vits-ljs"],
+     "suggestions": ["facebook/mms-tts-eng", "facebook/mms-tts-fra", "facebook/mms-tts-deu", "facebook/mms-tts-spa",
+      "suno/bark-small", "kakao-enterprise/vits-ljs", "facebook/mms-tts-nld", "facebook/mms-tts-por",
+      "facebook/mms-tts-pol", "facebook/mms-tts-rus", "facebook/mms-tts-ukr", "facebook/mms-tts-swe",
+      "facebook/mms-tts-fin", "facebook/mms-tts-hun", "facebook/mms-tts-ron", "facebook/mms-tts-tur",
+      "suno/bark"],
      "help": "Any text-to-speech model ID from huggingface.co"},
     {"id": "voice_preset", "label": "Voice preset (Bark)", "type": "text", "placeholder": "v2/en_speaker_6"}
   ]

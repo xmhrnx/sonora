@@ -53,11 +53,7 @@ func New(title string, items func() []Item, selected func() string, onPick func(
 	p.scroll = giode.Scroll(p.list, theme.Scrolling(6))
 	p.close = giode.Button("", giode.Styles{Color: "theme.muted", Background: "theme.text", Padding: giode.UniformInset(6), BorderRadius: 8}).
 		Variant(giode.VariantGhost).Icon(icons.Icon(icons.Close, 16, "")).OnClick(func() { p.open = false })
-	p.dialog = giode.Dialog(&p.open, p.content, giode.Styles{
-		Background: "theme.surface", BorderRadius: theme.RadiusLg, Padding: giode.UniformInset(20),
-		BorderWidth: 1, BorderColor: "theme.border",
-		BoxShadow: giode.BoxShadow{Y: 24, Blur: 60, Color: "#00000080"},
-	})
+	p.dialog = giode.Dialog(&p.open, p.content, theme.Dialog())
 	overlay.Add(p.dialog)
 	return p
 }

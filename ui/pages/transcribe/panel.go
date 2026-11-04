@@ -76,15 +76,9 @@ func newPanel(p *Page) *panel {
 			}
 			c.Success(tr.T("{name} is ready", "name", rt.Manifest().Name))
 		}
-		// Engines with a model choice download the model the panel's
-		// selector shows.
-		if o := rt.Manifest().ModelOption(); o != nil {
-			c.InstallModel(rt, c.Manager.Values(rt.Manifest()).String(o.ID), done)
-			return
-		}
-		c.Install(rt, done)
+		c.Setup(rt, done)
 	})
-	tr.Bind(func(s string) { v.install.Label(s) }, "Install")
+	// callout sets Install's text every frame (core.SetupLabel).
 	v.manage = giode.Button("", outline).Variant(giode.VariantOutlined).
 		OnClick(func() { c.ShowEngines(engines.TaskTranscribe) })
 	tr.Bind(func(s string) { v.manage.Label(s) }, "Open Engines")

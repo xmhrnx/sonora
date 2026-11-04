@@ -43,6 +43,7 @@ type Page struct {
 	openFolder, defaults *giode.ButtonElement
 	mic                  microphone
 	language             language
+	fileManager          fileManager
 }
 
 // New builds the page; applyTheme switches the palette.
@@ -96,6 +97,7 @@ func New(c *core.Ctx, applyTheme func(mode string)) *Page {
 	p.recordingControls()
 	p.mic.init(c)
 	p.language.init(c)
+	p.fileManager.init(c)
 	p.scroll = giode.Scroll(p.content, theme.Scrolling(6))
 	return p
 }
@@ -135,6 +137,9 @@ func (p *Page) content() giode.Element {
 				p.setting(tr.T("FFmpeg"), tr.T("Reads audio formats Sonora can't decode itself."), ffmpeg),
 			),
 		)
+		if row := p.fileManager.element(p); row != nil {
+			sections = append(sections, section(tr.T("Desktop"), tr.T("How Sonora fits into your computer."), row))
+		}
 	}
 	sections = append(sections,
 		section(tr.T("About"), "Sonora "+Version+" · "+runtime.GOOS+"/"+runtime.GOARCH,

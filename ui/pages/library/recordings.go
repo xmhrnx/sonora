@@ -12,6 +12,7 @@ import (
 
 	"github.com/mehran9675/sonora/internal/audio/opusfile"
 	"github.com/mehran9675/sonora/ui/components/chip"
+	"github.com/mehran9675/sonora/ui/components/playbutton"
 	"github.com/mehran9675/sonora/ui/core"
 	"github.com/mehran9675/sonora/ui/format"
 	"github.com/mehran9675/sonora/ui/icons"
@@ -86,7 +87,7 @@ type recRow struct {
 
 func newRecRow(c *core.Ctx, l *recordingList, r recording) *recRow {
 	row := &recRow{c: c, r: r}
-	row.play = playButton(c, r.Path, r.Name, tr.T("Recording"))
+	row.play = playbutton.New(c, r.Path, r.Name, tr.T("Recording"))
 	ghost := giode.Styles{Color: "theme.muted", Background: "theme.text", Padding: giode.UniformInset(8), BorderRadius: 8}
 	row.transcribe = giode.Button("", ghost).Variant(giode.VariantGhost).Icon(icons.Icon(icons.Captions, 16, "")).
 		OnClick(func() { c.Transcribe(r.Path, r.Name) })

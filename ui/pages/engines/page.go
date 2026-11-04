@@ -50,6 +50,15 @@ func New(c *core.Ctx) *Page {
 		p.task = task
 		c.Go(core.PageEngines)
 	}
+	c.ChooseModel = func(id string) {
+		rt := c.Manager.Get(id)
+		if rt == nil {
+			return
+		}
+		p.task = rt.Manifest().Task
+		p.card(rt).choose()
+		c.Go(core.PageEngines)
+	}
 	return p
 }
 

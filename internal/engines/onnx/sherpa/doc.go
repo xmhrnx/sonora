@@ -27,6 +27,7 @@ const (
 	Whisper    Family = "whisper"
 	Transducer Family = "nemo_transducer" // NVIDIA Parakeet TDT
 	SenseVoice Family = "sense_voice"
+	Moonshine  Family = "moonshine"
 )
 
 // Config locates a model's files.
@@ -65,8 +66,10 @@ type Progress func(fraction float32) bool
 type RecognizerConfig struct {
 	Family Family
 	// Encoder and Decoder (Whisper, transducers), Joiner (transducers)
-	// or Model (SenseVoice).
+	// or Model (SenseVoice). Moonshine has a Preprocessor, an Encoder,
+	// and a Decoder for the first token and CachedDecoder for the rest.
 	Encoder, Decoder, Joiner, Model string
+	Preprocessor, CachedDecoder     string
 	Tokens                          string
 	// Language is a language code, or empty to detect it (Whisper,
 	// SenseVoice).

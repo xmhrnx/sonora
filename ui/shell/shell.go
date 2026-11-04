@@ -92,7 +92,7 @@ func (s *Shell) frame(body giode.Element) giode.Element {
 }
 
 // shortcuts switches pages from the keyboard on desktops: Mod+1 to
-// Mod+5 in the sidebar's order, and Mod+, for Settings as apps do.
+// Mod+6 in the sidebar's order, and Mod+, for Settings as apps do.
 func (s *Shell) shortcuts() {
 	if core.Mobile {
 		return
@@ -102,8 +102,9 @@ func (s *Shell) shortcuts() {
 		giode.Shortcut("Mod+1", page(core.PageStudio)),
 		giode.Shortcut("Mod+2", page(core.PageTranscribe)),
 		giode.Shortcut("Mod+3", page(core.PageLibrary)),
-		giode.Shortcut("Mod+4", page(core.PageEngines)),
-		giode.Shortcut("Mod+5", page(core.PageSettings)),
+		giode.Shortcut("Mod+4", page(core.PageProfiles)),
+		giode.Shortcut("Mod+5", page(core.PageEngines)),
+		giode.Shortcut("Mod+6", page(core.PageSettings)),
 		giode.Shortcut("Mod+,", page(core.PageSettings)),
 	)
 }

@@ -72,7 +72,7 @@ func (m *Manager) firstDownloaded(man *engines.Manifest) string {
 // device (nil for engines without a model choice).
 func (m *Manager) Downloaded(id string) map[string]bool {
 	rt := m.byID[id]
-	if rt == nil || rt.Manifest().ModelOption() == nil {
+	if rt == nil || len(engines.Models(rt.Engine)) == 0 {
 		return nil
 	}
 	if s, ok := rt.Engine.(engines.ModelStore); ok {

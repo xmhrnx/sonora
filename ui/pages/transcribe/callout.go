@@ -18,7 +18,7 @@ func (v *panel) callout() giode.Element {
 	var body []giode.Element
 	switch rt.State {
 	case manager.StateNotInstalled:
-		body = append(body, giode.Text(tr.T("{name} needs a one-time setup. Sonora downloads everything it needs automatically.", "name", m.Name),
+		body = append(body, giode.Text(tr.T("{name} needs a one-time setup. Choose what to download; nothing downloads until you do.", "name", m.Name),
 			giode.Styles{Color: "theme.text", FontSize: 13, LineHeight: 19}))
 		if m.Size != "" {
 			body = append(body, chip.Chip(m.Size))
@@ -33,6 +33,7 @@ func (v *panel) callout() giode.Element {
 		if rt.Err != "" {
 			body = append(body, giode.Text(tr.T(format.FirstLine(rt.Err)), giode.Styles{Color: "theme.danger", FontSize: 12, MaxLines: 3}))
 		}
+		v.install.Label(v.p.c.SetupLabel(rt))
 		body = append(body, giode.Row(giode.Styles{Gap: 8}, v.install, v.manage))
 	case manager.StateInstalling:
 		body = append(body,

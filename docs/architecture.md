@@ -56,13 +56,28 @@ memory until Eject, and Stop cancels generation through sherpa-onnx's progress c
 
 ## Models
 
-An engine whose model is a choice (a `select` option named `model`, or the manifest's
-`model_option`) implements `engines.ModelStore`: which choices are downloaded, and
-`InstallModel` to fetch one - an on-device package, or for a Python engine a first load
-(recorded in `models.json`). The engine card asks which model to download on install and
-offers more later; `manager.Values` resolves an untouched model setting to a downloaded
-model, so the Studio and Transcribe pages start on one, while a model picked there
-downloads on first use.
+An engine whose models download one by one implements `engines.ModelStore`: which are
+downloaded, and `InstallModel` to fetch one - an on-device package, or for a Python engine
+a first load (recorded in `models.json`). `engines.Models` lists what the user picks from:
+the model option's choices (a `select` named `model`, or the manifest's `model_option`),
+or for engines whose packages aren't an option (Piper's voices, a single-model
+recognizer) the engine's own list (`engines.ModelLister`). Nothing downloads on its own:
+on-device engines' `Install` refuses, and the engine card asks which model to download,
+with nothing preselected, and offers more later. On the Studio and Transcribe pages the
+Install button names the model it downloads (`core.SetupModel`), or opens the card's
+chooser when there are several. `manager.Values` resolves an untouched model setting to a
+downloaded model, so those pages start on one, while a model picked there downloads on
+first use.
+
+## Voice profiles
+
+`internal/profiles` keeps voices to clone in `<data>/profiles`: each an Opus recording (cut
+to 30 s, 64 kbps) and its transcript, listed in `index.json`. Recording one
+(`ui/components/profiledialog`) shows one of `profiles.Passages` to read aloud, and the
+passage becomes the transcript; an imported file gets its transcript from a ready
+transcription engine (`manager.TranscribeClip`, which doesn't add to the Transcribe
+history). The Studio's Clone tab passes the chosen profile's recording and transcript to
+the engine as the reference, so the user never types one.
 
 ## Speech to text
 
@@ -89,10 +104,15 @@ WebVTT (`transcripts/export.go`).
 - `ui/app` wires services and pages; `ui/shell` is the frame (title bar, sidebar).
 - `ui/pages/transcribe` is the speech-to-text page; the Engines page shows voice and
   transcription engines on two tabs.
-- `ui/pages/*` are the four screens, each split into one file per part.
+- `ui/pages/*` are the six screens (Studio, Transcribe, Library, Profiles, Engines,
+  Settings), each split into one file per part.
 - `ui/components/*` are reusable pieces, one per package: picker, waveform, player bar,
   option fields (which render any engine's settings from its manifest), segmented
-  control, toggle, badges, chips, log view.
+  control, toggle, badges, chips, log view, the profile recorder, the play button.
+- `ui/core` is the context every page shares: services, navigation, saving, sharing and
+  receiving files (shared, dropped, or sent from the file manager's menu);
+  `ui/format` formats durations, times and detail lines; `ui/platform` holds what
+  differs by OS (the microphone and its permission).
 - `ui/tr` translates the UI (giode's `i18n` underneath). Messages are keyed by their English
   text: `tr.T("Install")`, `tr.T("Downloading {file}", "file", name)`, `tr.N("{n} words", n)`.
   Text drawn every frame calls `tr.T` there; elements built once take theirs through
