@@ -11,7 +11,6 @@ import (
 	"github.com/xmhrnx/giode/styles/properties"
 
 	"github.com/mehran9675/sonora/internal/manager"
-	"github.com/mehran9675/sonora/internal/textfile"
 	"github.com/mehran9675/sonora/ui/components/chip"
 	"github.com/mehran9675/sonora/ui/core"
 	"github.com/mehran9675/sonora/ui/format"
@@ -19,10 +18,6 @@ import (
 	"github.com/mehran9675/sonora/ui/theme"
 	"github.com/mehran9675/sonora/ui/tr"
 )
-
-// expandedMargin is the room, in dp, an expanded script card leaves for
-// the tab bar, the title bar and page padding.
-const expandedMargin = 150
 
 // editor is the script card.
 type editor struct {
@@ -41,6 +36,10 @@ type editor struct {
 	mu    sync.Mutex
 	draft string
 }
+
+// expandedMargin is the room, in dp, an expanded script card leaves for
+// the tab bar, the title bar and page padding.
+const expandedMargin = 150
 
 func newEditor(c *core.Ctx) *editor {
 	e := &editor{}
@@ -72,36 +71,8 @@ func newEditor(c *core.Ctx) *editor {
 	return e
 }
 
-// openFile replaces the script with the text of a document the user
-// picks: text, Markdown, subtitles, HTML, Word, OpenDocument, EPUB, PDF
-// or RTF.
-func (e *editor) openFile(c *core.Ctx) {
-	var text, name string
-	c.Background(func() error {
-		f, err := c.PickFile(textfile.Extensions, "")
-		if err != nil {
-			return err
-		}
-		defer f.Close()
-		name = f.Name
-		text, err = textfile.Read(name, f)
-		return err
-	}, func(err error) {
-		if err != nil {
-			c.Error(err)
-			return
-		}
-		e.in.ChangeText(text)
-		words := len(strings.Fields(text))
-		msg := tr.N("Loaded {n} words", words)
-		if name != "" {
-			msg = tr.N("Loaded {n} words from {file}", words, "file", name)
-		}
-		c.Success(msg)
-	})
-}
+func (e *editor) text() string { return e.in.Text() }
 
-func (e *editor) text() string     { return e.in.Text() }
 func (e *editor) setText(s string) { e.in.ChangeText(s) }
 
 // savedText returns the text from any goroutine.

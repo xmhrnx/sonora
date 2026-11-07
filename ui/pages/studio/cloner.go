@@ -9,7 +9,6 @@ import (
 	"github.com/mehran9675/sonora/ui/components/picker"
 	"github.com/mehran9675/sonora/ui/components/profiledialog"
 	"github.com/mehran9675/sonora/ui/core"
-	"github.com/mehran9675/sonora/ui/format"
 	"github.com/mehran9675/sonora/ui/icons"
 	"github.com/mehran9675/sonora/ui/theme"
 	"github.com/mehran9675/sonora/ui/tr"
@@ -92,16 +91,6 @@ func (cl *cloner) selected() (profiles.Profile, bool) {
 		return all[0], true
 	}
 	return profiles.Profile{}, false
-}
-
-// profileDetail describes a profile in a list: its length and what is
-// said.
-func profileDetail(p profiles.Profile) string {
-	said := tr.T("No transcript yet")
-	if p.Transcript != "" {
-		said = "“" + p.Transcript + "”"
-	}
-	return format.Join(format.Clock(p.Duration), said)
 }
 
 // element lays out the tab for an engine described by m.

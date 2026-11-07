@@ -16,20 +16,6 @@ package sherpa
 // Family selects the model architecture.
 type Family string
 
-const (
-	VITS   Family = "vits" // Piper voices
-	Kitten Family = "kitten"
-	Kokoro Family = "kokoro"
-	// ZipVoice clones the voice of a reference recording.
-	ZipVoice Family = "zipvoice"
-
-	// Speech recognition.
-	Whisper    Family = "whisper"
-	Transducer Family = "nemo_transducer" // NVIDIA Parakeet TDT
-	SenseVoice Family = "sense_voice"
-	Moonshine  Family = "moonshine"
-)
-
 // Config locates a model's files.
 type Config struct {
 	Family  Family
@@ -84,6 +70,20 @@ type Recognition struct {
 	Text     string
 	Language string // as the model reports it, e.g. "<|en|>" or "en"
 }
+
+const (
+	VITS   Family = "vits" // Piper voices
+	Kitten Family = "kitten"
+	Kokoro Family = "kokoro"
+	// ZipVoice clones the voice of a reference recording.
+	ZipVoice Family = "zipvoice"
+
+	// Speech recognition.
+	Whisper    Family = "whisper"
+	Transducer Family = "nemo_transducer" // NVIDIA Parakeet TDT
+	SenseVoice Family = "sense_voice"
+	Moonshine  Family = "moonshine"
+)
 
 // VADWindow is how many samples the voice activity detector takes at
 // a time.

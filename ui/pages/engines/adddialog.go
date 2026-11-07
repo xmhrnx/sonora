@@ -7,10 +7,7 @@ import (
 	"github.com/xmhrnx/giode/components/input"
 
 	"github.com/mehran9675/sonora/internal/engines"
-	"github.com/mehran9675/sonora/internal/engines/command"
-	"github.com/mehran9675/sonora/internal/engines/openai"
 	"github.com/mehran9675/sonora/internal/paths"
-	"github.com/mehran9675/sonora/ui/components/optionfield"
 	"github.com/mehran9675/sonora/ui/components/overlay"
 	"github.com/mehran9675/sonora/ui/components/segmented"
 	"github.com/mehran9675/sonora/ui/core"
@@ -18,25 +15,6 @@ import (
 	"github.com/mehran9675/sonora/ui/theme"
 	"github.com/mehran9675/sonora/ui/tr"
 )
-
-const (
-	addAPI        = "api"
-	addTranscribe = "transcribe"
-	addCommand    = "command"
-	addPlugin     = "plugin"
-)
-
-// addKinds maps the dialog's tabs to the engines they create; name is
-// the default engine name, translated when it's given.
-var addKinds = map[string]struct {
-	kind     engines.Kind
-	name     string
-	template func(id, name string) *engines.Manifest
-}{
-	addAPI:        {engines.KindOpenAI, tr.Msg("API engine"), openai.Template},
-	addTranscribe: {engines.KindOpenAITranscribe, tr.Msg("Transcription API"), openai.TranscribeTemplate},
-	addCommand:    {engines.KindCommand, tr.Msg("Command engine"), command.Template},
-}
 
 // addDialog creates API and command engines and explains plugins.
 type addDialog struct {
@@ -50,23 +28,6 @@ type addDialog struct {
 	forms map[string]*setupForm
 
 	cancel, add, folder, reload *giode.ButtonElement
-}
-
-// setupForm is a set of setup fields editing a values map.
-type setupForm struct {
-	values engines.Values
-	fields []*optionfield.Field
-}
-
-func newSetupForm(m *engines.Manifest) *setupForm {
-	f := &setupForm{values: engines.Resolve(m.Options, nil)}
-	st := optionfield.Store{Get: func(id string) any { return f.values[id] }, Set: func(id string, v any) { f.values[id] = v }}
-	for _, o := range m.Options {
-		if o.Scope == engines.ScopeSetup {
-			f.fields = append(f.fields, optionfield.New(o, st))
-		}
-	}
-	return f
 }
 
 func newAddDialog(c *core.Ctx) *addDialog {

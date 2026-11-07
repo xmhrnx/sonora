@@ -9,19 +9,6 @@ import (
 // State is an engine's lifecycle stage as shown in the UI.
 type State int
 
-const (
-	// StateNotInstalled: the engine needs its one-click install.
-	StateNotInstalled State = iota
-	// StateUnavailable: a system dependency is missing (see Hint).
-	StateUnavailable
-	// StateInstalling: Install is running.
-	StateInstalling
-	// StateReady: the engine can generate.
-	StateReady
-	// StateWorking: the engine is loading a model or generating.
-	StateWorking
-)
-
 // Runtime is the UI-facing state of one engine. It is only changed on
 // the UI goroutine (through the manager's post function), so views can
 // read it freely.
@@ -39,6 +26,19 @@ type Runtime struct {
 
 	cancel context.CancelFunc
 }
+
+const (
+	// StateNotInstalled: the engine needs its one-click install.
+	StateNotInstalled State = iota
+	// StateUnavailable: a system dependency is missing (see Hint).
+	StateUnavailable
+	// StateInstalling: Install is running.
+	StateInstalling
+	// StateReady: the engine can generate.
+	StateReady
+	// StateWorking: the engine is loading a model or generating.
+	StateWorking
+)
 
 // Manifest is a shortcut for r.Engine.Manifest().
 func (r *Runtime) Manifest() *engines.Manifest { return r.Engine.Manifest() }

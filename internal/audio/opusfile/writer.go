@@ -6,24 +6,11 @@ package opusfile
 
 import (
 	"bufio"
-	"encoding/binary"
-	"errors"
-	"io"
 	"math/rand/v2"
 	"os"
-	"time"
 
 	"github.com/thesyncim/gopus"
-	"github.com/thesyncim/gopus/container/ogg"
 )
-
-// frameMS is the length of each Opus frame.
-const frameMS = 20
-
-// packetsPerPage groups about a second of audio into each Ogg page, so
-// the container costs little and an interrupted recording loses at most
-// that much.
-const packetsPerPage = 50
 
 // Writer encodes mono audio into an Ogg Opus file as it arrives.
 type Writer struct {
@@ -45,6 +32,14 @@ type Writer struct {
 	lacing   []byte
 	packets  int
 }
+
+// frameMS is the length of each Opus frame.
+const frameMS = 20
+
+// packetsPerPage groups about a second of audio into each Ogg page, so
+// the container costs little and an interrupted recording loses at most
+// that much.
+const packetsPerPage = 50
 
 // Create starts a mono Ogg Opus file at path. rate is the input sample
 // rate (8000, 12000, 16000, 24000 or 48000) and bitrate the target in
@@ -112,67 +107,6 @@ func (w *Writer) encode() error {
 	return nil
 }
 
-// addPacket queues a packet for the current page.
-func (w *Writer) addPacket(p []byte) {
-	for n := len(p); ; n -= 255 {
-		if n < 255 {
-			w.lacing = append(w.lacing, byte(n))
-			break
-		}
-		w.lacing = append(w.lacing, 255)
-	}
-	w.pageData = append(w.pageData, p...)
-	w.packets++
-}
-
-func (w *Writer) flushPage(flags byte) error {
-	if w.packets == 0 && flags == 0 {
-		return nil
-	}
-	err := w.writeRaw(w.lacing, w.pageData, w.granule, flags)
-	w.lacing, w.pageData, w.packets = w.lacing[:0], w.pageData[:0], 0
-	if err != nil {
-		return err
-	}
-	// Push each page to the file, so a crash loses at most a second.
-	return w.w.Flush()
-}
-
-// writePage writes a page holding whole packets.
-func (w *Writer) writePage(packets [][]byte, granule uint64, flags byte) error {
-	var lacing, data []byte
-	for _, p := range packets {
-		for n := len(p); ; n -= 255 {
-			if n < 255 {
-				lacing = append(lacing, byte(n))
-				break
-			}
-			lacing = append(lacing, 255)
-		}
-		data = append(data, p...)
-	}
-	return w.writeRaw(lacing, data, granule, flags)
-}
-
-func (w *Writer) writeRaw(lacing, data []byte, granule uint64, flags byte) error {
-	h := make([]byte, 27, 27+len(lacing))
-	copy(h, "OggS")
-	h[5] = flags
-	binary.LittleEndian.PutUint64(h[6:], granule)
-	binary.LittleEndian.PutUint32(h[14:], w.serial)
-	binary.LittleEndian.PutUint32(h[18:], w.seq)
-	h[26] = byte(len(lacing))
-	h = append(h, lacing...)
-	crc := crcUpdate(crcUpdate(0, h), data)
-	binary.LittleEndian.PutUint32(h[22:], crc)
-	w.seq++
-	if _, err := w.w.Write(h); err != nil {
-		return err
-	}
-	_, err := w.w.Write(data)
-	return err
-}
-
 // Samples returns how much audio has been written, in input samples.
 func (w *Writer) Samples() uint64 { return w.written }
 
@@ -206,116 +140,4 @@ func (w *Writer) Close() error {
 func (w *Writer) abort() {
 	w.f.Close()
 	os.Remove(w.f.Name())
-}
-
-// ErrNotOpus means the file isn't Ogg Opus.
-var ErrNotOpus = errors.New("not an Ogg Opus file")
-
-// IsOpus reports whether head, the start of a file, is Ogg Opus.
-func IsOpus(head []byte) bool {
-	return len(head) >= 36 && string(head[:4]) == "OggS" && string(head[28:36]) == "OpusHead"
-}
-
-// Decode reads an Ogg Opus stream, calling fn with mono 48 kHz samples
-// a packet at a time.
-func Decode(r io.Reader, fn func(rate int, mono []float32) error) error {
-	or, err := ogg.NewReader(r)
-	if err != nil {
-		return ErrNotOpus
-	}
-	ch := max(1, int(or.Channels()))
-	if ch > 2 {
-		return errors.New("Opus files with more than two channels aren't supported")
-	}
-	dec, err := gopus.NewDecoder(gopus.DefaultDecoderConfig(48000, ch))
-	if err != nil {
-		return err
-	}
-	skip := int(or.PreSkip())
-	pcm := make([]float32, 5760*ch) // the longest Opus packet: 120 ms
-	mono := make([]float32, 5760)
-	for {
-		p, _, err := or.ReadPacket()
-		if err == io.EOF {
-			return nil
-		}
-		if err != nil {
-			return err
-		}
-		n, err := dec.Decode(p, pcm)
-		if err != nil {
-			return err
-		}
-		for i := 0; i < n; i++ {
-			var sum float32
-			for c := 0; c < ch; c++ {
-				sum += pcm[i*ch+c]
-			}
-			mono[i] = sum / float32(ch)
-		}
-		out := mono[:n]
-		if skip > 0 {
-			d := min(skip, len(out))
-			out, skip = out[d:], skip-d
-		}
-		if len(out) > 0 {
-			if err := fn(48000, out); err != nil {
-				return err
-			}
-		}
-	}
-}
-
-// opusHead builds the identification header (RFC 7845 §5.1) for mono.
-func opusHead(preSkip, rate int) []byte {
-	b := make([]byte, 19)
-	copy(b, "OpusHead")
-	b[8] = 1 // version
-	b[9] = 1 // channels
-	binary.LittleEndian.PutUint16(b[10:], uint16(preSkip))
-	binary.LittleEndian.PutUint32(b[12:], uint32(rate))
-	return b // output gain 0, mapping family 0
-}
-
-// opusTags builds the comment header (RFC 7845 §5.2) with no comments.
-func opusTags(vendor string) []byte {
-	b := make([]byte, 8+4+len(vendor)+4)
-	copy(b, "OpusTags")
-	binary.LittleEndian.PutUint32(b[8:], uint32(len(vendor)))
-	copy(b[12:], vendor)
-	return b
-}
-
-// Duration reads an Ogg Opus file's length from its header and last
-// page, without decoding it.
-func Duration(path string) (time.Duration, error) {
-	f, err := os.Open(path)
-	if err != nil {
-		return 0, err
-	}
-	defer f.Close()
-	head := make([]byte, 64)
-	if n, _ := io.ReadFull(f, head); !IsOpus(head[:n]) {
-		return 0, ErrNotOpus
-	}
-	preSkip := int64(binary.LittleEndian.Uint16(head[28+10:]))
-	st, err := f.Stat()
-	if err != nil {
-		return 0, err
-	}
-	tail := min(st.Size(), 64<<10)
-	buf := make([]byte, tail)
-	if _, err := f.ReadAt(buf, st.Size()-tail); err != nil && err != io.EOF {
-		return 0, err
-	}
-	for i := len(buf) - 27; i >= 0; i-- {
-		if string(buf[i:i+4]) == "OggS" && buf[i+4] == 0 {
-			granule := int64(binary.LittleEndian.Uint64(buf[i+6:]))
-			if granule < 0 { // -1: no packet ends on this page
-				continue
-			}
-			return time.Duration(max(0, granule-preSkip)) * time.Second / 48000, nil
-		}
-	}
-	return 0, errors.New("no Ogg pages found")
 }

@@ -20,8 +20,10 @@ type marker struct {
 }
 
 func (e *Engine) markerPath() string { return filepath.Join(e.dir, "installed.json") }
-func (e *Engine) venv() string       { return filepath.Join(e.dir, "venv") }
-func (e *Engine) src() string        { return filepath.Join(e.dir, "src") }
+
+func (e *Engine) venv() string { return filepath.Join(e.dir, "venv") }
+
+func (e *Engine) src() string { return filepath.Join(e.dir, "src") }
 
 // Installed reports whether Install has completed.
 func (e *Engine) Installed() bool {

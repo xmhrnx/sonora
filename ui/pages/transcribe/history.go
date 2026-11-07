@@ -16,6 +16,15 @@ type history struct {
 	rows *giode.KeyedCache[string, *row]
 }
 
+// row is one past transcript.
+type row struct {
+	p      *Page
+	id     string
+	open   *giode.PressableElement
+	export *giode.ButtonElement
+	remove *giode.ButtonElement
+}
+
 func newHistory(p *Page) *history {
 	return &history{p: p, rows: giode.NewKeyedCache[string, *row]()}
 }
@@ -31,15 +40,6 @@ func (h *history) element() giode.Element {
 		els = append(els, h.rows.Get(e.ID, func() *row { return newRow(h.p, e) }).element())
 	}
 	return giode.Stack(giode.Styles{Width: -1, Gap: 8, Padding: giode.Inset{Top: 8, Bottom: 12}}, els...)
-}
-
-// row is one past transcript.
-type row struct {
-	p      *Page
-	id     string
-	open   *giode.PressableElement
-	export *giode.ButtonElement
-	remove *giode.ButtonElement
 }
 
 func newRow(p *Page, e transcripts.Entry) *row {

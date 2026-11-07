@@ -100,13 +100,6 @@ func (p *Page) content() giode.Element {
 	return giode.Stack(giode.Styles{Width: -1, Gap: 26, Padding: giode.UniformInset(core.Gutter())}, els...)
 }
 
-func group(title string, cards []giode.Element) giode.Element {
-	return giode.Stack(giode.Styles{Width: -1, Gap: 14},
-		giode.Text(title, theme.Overline),
-		giode.Row(giode.Styles{Width: -1, Gap: 16}, cards...),
-	)
-}
-
 // Element lays out the page.
 func (p *Page) Element() giode.Element {
 	return giode.Box(giode.Styles{Width: -1, Height: -1}, p.scroll)

@@ -1,8 +1,6 @@
 package profiles
 
 import (
-	"strings"
-
 	"github.com/xmhrnx/giode"
 	"github.com/xmhrnx/giode/components/input"
 
@@ -82,14 +80,6 @@ func newCard(c *core.Ctx, id string) *card {
 	return cd
 }
 
-// saveName stores the name typed and leaves editing.
-func (cd *card) saveName() {
-	if name := strings.TrimSpace(cd.name.Text()); name != "" {
-		cd.c.Error(cd.c.Profiles.Update(cd.id, func(p *profiles.Profile) { p.Name = name }))
-	}
-	cd.editing = false
-}
-
 func (cd *card) element(pr profiles.Profile) giode.Element {
 	st := theme.Card()
 	st.FlexDirection, st.Align, st.Gap, st.Width = giode.FlexDirectionRow, giode.AlignCenter, 16, -1
@@ -115,20 +105,4 @@ func (cd *card) element(pr profiles.Profile) giode.Element {
 		return giode.Row(st, cd.play, giode.Stack(giode.Styles{FlexGrow: 1, Gap: 8}, body...))
 	}
 	return giode.Row(st, cd.play, giode.Stack(giode.Styles{FlexGrow: 1, Gap: 8}, body...), actions)
-}
-
-// transcript shows what is said in the profile, or how to find out.
-func (cd *card) transcript(pr profiles.Profile) giode.Element {
-	quote := giode.Styles{Color: "theme.secondary", FontSize: 13, LineHeight: 19, MaxLines: 2, TextOverflow: giode.TextOverflowEllipsis}
-	switch {
-	case pr.Transcript != "":
-		return giode.Text("“"+pr.Transcript+"”", quote)
-	case cd.filling:
-		return giode.Text(tr.T("Finding out what is said…"), theme.Caption)
-	case cd.c.CanFillTranscripts():
-		return giode.Row(giode.Styles{Gap: 8, Align: giode.AlignCenter},
-			giode.Text(tr.T("No transcript yet."), theme.Caption), cd.transcribe)
-	}
-	return giode.Text(tr.T("No transcript yet. Install a transcription engine, such as Whisper, and Sonora fills it in; "+
-		"engines that need one can't clone this voice until then."), giode.Styles{Color: "theme.muted", FontSize: 12, LineHeight: 17})
 }

@@ -9,26 +9,8 @@ import (
 // OptionType selects the control an option is edited with.
 type OptionType string
 
-const (
-	OptionSelect OptionType = "select"
-	OptionNumber OptionType = "number"
-	OptionText   OptionType = "text"
-	OptionSecret OptionType = "secret"
-	OptionBool   OptionType = "bool"
-)
-
 // Scope says where an option is edited and what changing it costs.
 type Scope string
-
-const (
-	// ScopeSynth options apply per request (the default).
-	ScopeSynth Scope = ""
-	// ScopeLoad options require reloading the model.
-	ScopeLoad Scope = "load"
-	// ScopeSetup options configure the engine itself (an endpoint, a
-	// command) and are edited on the Engines page.
-	ScopeSetup Scope = "setup"
-)
 
 // Option is one engine setting, rendered generically by the UI.
 type Option struct {
@@ -58,6 +40,24 @@ type Choice struct {
 // Values holds option values by id, as stored in settings and sent to
 // adapters.
 type Values map[string]any
+
+const (
+	OptionSelect OptionType = "select"
+	OptionNumber OptionType = "number"
+	OptionText   OptionType = "text"
+	OptionSecret OptionType = "secret"
+	OptionBool   OptionType = "bool"
+)
+
+const (
+	// ScopeSynth options apply per request (the default).
+	ScopeSynth Scope = ""
+	// ScopeLoad options require reloading the model.
+	ScopeLoad Scope = "load"
+	// ScopeSetup options configure the engine itself (an endpoint, a
+	// command) and are edited on the Engines page.
+	ScopeSetup Scope = "setup"
+)
 
 // Resolve fills in defaults for every option missing from v.
 func Resolve(opts []Option, v Values) Values {

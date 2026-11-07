@@ -1,0 +1,80 @@
+package shell
+
+import (
+	"github.com/xmhrnx/giode"
+
+	"github.com/mehran9675/sonora/ui/components/overlay"
+	"github.com/mehran9675/sonora/ui/core"
+)
+
+// Element lays out the whole window, choosing the layout by width.
+func (s *Shell) Element() giode.Element {
+	s.shortcuts()
+	return giode.Responsive(
+		giode.Breakpoint{MaxWidth: compactBelow, Name: "compact", View: s.compact},
+		giode.Breakpoint{View: s.wide},
+	)
+}
+
+// wide is the desktop layout: sidebar beside the page.
+func (s *Shell) wide() giode.Element {
+	return s.frame(giode.Row(giode.Styles{Width: -1, FlexGrow: 1, Wrap: giode.WrapNoWrap},
+		s.sidebar.Element(),
+		giode.Box(giode.Styles{Width: 1, Height: -1, Background: "theme.border"}),
+		giode.Box(giode.Styles{FlexGrow: 1, Height: -1, Background: "theme.background"}, s.page()),
+	))
+}
+
+// compact is the phone layout: the page above a bottom tab bar.
+func (s *Shell) compact() giode.Element {
+	return s.frame(giode.Stack(giode.Styles{Width: -1, FlexGrow: 1},
+		giode.Box(giode.Styles{Width: -1, FlexGrow: 1, Background: "theme.background"}, s.page()),
+		giode.Box(giode.Styles{Width: -1, Height: 1, Background: "theme.border"}),
+		s.sidebar.Tabs(),
+	))
+}
+
+// page builds the current page. Back on any page but the Studio returns
+// to the Studio; it's registered first, so a page or an open dialog
+// that handles Back itself takes precedence.
+func (s *Shell) page() giode.Element {
+	if s.c.Page() != core.PageStudio {
+		giode.HandleBack(func() { s.c.Go(core.PageStudio) })
+	}
+	return s.pages[s.c.Page()]()
+}
+
+// frame adds the title bar and the layers that cover the whole window.
+func (s *Shell) frame(body giode.Element) giode.Element {
+	main := []giode.Element{}
+	if s.bar != nil {
+		main = append(main, s.bar)
+	}
+	main = append(main, body)
+	layers := []giode.Element{giode.Stack(giode.Styles{Width: -1, Height: -1}, main...)}
+	// Toasts and modal layers cover the whole window, above the page.
+	for _, el := range append([]giode.Element{s.c.Toasts}, overlay.All()...) {
+		layers = append(layers, giode.Box(giode.Styles{
+			Position: giode.PositionAbsolute, Top: 0, Left: 0, Width: -1, Height: -1, ZIndex: 10,
+		}, el))
+	}
+	return giode.Box(giode.Styles{Width: -1, Height: -1, Background: "theme.background"}, layers...)
+}
+
+// shortcuts switches pages from the keyboard on desktops: Mod+1 to
+// Mod+6 in the sidebar's order, and Mod+, for Settings as apps do.
+func (s *Shell) shortcuts() {
+	if core.Mobile {
+		return
+	}
+	page := func(p core.Page) func() { return func() { s.c.Go(p) } }
+	giode.Shortcuts(
+		giode.Shortcut("Mod+1", page(core.PageStudio)),
+		giode.Shortcut("Mod+2", page(core.PageTranscribe)),
+		giode.Shortcut("Mod+3", page(core.PageLibrary)),
+		giode.Shortcut("Mod+4", page(core.PageProfiles)),
+		giode.Shortcut("Mod+5", page(core.PageEngines)),
+		giode.Shortcut("Mod+6", page(core.PageSettings)),
+		giode.Shortcut("Mod+,", page(core.PageSettings)),
+	)
+}

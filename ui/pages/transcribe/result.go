@@ -8,7 +8,6 @@ import (
 	"github.com/xmhrnx/giode/components/input"
 	"github.com/xmhrnx/giode/styles/properties"
 
-	"github.com/mehran9675/sonora/internal/engines"
 	"github.com/mehran9675/sonora/internal/transcripts"
 	"github.com/mehran9675/sonora/ui/components/chip"
 	"github.com/mehran9675/sonora/ui/format"
@@ -54,42 +53,6 @@ func newResult(p *Page) *result {
 	r.export = button(tr.T("Export"), icons.Share, func() { c.ExportTranscript(*r.entry, r.text.Text()) })
 	r.speak = button(tr.T("Speak"), icons.Speaker, func() { c.Speak(r.text.Text()) })
 	return r
-}
-
-// show selects e.
-func (r *result) show(e transcripts.Entry) {
-	r.flush()
-	r.entry = &e
-	r.text.SetText(e.Text)
-}
-
-// clear deselects the transcript (after it's deleted).
-func (r *result) clear() {
-	if r.save != nil {
-		r.save.Stop()
-	}
-	r.entry = nil
-	r.text.SetText("")
-}
-
-// edited saves the user's changes shortly after they stop typing.
-func (r *result) edited(text string) {
-	if r.entry == nil {
-		return
-	}
-	r.entry.Text = text
-	if r.save != nil {
-		r.save.Stop()
-	}
-	id := r.entry.ID
-	r.save = time.AfterFunc(600*time.Millisecond, func() { r.p.c.Transcripts.SetText(id, text) })
-}
-
-// flush saves pending edits now.
-func (r *result) flush() {
-	if r.save != nil && r.save.Stop() && r.entry != nil {
-		r.p.c.Transcripts.SetText(r.entry.ID, r.entry.Text)
-	}
 }
 
 // element lays out the card; height 0 fills the space available.
@@ -145,14 +108,4 @@ func (r *result) element(height int) giode.Element {
 		giode.Divider(giode.Styles{Color: "theme.border"}),
 		giode.Row(giode.Styles{Width: -1, Gap: 4, Align: giode.AlignCenter}, r.play, r.copy, r.export, r.speak),
 	)
-}
-
-// languageName names a language code ("de" → "German"), translated.
-func languageName(code string) string {
-	for _, l := range engines.Languages {
-		if l.Value != "" && l.Value == strings.ToLower(code) {
-			return tr.T(l.Label)
-		}
-	}
-	return strings.ToUpper(code)
 }

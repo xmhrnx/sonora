@@ -27,12 +27,17 @@ func New(m *engines.Manifest, config func() engines.Values) *Engine {
 	return &Engine{m: m, config: config, client: &http.Client{Timeout: 10 * time.Minute}}
 }
 
-func (e *Engine) Manifest() *engines.Manifest                   { return e.m }
-func (e *Engine) Installed() bool                               { return true }
+func (e *Engine) Manifest() *engines.Manifest { return e.m }
+
+func (e *Engine) Installed() bool { return true }
+
 func (e *Engine) Install(context.Context, engines.Logger) error { return nil }
-func (e *Engine) Uninstall() error                              { return nil }
-func (e *Engine) Close()                                        {}
-func (e *Engine) Loaded() bool                                  { return false }
+
+func (e *Engine) Uninstall() error { return nil }
+
+func (e *Engine) Close() {}
+
+func (e *Engine) Loaded() bool { return false }
 
 func (e *Engine) url(path string) string {
 	return strings.TrimRight(e.config().String("base_url"), "/") + path
@@ -43,56 +48,6 @@ func (e *Engine) do(req *http.Request) (*http.Response, error) {
 		req.Header.Set("Authorization", "Bearer "+key)
 	}
 	return e.client.Do(req)
-}
-
-// Voices asks the server (GET /audio/voices, offered by several local
-// servers) and falls back to the configured list.
-func (e *Engine) Voices(ctx context.Context, _ engines.Values, log engines.Logger) ([]engines.Voice, error) {
-	if vs := e.serverVoices(ctx); len(vs) > 0 {
-		return vs, nil
-	}
-	var out []engines.Voice
-	for _, v := range strings.Split(e.config().String("voices"), ",") {
-		if v = strings.TrimSpace(v); v != "" {
-			out = append(out, engines.Voice{ID: v, Name: v})
-		}
-	}
-	return out, nil
-}
-
-func (e *Engine) serverVoices(ctx context.Context) []engines.Voice {
-	ctx, cancel := context.WithTimeout(ctx, 4*time.Second)
-	defer cancel()
-	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, e.url("/audio/voices"), nil)
-	resp, err := e.do(req)
-	if err != nil {
-		return nil
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		return nil
-	}
-	var body struct {
-		Voices []json.RawMessage `json:"voices"`
-	}
-	if json.NewDecoder(resp.Body).Decode(&body) != nil {
-		return nil
-	}
-	var out []engines.Voice
-	for _, raw := range body.Voices {
-		var name string
-		var obj struct{ ID, Name string }
-		if json.Unmarshal(raw, &name) == nil {
-			out = append(out, engines.Voice{ID: name, Name: name})
-		} else if json.Unmarshal(raw, &obj) == nil && (obj.ID != "" || obj.Name != "") {
-			id := obj.ID
-			if id == "" {
-				id = obj.Name
-			}
-			out = append(out, engines.Voice{ID: id, Name: obj.Name})
-		}
-	}
-	return out
 }
 
 // Synthesize posts the text and saves the returned audio as WAV.

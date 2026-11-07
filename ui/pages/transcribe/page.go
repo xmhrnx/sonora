@@ -11,9 +11,6 @@ import (
 	"github.com/xmhrnx/giode/components/scroll"
 
 	"github.com/mehran9675/sonora/internal/engines"
-	"github.com/mehran9675/sonora/internal/manager"
-	"github.com/mehran9675/sonora/internal/settings"
-	"github.com/mehran9675/sonora/internal/transcripts"
 	"github.com/mehran9675/sonora/ui/components/emptystate"
 	"github.com/mehran9675/sonora/ui/components/playerbar"
 	"github.com/mehran9675/sonora/ui/core"
@@ -73,80 +70,6 @@ func New(c *core.Ctx) *Page {
 		os.Remove(f)
 	}
 	return p
-}
-
-// engine returns the selected speech-to-text engine, falling back to
-// the first ready one, or nil when there are none.
-func (p *Page) engine() *manager.Runtime {
-	m := p.c.Manager
-	if rt := m.Get(p.c.Settings.Get().TranscribeEngine); rt != nil && rt.Manifest().Transcribes() {
-		return rt
-	}
-	if ready := m.ReadyFor(engines.TaskTranscribe); len(ready) > 0 {
-		return ready[0]
-	}
-	if all := m.EnginesFor(engines.TaskTranscribe); len(all) > 0 {
-		return all[0]
-	}
-	return nil
-}
-
-func (p *Page) selectEngine(id string) {
-	p.c.Settings.Update(func(s *settings.Settings) { s.TranscribeEngine = id })
-}
-
-// setSource replaces the audio waiting to be transcribed.
-func (p *Page) setSource(path, name string, temp bool) {
-	p.dropSource()
-	p.source, p.sourceName, p.temp = path, name, temp
-}
-
-// dropSource forgets the waiting audio, deleting Sonora's own copy.
-func (p *Page) dropSource() {
-	if p.temp && p.source != "" {
-		os.Remove(p.source)
-	}
-	p.source, p.sourceName, p.temp = "", "", false
-}
-
-// start transcribes the waiting audio, or stops the running job.
-func (p *Page) start() {
-	c := p.c
-	if j := c.Manager.TranscribeJob; j != nil {
-		c.Manager.Cancel(j.Runtime)
-		return
-	}
-	rt := p.engine()
-	if rt == nil || p.source == "" {
-		return
-	}
-	s := c.Settings.Get()
-	in := manager.TranscribeInput{Source: p.source, Title: p.sourceName,
-		Language: language(rt.Manifest(), s.Language), Translate: s.Translate}
-	awake := c.StayAwake(tr.T("Transcribing"))
-	c.Manager.Transcribe(rt, in, func(e transcripts.Entry, err error) {
-		awake()
-		if err != nil {
-			c.Error(err)
-			return
-		}
-		c.NotifyIfAway(tr.T("Transcript ready"), e.Title)
-		p.dropSource()
-		p.result.show(e)
-	})
-}
-
-// language returns want if the engine understands it, else "" (detect).
-func language(m *engines.Manifest, want string) string {
-	if len(m.Languages) == 0 {
-		return want
-	}
-	for _, l := range m.Languages {
-		if l == want {
-			return want
-		}
-	}
-	return ""
 }
 
 // Element lays out the page.

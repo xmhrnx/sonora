@@ -5,8 +5,6 @@ import (
 	"time"
 )
 
-const maxLog = 400
-
 // logSink batches log lines from background goroutines and applies
 // them to the runtime on the UI goroutine at most ten times a second,
 // so a chatty pip install doesn't flood the render loop.
@@ -17,6 +15,8 @@ type logSink struct {
 	post    func(func())
 	rt      *Runtime
 }
+
+const maxLog = 400
 
 func (m *Manager) sink(rt *Runtime) *logSink {
 	return &logSink{post: m.post, rt: rt}

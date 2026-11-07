@@ -5,13 +5,6 @@ import "context"
 // Task is what an engine does.
 type Task string
 
-const (
-	// TaskSpeak turns text into speech (the default).
-	TaskSpeak Task = ""
-	// TaskTranscribe turns speech into text.
-	TaskTranscribe Task = "transcribe"
-)
-
 // TranscribeRequest is one speech-to-text job.
 type TranscribeRequest struct {
 	// Audio is a 16 kHz mono 16-bit WAV file.
@@ -42,6 +35,13 @@ type Transcript struct {
 type Transcriber interface {
 	Transcribe(ctx context.Context, req TranscribeRequest, log Logger) (*Transcript, error)
 }
+
+const (
+	// TaskSpeak turns text into speech (the default).
+	TaskSpeak Task = ""
+	// TaskTranscribe turns speech into text.
+	TaskTranscribe Task = "transcribe"
+)
 
 // Languages are the languages offered for transcription, by ISO code;
 // an engine may support only some of them.

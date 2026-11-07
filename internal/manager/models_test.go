@@ -15,9 +15,12 @@ type modelEngine struct {
 	have map[string]bool
 }
 
-func (e *modelEngine) Manifest() *engines.Manifest       { return e.m }
-func (e *modelEngine) Installed() bool                   { return len(e.have) > 0 }
+func (e *modelEngine) Manifest() *engines.Manifest { return e.m }
+
+func (e *modelEngine) Installed() bool { return len(e.have) > 0 }
+
 func (e *modelEngine) DownloadedModels() map[string]bool { return e.have }
+
 func (e *modelEngine) InstallModel(_ context.Context, id string, _ engines.Logger) error {
 	e.have[id] = true
 	return nil

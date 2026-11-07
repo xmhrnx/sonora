@@ -17,16 +17,6 @@ import (
 	"github.com/mehran9675/sonora/internal/engines/onnx/sherpa"
 )
 
-// releases is where sherpa-onnx publishes its ready-to-run models.
-const releases = "https://github.com/k2-fsa/sherpa-onnx/releases/download/"
-
-const (
-	// vocos is the vocoder ZipVoice models need, a separate download.
-	vocos = releases + "vocoder-models/vocos_24khz.onnx"
-	// sileroVAD finds the speech in recordings before recognition.
-	sileroVAD = releases + "asr-models/silero_vad.onnx"
-)
-
 // model is one downloadable package.
 type model struct {
 	ID     string // package name; the archive is <release>/<ID>.tar.bz2
@@ -48,6 +38,16 @@ type model struct {
 	// next to the packages and shared.
 	Extra []string
 }
+
+// releases is where sherpa-onnx publishes its ready-to-run models.
+const releases = "https://github.com/k2-fsa/sherpa-onnx/releases/download/"
+
+const (
+	// vocos is the vocoder ZipVoice models need, a separate download.
+	vocos = releases + "vocoder-models/vocos_24khz.onnx"
+	// sileroVAD finds the speech in recordings before recognition.
+	sileroVAD = releases + "asr-models/silero_vad.onnx"
+)
 
 func (m model) url() string {
 	rel := m.Release

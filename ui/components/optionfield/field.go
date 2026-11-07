@@ -19,13 +19,6 @@ type Store struct {
 	Detail func(id, value string) string
 }
 
-func (st Store) detail(id, value string) string {
-	if st.Detail == nil {
-		return ""
-	}
-	return st.Detail(id, value)
-}
-
 // control is one rendered option.
 type control interface {
 	Element() giode.Element
@@ -36,6 +29,13 @@ type control interface {
 type Field struct {
 	opt  engines.Option
 	ctrl control
+}
+
+func (st Store) detail(id, value string) string {
+	if st.Detail == nil {
+		return ""
+	}
+	return st.Detail(id, value)
 }
 
 // New builds the control for opt.

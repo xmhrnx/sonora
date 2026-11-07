@@ -6,31 +6,8 @@ package engines
 // Kind selects the backend that runs an engine.
 type Kind string
 
-const (
-	// KindPython runs an adapter.py in a managed Python environment.
-	KindPython Kind = "python"
-	// KindOnDevice runs downloaded ONNX models inside the app (sherpa-onnx);
-	// it's how phones run models.
-	KindOnDevice Kind = "ondevice"
-	// KindOpenAI calls an OpenAI-compatible /v1/audio/speech endpoint.
-	KindOpenAI Kind = "openai"
-	// KindOpenAITranscribe calls an OpenAI-compatible
-	// /v1/audio/transcriptions endpoint.
-	KindOpenAITranscribe Kind = "openai-transcribe"
-	// KindCommand runs a command-line program.
-	KindCommand Kind = "command"
-	// KindSystem uses the operating system's built-in voices.
-	KindSystem Kind = "system"
-)
-
 // Clone describes whether an engine accepts a reference recording.
 type Clone string
-
-const (
-	CloneNone     Clone = ""
-	CloneOptional Clone = "optional"
-	CloneRequired Clone = "required"
-)
 
 // Manifest describes an engine. Built-in Python engines ship one as
 // engine.json; plugins in the data folder's plugins/ use the same
@@ -89,6 +66,29 @@ type Manifest struct {
 type Source struct {
 	URL string `json:"url"`
 }
+
+const (
+	// KindPython runs an adapter.py in a managed Python environment.
+	KindPython Kind = "python"
+	// KindOnDevice runs downloaded ONNX models inside the app (sherpa-onnx);
+	// it's how phones run models.
+	KindOnDevice Kind = "ondevice"
+	// KindOpenAI calls an OpenAI-compatible /v1/audio/speech endpoint.
+	KindOpenAI Kind = "openai"
+	// KindOpenAITranscribe calls an OpenAI-compatible
+	// /v1/audio/transcriptions endpoint.
+	KindOpenAITranscribe Kind = "openai-transcribe"
+	// KindCommand runs a command-line program.
+	KindCommand Kind = "command"
+	// KindSystem uses the operating system's built-in voices.
+	KindSystem Kind = "system"
+)
+
+const (
+	CloneNone     Clone = ""
+	CloneOptional Clone = "optional"
+	CloneRequired Clone = "required"
+)
 
 // Transcribes reports whether the engine turns speech into text.
 func (m *Manifest) Transcribes() bool { return m.Task == TaskTranscribe }

@@ -6,9 +6,6 @@ import (
 	"github.com/mehran9675/sonora/internal/audio/decode"
 )
 
-// peakCount is the waveform resolution kept for display.
-const peakCount = 600
-
 // NowPlaying is the clip loaded into the player.
 type NowPlaying struct {
 	Path     string
@@ -17,6 +14,9 @@ type NowPlaying struct {
 	Peaks    []float32
 	Duration time.Duration
 }
+
+// peakCount is the waveform resolution kept for display.
+const peakCount = 600
 
 // Open decodes path in the background and loads it into the player,
 // starting playback when autoplay is set.

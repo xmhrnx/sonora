@@ -79,17 +79,6 @@ func (p *Page) recordingControls() {
 	tr.Bind(func(s string) { p.defaults.Label(s) }, "Default")
 }
 
-// limitLabel names a recording length in minutes.
-func limitLabel(m int) string {
-	switch {
-	case m == 60:
-		return tr.T("1 hour")
-	case m%60 == 0:
-		return tr.N("{n} hours", m/60)
-	}
-	return tr.N("{n} minutes", m)
-}
-
 // recordingSection is the Recording settings card.
 func (p *Page) recordingSection() giode.Element {
 	rows := []giode.Element{
