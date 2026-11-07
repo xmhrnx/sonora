@@ -566,5 +566,11 @@
   "{engine} needs to know what is said in this recording.": "{engine} potrebuje vedieť, čo v tejto nahrávke zaznie.",
   "{engine} needs to know what is said in this recording. Install a transcription engine, such as Whisper, to fill it in.": "{engine} potrebuje vedieť, čo v tejto nahrávke zaznie. Na doplnenie nainštalujte modul na prepis, napríklad Whisper.",
   "{engine} works out what is said itself.": "{engine} si sám zistí, čo zaznie.",
-  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} vyžaduje jednorazové nastavenie. Vyberte, čo stiahnuť; kým to neurobíte, nič sa nestiahne."
+  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} vyžaduje jednorazové nastavenie. Vyberte, čo stiahnuť; kým to neurobíte, nič sa nestiahne.",
+  "A tiny English voice model (40 MB) with two voices, Juno and Mira, that reads phone numbers, dates, prices and codes the way people say them. Fast on any CPU with nothing but numpy.": "Drobný anglický hlasový model (40 MB) s dvoma hlasmi, Juno a Mira, ktorý číta telefónne čísla, dátumy, ceny a kódy tak, ako ich ľudia vyslovujú. Rýchly na akomkoľvek procesore, stačí numpy.",
+  "Compact downloads less; Plus is the most accurate.": "Kompaktný sťahuje menej; Plus je najpresnejší.",
+  "Conway Research's English speech recognition, tuned from Parakeet to be more accurate, offline on this device. It writes lowercase text without punctuation. Plus is a little more accurate.": "Anglické rozpoznávanie reči od Conway Research, vyladené z Parakeet pre vyššiu presnosť, offline v tomto zariadení. Píše malými písmenami bez interpunkcie. Plus je o niečo presnejší.",
+  "Random": "Náhodné",
+  "Reads numbers, dates, times, money and codes the way people say them.": "Číta čísla, dátumy, časy, sumy a kódy tak, ako ich ľudia vyslovujú.",
+  "Voice by Underdog Woof. Free for non-commercial use; commercial use needs a license from Underdog.": "Hlas: Underdog Woof. Zadarmo na nekomerčné použitie; komerčné použitie vyžaduje licenciu od Underdog."
 }

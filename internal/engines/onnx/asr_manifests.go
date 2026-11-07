@@ -53,3 +53,17 @@ func moonshineManifest() *engines.Manifest {
 		Options: []engines.Option{modelOption(moonshineModels, "Base is more accurate; Tiny is faster.")},
 	}
 }
+
+func barkManifest() *engines.Manifest {
+	return &engines.Manifest{
+		ID: "ondevice-bark", Name: "Underdog Bark", Vendor: "Conway Research · on device",
+		Description: "Conway Research's English speech recognition, tuned from Parakeet to be more accurate, offline on this device. " +
+			"It writes lowercase text without punctuation. Plus is a little more accurate.",
+		Tags:     []string{"Offline", "English", "Accurate"},
+		License:  "CC-BY-4.0 (converted weights) · Conway's own release is CC-BY-NC-4.0",
+		Homepage: "https://huggingface.co/ConwayResearch/Underdog-Bark-3.0",
+		Size:     "397–685 MB", Accent: []string{"#f97316", "#a16207"},
+		Kind: engines.KindOnDevice, Task: engines.TaskTranscribe, Languages: []string{"", "en"},
+		Options: []engines.Option{modelOption(barkModels, "Compact downloads less; Plus is the most accurate.")},
+	}
+}

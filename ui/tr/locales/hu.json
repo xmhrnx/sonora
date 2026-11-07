@@ -555,5 +555,11 @@
   "{engine} needs to know what is said in this recording.": "A(z) {engine} motornak tudnia kell, mi hangzik el ezen a felvételen.",
   "{engine} needs to know what is said in this recording. Install a transcription engine, such as Whisper, to fill it in.": "A(z) {engine} motornak tudnia kell, mi hangzik el ezen a felvételen. A kitöltéséhez telepíts egy átíró motort, például a Whispert.",
   "{engine} works out what is said itself.": "A(z) {engine} maga ismeri fel, mi hangzik el.",
-  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "A(z) {name} egyszeri beállítást igényel. Válaszd ki, mit töltsön le; amíg nem választasz, semmi sem töltődik le."
+  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "A(z) {name} egyszeri beállítást igényel. Válaszd ki, mit töltsön le; amíg nem választasz, semmi sem töltődik le.",
+  "A tiny English voice model (40 MB) with two voices, Juno and Mira, that reads phone numbers, dates, prices and codes the way people say them. Fast on any CPU with nothing but numpy.": "Egy apró angol hangmodell (40 MB) két hanggal, Junóval és Mirával, amely úgy olvassa fel a telefonszámokat, dátumokat, árakat és kódokat, ahogy az emberek mondják. Gyors bármilyen processzoron, csak numpy kell hozzá.",
+  "Compact downloads less; Plus is the most accurate.": "A Kompakt kevesebbet tölt le; a Plus a legpontosabb.",
+  "Conway Research's English speech recognition, tuned from Parakeet to be more accurate, offline on this device. It writes lowercase text without punctuation. Plus is a little more accurate.": "A Conway Research angol beszédfelismerése, a Parakeetből továbbfejlesztve a nagyobb pontosságért, offline ezen az eszközön. Kisbetűkkel, írásjelek nélkül ír. A Plus valamivel pontosabb.",
+  "Random": "Véletlenszerű",
+  "Reads numbers, dates, times, money and codes the way people say them.": "Úgy olvassa fel a számokat, dátumokat, időpontokat, összegeket és kódokat, ahogy az emberek mondják.",
+  "Voice by Underdog Woof. Free for non-commercial use; commercial use needs a license from Underdog.": "Hang: Underdog Woof. Nem kereskedelmi célra ingyenes; kereskedelmi használathoz az Underdog licence szükséges."
 }

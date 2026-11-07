@@ -555,5 +555,11 @@
   "{engine} needs to know what is said in this recording.": "{engine} muss wissen, was in dieser Aufnahme gesagt wird.",
   "{engine} needs to know what is said in this recording. Install a transcription engine, such as Whisper, to fill it in.": "{engine} muss wissen, was in dieser Aufnahme gesagt wird. Installiere eine Transkriptions-Engine wie Whisper, um das zu ergänzen.",
   "{engine} works out what is said itself.": "{engine} erkennt selbst, was gesagt wird.",
-  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} muss einmalig eingerichtet werden. Wähle, was heruntergeladen werden soll; bis dahin wird nichts heruntergeladen."
+  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} muss einmalig eingerichtet werden. Wähle, was heruntergeladen werden soll; bis dahin wird nichts heruntergeladen.",
+  "A tiny English voice model (40 MB) with two voices, Juno and Mira, that reads phone numbers, dates, prices and codes the way people say them. Fast on any CPU with nothing but numpy.": "Ein winziges englisches Sprachmodell (40 MB) mit zwei Stimmen, Juno und Mira, das Telefonnummern, Daten, Preise und Codes so liest, wie Menschen sie sprechen. Schnell auf jeder CPU, nur mit numpy.",
+  "Compact downloads less; Plus is the most accurate.": "Kompakt lädt weniger herunter; Plus ist am genauesten.",
+  "Conway Research's English speech recognition, tuned from Parakeet to be more accurate, offline on this device. It writes lowercase text without punctuation. Plus is a little more accurate.": "Englische Spracherkennung von Conway Research, aus Parakeet weiterentwickelt und genauer, offline auf diesem Gerät. Sie schreibt Kleinbuchstaben ohne Satzzeichen. Plus ist etwas genauer.",
+  "Random": "Zufällig",
+  "Reads numbers, dates, times, money and codes the way people say them.": "Liest Zahlen, Daten, Uhrzeiten, Geldbeträge und Codes so, wie Menschen sie sprechen.",
+  "Voice by Underdog Woof. Free for non-commercial use; commercial use needs a license from Underdog.": "Stimme von Underdog Woof. Kostenlos für nicht-kommerzielle Nutzung; kommerzielle Nutzung erfordert eine Lizenz von Underdog."
 }

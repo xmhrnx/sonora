@@ -555,5 +555,11 @@
   "{engine} needs to know what is said in this recording.": "Το {engine} πρέπει να γνωρίζει τι λέγεται σε αυτήν την ηχογράφηση.",
   "{engine} needs to know what is said in this recording. Install a transcription engine, such as Whisper, to fill it in.": "Το {engine} πρέπει να γνωρίζει τι λέγεται σε αυτήν την ηχογράφηση. Εγκαταστήστε μια μηχανή απομαγνητοφώνησης, όπως το Whisper, για να συμπληρωθεί.",
   "{engine} works out what is said itself.": "Το {engine} αναγνωρίζει μόνο του τι λέγεται.",
-  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "Το {name} χρειάζεται μια εφάπαξ ρύθμιση. Επιλέξτε τι θα ληφθεί· τίποτα δεν λαμβάνεται μέχρι να επιλέξετε."
+  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "Το {name} χρειάζεται μια εφάπαξ ρύθμιση. Επιλέξτε τι θα ληφθεί· τίποτα δεν λαμβάνεται μέχρι να επιλέξετε.",
+  "A tiny English voice model (40 MB) with two voices, Juno and Mira, that reads phone numbers, dates, prices and codes the way people say them. Fast on any CPU with nothing but numpy.": "Ένα μικροσκοπικό αγγλικό μοντέλο φωνής (40 MB) με δύο φωνές, Juno και Mira, που διαβάζει αριθμούς τηλεφώνου, ημερομηνίες, τιμές και κωδικούς όπως τους λένε οι άνθρωποι. Γρήγορο σε κάθε επεξεργαστή, μόνο με numpy.",
+  "Compact downloads less; Plus is the most accurate.": "Το Compact κατεβάζει λιγότερα· το Plus είναι το πιο ακριβές.",
+  "Conway Research's English speech recognition, tuned from Parakeet to be more accurate, offline on this device. It writes lowercase text without punctuation. Plus is a little more accurate.": "Η αγγλική αναγνώριση ομιλίας της Conway Research, βελτιωμένη από το Parakeet για μεγαλύτερη ακρίβεια, εκτός σύνδεσης σε αυτή τη συσκευή. Γράφει με πεζά χωρίς στίξη. Το Plus είναι λίγο πιο ακριβές.",
+  "Random": "Τυχαίο",
+  "Reads numbers, dates, times, money and codes the way people say them.": "Διαβάζει αριθμούς, ημερομηνίες, ώρες, ποσά και κωδικούς όπως τους λένε οι άνθρωποι.",
+  "Voice by Underdog Woof. Free for non-commercial use; commercial use needs a license from Underdog.": "Φωνή από το Underdog Woof. Δωρεάν για μη εμπορική χρήση· η εμπορική χρήση απαιτεί άδεια από την Underdog."
 }

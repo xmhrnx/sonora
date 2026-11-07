@@ -72,6 +72,9 @@ func fetch(ctx context.Context, dir string, m model, log engines.Logger) (string
 	if _, err := os.Stat(dst); err == nil {
 		return dst, nil
 	}
+	if m.Repo != "" {
+		return fetchFiles(ctx, dst, m, log)
+	}
 	tmp := dst + ".partial"
 	os.RemoveAll(tmp)
 	resp, err := get(ctx, m.url())
@@ -136,4 +139,35 @@ func writeFile(path string, r io.Reader) error {
 		return err
 	}
 	return f.Close()
+}
+
+// fetchFiles downloads a package published as separate files (see
+// model.Repo) into dst, through a temporary folder renamed when every
+// file is there.
+func fetchFiles(ctx context.Context, dst string, m model, log engines.Logger) (string, error) {
+	tmp := dst + ".partial"
+	os.RemoveAll(tmp)
+	for i, file := range m.Files {
+		resp, err := get(ctx, m.fileURL(file))
+		if err != nil {
+			os.RemoveAll(tmp)
+			return "", err
+		}
+		label := fmt.Sprintf("Downloading %s (%d of %d)", m.Label, i+1, len(m.Files))
+		err = writeFile(filepath.Join(tmp, file), &progressReader{r: resp.Body, total: resp.ContentLength, label: label, log: log})
+		resp.Body.Close()
+		if err != nil {
+			os.RemoveAll(tmp)
+			if ctx.Err() != nil {
+				return "", ctx.Err()
+			}
+			return "", err
+		}
+	}
+	if err := os.Rename(tmp, dst); err != nil {
+		os.RemoveAll(tmp)
+		return "", err
+	}
+	log(m.Label + " is ready.")
+	return dst, nil
 }

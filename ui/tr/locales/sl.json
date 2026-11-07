@@ -577,5 +577,11 @@
   "{engine} needs to know what is said in this recording.": "{engine} mora vedeti, kaj je izgovorjeno v tem posnetku.",
   "{engine} needs to know what is said in this recording. Install a transcription engine, such as Whisper, to fill it in.": "{engine} mora vedeti, kaj je izgovorjeno v tem posnetku. Za izpolnitev namestite modul za prepis, na primer Whisper.",
   "{engine} works out what is said itself.": "{engine} sam ugotovi, kaj je izgovorjeno.",
-  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} potrebuje enkratno nastavitev. Izberite, kaj želite prenesti; dokler tega ne storite, se nič ne prenese."
+  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} potrebuje enkratno nastavitev. Izberite, kaj želite prenesti; dokler tega ne storite, se nič ne prenese.",
+  "A tiny English voice model (40 MB) with two voices, Juno and Mira, that reads phone numbers, dates, prices and codes the way people say them. Fast on any CPU with nothing but numpy.": "Drobcen angleški glasovni model (40 MB) z dvema glasovoma, Juno in Mira, ki bere telefonske številke, datume, cene in kode tako, kot jih izgovarjajo ljudje. Hiter na vsakem procesorju, potreben je le numpy.",
+  "Compact downloads less; Plus is the most accurate.": "Kompaktni prenese manj; Plus je najnatančnejši.",
+  "Conway Research's English speech recognition, tuned from Parakeet to be more accurate, offline on this device. It writes lowercase text without punctuation. Plus is a little more accurate.": "Angleško prepoznavanje govora podjetja Conway Research, izpopolnjeno iz Parakeeta za večjo natančnost, brez povezave v tej napravi. Piše z malimi črkami brez ločil. Plus je nekoliko natančnejši.",
+  "Random": "Naključno",
+  "Reads numbers, dates, times, money and codes the way people say them.": "Bere števila, datume, ure, zneske in kode tako, kot jih izgovarjajo ljudje.",
+  "Voice by Underdog Woof. Free for non-commercial use; commercial use needs a license from Underdog.": "Glas: Underdog Woof. Brezplačno za nekomercialno rabo; komercialna raba zahteva licenco podjetja Underdog."
 }

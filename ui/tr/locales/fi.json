@@ -555,5 +555,11 @@
   "{engine} needs to know what is said in this recording.": "{engine} tarvitsee tiedon siitä, mitä tässä äänitteessä sanotaan.",
   "{engine} needs to know what is said in this recording. Install a transcription engine, such as Whisper, to fill it in.": "{engine} tarvitsee tiedon siitä, mitä tässä äänitteessä sanotaan. Asenna litterointimoottori, kuten Whisper, joka täyttää sen.",
   "{engine} works out what is said itself.": "{engine} selvittää itse, mitä sanotaan.",
-  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} vaatii kertaluonteisen käyttöönoton. Valitse, mitä ladataan; mitään ei ladata ennen kuin valitset."
+  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} vaatii kertaluonteisen käyttöönoton. Valitse, mitä ladataan; mitään ei ladata ennen kuin valitset.",
+  "A tiny English voice model (40 MB) with two voices, Juno and Mira, that reads phone numbers, dates, prices and codes the way people say them. Fast on any CPU with nothing but numpy.": "Pieni englanninkielinen äänimalli (40 Mt), jossa on kaksi ääntä, Juno ja Mira, ja joka lukee puhelinnumerot, päivämäärät, hinnat ja koodit niin kuin ihmiset ne sanovat. Nopea millä tahansa suorittimella pelkällä numpylla.",
+  "Compact downloads less; Plus is the most accurate.": "Kompakti lataa vähemmän; Plus on tarkin.",
+  "Conway Research's English speech recognition, tuned from Parakeet to be more accurate, offline on this device. It writes lowercase text without punctuation. Plus is a little more accurate.": "Conway Researchin englanninkielinen puheentunnistus, jatkokehitetty Parakeetista tarkemmaksi, offline-tilassa tällä laitteella. Se kirjoittaa pienillä kirjaimilla ilman välimerkkejä. Plus on hieman tarkempi.",
+  "Random": "Satunnainen",
+  "Reads numbers, dates, times, money and codes the way people say them.": "Lukee numerot, päivämäärät, kellonajat, rahasummat ja koodit niin kuin ihmiset ne sanovat.",
+  "Voice by Underdog Woof. Free for non-commercial use; commercial use needs a license from Underdog.": "Ääni: Underdog Woof. Ilmainen ei-kaupalliseen käyttöön; kaupallinen käyttö vaatii Underdogin lisenssin."
 }

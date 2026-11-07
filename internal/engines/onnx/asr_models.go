@@ -35,6 +35,17 @@ var (
 		{ID: "sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2025-09-09", Label: "Small · int8", Size: "158 MB", Family: sherpa.SenseVoice},
 		{ID: "sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2025-09-09", Label: "Small · Full quality · fp32", Size: "887 MB", Family: sherpa.SenseVoice},
 	}
+	// barkModels are Conway Research's Underdog Bark 3.0 recognizers,
+	// English fine-tunes of Parakeet TDT 0.6B v3, as sherpa-onnx files
+	// converted by velddev (weights unchanged but for quantization).
+	barkModels = []model{
+		{ID: "underdog-bark-3.0-int4", Label: "Bark 3.0 · Compact · int4", Size: "397 MB", Family: sherpa.Transducer,
+			Repo: "velddev/Underdog-Bark-3.0-sherpa-onnx", Files: transducerFiles("int4")},
+		{ID: "underdog-bark-3.0-int8", Label: "Bark 3.0 · int8", Size: "685 MB", Family: sherpa.Transducer,
+			Repo: "velddev/Underdog-Bark-3.0-sherpa-onnx", Files: transducerFiles("int8")},
+		{ID: "underdog-bark-3.0-plus-int8", Label: "Bark 3.0 Plus · int8", Size: "685 MB", Family: sherpa.Transducer,
+			Repo: "velddev/Underdog-Bark-3.0-Plus-sherpa-onnx", Files: transducerFiles("int8")},
+	}
 	// moonshineModels are small, fast English recognizers that suit
 	// older phones.
 	moonshineModels = []model{
@@ -47,11 +58,16 @@ func init() {
 	for i := range whisperModels {
 		whisperModels[i].Family, whisperModels[i].Int8 = sherpa.Whisper, true
 	}
-	for _, list := range [][]model{whisperModels, parakeetModels, senseVoiceModels, moonshineModels} {
+	for _, list := range [][]model{whisperModels, parakeetModels, senseVoiceModels, moonshineModels, barkModels} {
 		for i := range list {
 			list[i].Release, list[i].Extra = "asr-models", []string{sileroVAD}
 		}
 	}
+}
+
+// transducerFiles are a NeMo transducer's files at a quantization.
+func transducerFiles(quant string) []string {
+	return []string{"encoder." + quant + ".onnx", "decoder." + quant + ".onnx", "joiner." + quant + ".onnx", "tokens.txt"}
 }
 
 // whisperLanguages are the languages Whisper models know; sherpa-onnx

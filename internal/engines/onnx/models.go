@@ -1,6 +1,7 @@
 // Package onnx runs speech models inside the app with sherpa-onnx, on
 // the CPU and with no Python: text to speech with Kitten, Kokoro, Piper
-// and ZipVoice, speech to text with Whisper, Parakeet and SenseVoice.
+// and ZipVoice, speech to text with Whisper, Parakeet, Moonshine, SenseVoice and
+// Underdog Bark.
 // It's what Android uses; desktop builds include it when built with the
 // "sherpa" tag.
 package onnx
@@ -37,6 +38,18 @@ type model struct {
 	// Extra are single files the model also needs, downloaded once
 	// next to the packages and shared.
 	Extra []string
+	// Repo and Files describe a package published as separate files in
+	// a Hugging Face repository instead of a sherpa-onnx release archive.
+	Repo  string
+	Files []string
+}
+
+// huggingFace serves a repository's files.
+const huggingFace = "https://huggingface.co/"
+
+// fileURL is where file of a Hugging Face package is.
+func (m model) fileURL(file string) string {
+	return huggingFace + m.Repo + "/resolve/main/" + file
 }
 
 // releases is where sherpa-onnx publishes its ready-to-run models.

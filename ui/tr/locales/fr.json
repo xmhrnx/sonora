@@ -555,5 +555,11 @@
   "{engine} needs to know what is said in this recording.": "{engine} doit savoir ce qui est dit dans cet enregistrement.",
   "{engine} needs to know what is said in this recording. Install a transcription engine, such as Whisper, to fill it in.": "{engine} doit savoir ce qui est dit dans cet enregistrement. Installez un moteur de transcription, comme Whisper, pour le compléter.",
   "{engine} works out what is said itself.": "{engine} détermine lui-même ce qui est dit.",
-  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} nécessite une configuration unique. Choisissez ce qu’il faut télécharger ; rien n’est téléchargé tant que vous ne l’avez pas fait."
+  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} nécessite une configuration unique. Choisissez ce qu’il faut télécharger ; rien n’est téléchargé tant que vous ne l’avez pas fait.",
+  "A tiny English voice model (40 MB) with two voices, Juno and Mira, that reads phone numbers, dates, prices and codes the way people say them. Fast on any CPU with nothing but numpy.": "Un tout petit modèle vocal anglais (40 Mo) avec deux voix, Juno et Mira, qui lit les numéros de téléphone, les dates, les prix et les codes comme on les prononce. Rapide sur n'importe quel processeur, avec seulement numpy.",
+  "Compact downloads less; Plus is the most accurate.": "Compact télécharge moins ; Plus est le plus précis.",
+  "Conway Research's English speech recognition, tuned from Parakeet to be more accurate, offline on this device. It writes lowercase text without punctuation. Plus is a little more accurate.": "La reconnaissance vocale anglaise de Conway Research, dérivée de Parakeet et plus précise, hors ligne sur cet appareil. Elle écrit en minuscules sans ponctuation. Plus est un peu plus précis.",
+  "Random": "Aléatoire",
+  "Reads numbers, dates, times, money and codes the way people say them.": "Lit les nombres, dates, heures, montants et codes comme on les prononce.",
+  "Voice by Underdog Woof. Free for non-commercial use; commercial use needs a license from Underdog.": "Voix par Underdog Woof. Gratuit pour un usage non commercial ; un usage commercial nécessite une licence d'Underdog."
 }

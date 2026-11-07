@@ -566,5 +566,11 @@
   "{engine} needs to know what is said in this recording.": "{engine} turi žinoti, kas pasakyta šiame įraše.",
   "{engine} needs to know what is said in this recording. Install a transcription engine, such as Whisper, to fill it in.": "{engine} turi žinoti, kas pasakyta šiame įraše. Kad tai būtų užpildyta, įdiekite transkribavimo variklį, pvz., Whisper.",
   "{engine} works out what is said itself.": "{engine} pats nustato, kas pasakyta.",
-  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} reikia vienkartinės sąrankos. Pasirinkite, ką atsisiųsti; kol to nepadarysite, niekas nebus atsisiųsta."
+  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} reikia vienkartinės sąrankos. Pasirinkite, ką atsisiųsti; kol to nepadarysite, niekas nebus atsisiųsta.",
+  "A tiny English voice model (40 MB) with two voices, Juno and Mira, that reads phone numbers, dates, prices and codes the way people say them. Fast on any CPU with nothing but numpy.": "Mažytis anglų kalbos balso modelis (40 MB) su dviem balsais, Juno ir Mira, kuris skaito telefono numerius, datas, kainas ir kodus taip, kaip juos sako žmonės. Greitas bet kuriame procesoriuje, reikia tik numpy.",
+  "Compact downloads less; Plus is the most accurate.": "Kompaktiškas atsisiunčia mažiau; Plus yra tiksliausias.",
+  "Conway Research's English speech recognition, tuned from Parakeet to be more accurate, offline on this device. It writes lowercase text without punctuation. Plus is a little more accurate.": "Conway Research anglų kalbos šnekos atpažinimas, patobulintas iš Parakeet, kad būtų tikslesnis, neprisijungus šiame įrenginyje. Jis rašo mažosiomis raidėmis be skyrybos ženklų. Plus yra šiek tiek tikslesnis.",
+  "Random": "Atsitiktinis",
+  "Reads numbers, dates, times, money and codes the way people say them.": "Skaito skaičius, datas, laiką, pinigų sumas ir kodus taip, kaip juos sako žmonės.",
+  "Voice by Underdog Woof. Free for non-commercial use; commercial use needs a license from Underdog.": "Balsas: Underdog Woof. Nemokamai nekomerciniam naudojimui; komerciniam naudojimui reikia Underdog licencijos."
 }

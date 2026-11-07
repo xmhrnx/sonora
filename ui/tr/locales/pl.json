@@ -566,5 +566,11 @@
   "{engine} needs to know what is said in this recording.": "{engine} musi wiedzieć, co jest powiedziane w tym nagraniu.",
   "{engine} needs to know what is said in this recording. Install a transcription engine, such as Whisper, to fill it in.": "{engine} musi wiedzieć, co jest powiedziane w tym nagraniu. Zainstaluj silnik transkrypcji, np. Whisper, aby to uzupełnić.",
   "{engine} works out what is said itself.": "{engine} sam rozpoznaje, co jest powiedziane.",
-  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} wymaga jednorazowej konfiguracji. Wybierz, co pobrać; nic nie zostanie pobrane, dopóki tego nie zrobisz."
+  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} wymaga jednorazowej konfiguracji. Wybierz, co pobrać; nic nie zostanie pobrane, dopóki tego nie zrobisz.",
+  "A tiny English voice model (40 MB) with two voices, Juno and Mira, that reads phone numbers, dates, prices and codes the way people say them. Fast on any CPU with nothing but numpy.": "Malutki angielski model głosowy (40 MB) z dwoma głosami, Juno i Mira, który czyta numery telefonów, daty, ceny i kody tak, jak mówią je ludzie. Szybki na każdym procesorze, wystarczy numpy.",
+  "Compact downloads less; Plus is the most accurate.": "Kompaktowy pobiera mniej; Plus jest najdokładniejszy.",
+  "Conway Research's English speech recognition, tuned from Parakeet to be more accurate, offline on this device. It writes lowercase text without punctuation. Plus is a little more accurate.": "Angielskie rozpoznawanie mowy od Conway Research, dostrojone z Parakeet dla większej dokładności, offline na tym urządzeniu. Pisze małymi literami bez interpunkcji. Plus jest nieco dokładniejszy.",
+  "Random": "Losowy",
+  "Reads numbers, dates, times, money and codes the way people say them.": "Czyta liczby, daty, godziny, kwoty i kody tak, jak mówią je ludzie.",
+  "Voice by Underdog Woof. Free for non-commercial use; commercial use needs a license from Underdog.": "Głos: Underdog Woof. Bezpłatny do użytku niekomercyjnego; użycie komercyjne wymaga licencji od Underdog."
 }

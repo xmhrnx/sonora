@@ -555,5 +555,11 @@
   "{engine} needs to know what is said in this recording.": "{engine} må vite hva som blir sagt i dette opptaket.",
   "{engine} needs to know what is said in this recording. Install a transcription engine, such as Whisper, to fill it in.": "{engine} må vite hva som blir sagt i dette opptaket. Installer en transkripsjonsmotor, for eksempel Whisper, for å fylle det inn.",
   "{engine} works out what is said itself.": "{engine} finner selv ut hva som blir sagt.",
-  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} må settes opp én gang. Velg hva som skal lastes ned; ingenting lastes ned før du gjør det."
+  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} må settes opp én gang. Velg hva som skal lastes ned; ingenting lastes ned før du gjør det.",
+  "A tiny English voice model (40 MB) with two voices, Juno and Mira, that reads phone numbers, dates, prices and codes the way people say them. Fast on any CPU with nothing but numpy.": "En liten engelsk stemmemodell (40 MB) med to stemmer, Juno og Mira, som leser telefonnumre, datoer, priser og koder slik folk sier dem. Rask på enhver CPU med bare numpy.",
+  "Compact downloads less; Plus is the most accurate.": "Kompakt laster ned mindre; Plus er mest nøyaktig.",
+  "Conway Research's English speech recognition, tuned from Parakeet to be more accurate, offline on this device. It writes lowercase text without punctuation. Plus is a little more accurate.": "Conway Researchs engelske talegjenkjenning, videreutviklet fra Parakeet for å være mer nøyaktig, frakoblet på denne enheten. Den skriver små bokstaver uten tegnsetting. Plus er litt mer nøyaktig.",
+  "Random": "Tilfeldig",
+  "Reads numbers, dates, times, money and codes the way people say them.": "Leser tall, datoer, klokkeslett, beløp og koder slik folk sier dem.",
+  "Voice by Underdog Woof. Free for non-commercial use; commercial use needs a license from Underdog.": "Stemme av Underdog Woof. Gratis for ikke-kommersiell bruk; kommersiell bruk krever lisens fra Underdog."
 }

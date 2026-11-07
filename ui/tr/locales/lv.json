@@ -566,5 +566,11 @@
   "{engine} needs to know what is said in this recording.": "Dzinējam {engine} jāzina, kas tiek teikts šajā ierakstā.",
   "{engine} needs to know what is said in this recording. Install a transcription engine, such as Whisper, to fill it in.": "Dzinējam {engine} jāzina, kas tiek teikts šajā ierakstā. Lai to aizpildītu, instalējiet transkribēšanas dzinēju, piemēram, Whisper.",
   "{engine} works out what is said itself.": "{engine} pats noskaidro, kas tiek teikts.",
-  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "Dzinējam {name} vajadzīga vienreizēja iestatīšana. Izvēlieties, ko lejupielādēt; nekas netiek lejupielādēts, kamēr to neizdarāt."
+  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "Dzinējam {name} vajadzīga vienreizēja iestatīšana. Izvēlieties, ko lejupielādēt; nekas netiek lejupielādēts, kamēr to neizdarāt.",
+  "A tiny English voice model (40 MB) with two voices, Juno and Mira, that reads phone numbers, dates, prices and codes the way people say them. Fast on any CPU with nothing but numpy.": "Sīks angļu valodas balss modelis (40 MB) ar divām balsīm, Juno un Mira, kas lasa tālruņa numurus, datumus, cenas un kodus tā, kā tos saka cilvēki. Ātrs uz jebkura procesora, vajag tikai numpy.",
+  "Compact downloads less; Plus is the most accurate.": "Kompaktais lejupielādē mazāk; Plus ir visprecīzākais.",
+  "Conway Research's English speech recognition, tuned from Parakeet to be more accurate, offline on this device. It writes lowercase text without punctuation. Plus is a little more accurate.": "Conway Research angļu valodas runas atpazīšana, pilnveidota no Parakeet, lai būtu precīzāka, bezsaistē šajā ierīcē. Tā raksta mazajiem burtiem bez pieturzīmēm. Plus ir nedaudz precīzāks.",
+  "Random": "Nejaušs",
+  "Reads numbers, dates, times, money and codes the way people say them.": "Lasa skaitļus, datumus, laikus, naudas summas un kodus tā, kā tos saka cilvēki.",
+  "Voice by Underdog Woof. Free for non-commercial use; commercial use needs a license from Underdog.": "Balss: Underdog Woof. Bez maksas nekomerciālai lietošanai; komerciālai lietošanai nepieciešama Underdog licence."
 }

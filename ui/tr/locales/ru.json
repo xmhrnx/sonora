@@ -566,5 +566,11 @@
   "{engine} needs to know what is said in this recording.": "{engine} нужно знать, что сказано в этой записи.",
   "{engine} needs to know what is said in this recording. Install a transcription engine, such as Whisper, to fill it in.": "{engine} нужно знать, что сказано в этой записи. Чтобы это заполнить, установите движок расшифровки, например Whisper.",
   "{engine} works out what is said itself.": "{engine} сам распознаёт, что сказано.",
-  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} требует однократной настройки. Выберите, что скачать; пока вы не выберете, ничего не скачивается."
+  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} требует однократной настройки. Выберите, что скачать; пока вы не выберете, ничего не скачивается.",
+  "A tiny English voice model (40 MB) with two voices, Juno and Mira, that reads phone numbers, dates, prices and codes the way people say them. Fast on any CPU with nothing but numpy.": "Крошечная английская голосовая модель (40 МБ) с двумя голосами, Juno и Mira, которая читает номера телефонов, даты, цены и коды так, как их произносят люди. Быстро работает на любом процессоре, нужен только numpy.",
+  "Compact downloads less; Plus is the most accurate.": "Компактная загружает меньше; Plus — самая точная.",
+  "Conway Research's English speech recognition, tuned from Parakeet to be more accurate, offline on this device. It writes lowercase text without punctuation. Plus is a little more accurate.": "Английское распознавание речи от Conway Research, доработанное на основе Parakeet для большей точности, офлайн на этом устройстве. Пишет строчными буквами без знаков препинания. Plus немного точнее.",
+  "Random": "Случайно",
+  "Reads numbers, dates, times, money and codes the way people say them.": "Читает числа, даты, время, суммы и коды так, как их произносят люди.",
+  "Voice by Underdog Woof. Free for non-commercial use; commercial use needs a license from Underdog.": "Голос: Underdog Woof. Бесплатно для некоммерческого использования; для коммерческого нужна лицензия Underdog."
 }

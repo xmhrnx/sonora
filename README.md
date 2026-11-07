@@ -15,7 +15,7 @@ single scrolling column with a bottom tab bar.
 
 **On Android** models run on the phone itself, offline: install **Kitten TTS Lite**,
 **Kokoro**, **Piper** or **ZipVoice** to speak, and **Whisper**, **Parakeet**,
-**SenseVoice** or **Moonshine** to transcribe, from the Engines page. Sonora downloads the
+**Underdog Bark**, **SenseVoice** or **Moonshine** to transcribe, from the Engines page. Sonora downloads the
 model you pick (from 26 MB to about 2 GB; nothing downloads until you choose) and runs it
 with [sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx). ZipVoice clones a voice profile
 right on the phone; Piper has 74 voices in 33 languages; Kokoro has a full-precision model
@@ -96,6 +96,7 @@ Studio; your script is kept when you switch away.
 | **Kokoro** | Natural voices in 8 languages, 82M | – | CPU · GPU |
 | **Chatterbox** (Resemble AI) | Strong cloning, emotion control | ✓ | GPU recommended |
 | **Piper** | Real-time voices in 40+ languages | – | CPU |
+| **Underdog Woof** (Conway Research) | Tiny (40 MB) English voices that read numbers, dates and codes naturally; non-commercial license, credit "Voice by Underdog Woof" | – | CPU |
 | **Coqui TTS** | XTTS-v2 or any of 100+ Coqui models by name | ✓ | CPU · GPU |
 | **Hugging Face models** | Any Transformers TTS model by ID (MMS, Bark, VITS…) | – | CPU · GPU |
 | **System voices** | Your OS's built-in voices, offline, instant | – | – |
@@ -112,6 +113,7 @@ Speech to text:
 | **Hugging Face speech recognition** | Any Transformers ASR model by ID (Whisper variants, Moonshine, wav2vec 2.0, MMS…) | CPU · GPU |
 | **Whisper** *(on device)* | Tiny, Base, Small, Medium, Large v3 or Large v3 Turbo inside the app | Android |
 | **Parakeet** (NVIDIA) *(on device)* | Fast and accurate, English + 24 European languages (v3) or English (v2), punctuated | Android |
+| **Underdog Bark** (Conway Research) *(on device)* | Parakeet fine-tune for English, more accurate; lowercase, no punctuation | Android |
 | **SenseVoice** *(on device)* | Very fast Chinese, Cantonese, English, Japanese, Korean | Android |
 | **Moonshine** *(on device)* | Small, fast English recognition for older phones | Android |
 | **Transcription API** *(add your own)* | OpenAI, Groq, a local Whisper server… | remote |

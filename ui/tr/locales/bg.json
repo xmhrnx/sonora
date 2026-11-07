@@ -555,5 +555,11 @@
   "{engine} needs to know what is said in this recording.": "{engine} трябва да знае какво се казва в този запис.",
   "{engine} needs to know what is said in this recording. Install a transcription engine, such as Whisper, to fill it in.": "{engine} трябва да знае какво се казва в този запис. Инсталирайте двигател за транскрибиране, например Whisper, за да се попълни.",
   "{engine} works out what is said itself.": "{engine} сам разпознава какво се казва.",
-  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} изисква еднократна настройка. Изберете какво да се изтегли; нищо не се изтегля, докато не изберете."
+  "{name} needs a one-time setup. Choose what to download; nothing downloads until you do.": "{name} изисква еднократна настройка. Изберете какво да се изтегли; нищо не се изтегля, докато не изберете.",
+  "A tiny English voice model (40 MB) with two voices, Juno and Mira, that reads phone numbers, dates, prices and codes the way people say them. Fast on any CPU with nothing but numpy.": "Мъничък английски гласов модел (40 MB) с два гласа, Juno и Mira, който чете телефонни номера, дати, цени и кодове така, както ги казват хората. Бърз на всеки процесор, нужен е само numpy.",
+  "Compact downloads less; Plus is the most accurate.": "Компактният изтегля по-малко; Plus е най-точният.",
+  "Conway Research's English speech recognition, tuned from Parakeet to be more accurate, offline on this device. It writes lowercase text without punctuation. Plus is a little more accurate.": "Английското разпознаване на реч на Conway Research, доразвито от Parakeet за по-голяма точност, офлайн на това устройство. Пише с малки букви без пунктуация. Plus е малко по-точен.",
+  "Random": "Случайно",
+  "Reads numbers, dates, times, money and codes the way people say them.": "Чете числа, дати, часове, суми и кодове така, както ги казват хората.",
+  "Voice by Underdog Woof. Free for non-commercial use; commercial use needs a license from Underdog.": "Глас от Underdog Woof. Безплатно за некомерсиална употреба; търговската употреба изисква лиценз от Underdog."
 }

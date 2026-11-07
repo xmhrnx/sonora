@@ -1,0 +1,25 @@
+{
+  "id": "underdog-woof",
+  "name": "Underdog Woof",
+  "vendor": "Conway Research",
+  "description": "A tiny English voice model (40 MB) with two voices, Juno and Mira, that reads phone numbers, dates, prices and codes the way people say them. Fast on any CPU with nothing but numpy.",
+  "tags": ["Tiny", "CPU", "English"],
+  "license": "Underdog Non-Commercial License 1.0 · free for personal use, with credit",
+  "homepage": "https://huggingface.co/ConwayResearch/Underdog-Woof",
+  "size": "≈ 60 MB",
+  "accent": ["#f97316", "#facc15"],
+  "kind": "python",
+  "python": "3.11",
+  "install": [["numpy>=1.24", "huggingface_hub"]],
+  "hint": "Voice by Underdog Woof. Free for non-commercial use; commercial use needs a license from Underdog.",
+  "default_voice": "juno",
+  "voices": [
+    {"id": "juno", "name": "Juno", "group": "English", "description": "Female"},
+    {"id": "mira", "name": "Mira", "group": "English", "description": "Female"}
+  ],
+  "options": [
+    {"id": "normalize", "label": "Expand numbers & dates", "type": "bool", "scope": "load", "default": true,
+     "help": "Reads numbers, dates, times, money and codes the way people say them."},
+    {"id": "seed", "label": "Seed", "type": "text", "placeholder": "Random", "help": "Same seed, same audio", "keyboard": "number"}
+  ]
+}

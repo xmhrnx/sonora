@@ -46,6 +46,7 @@ func All(dataDir string) []engines.Engine {
 		newRecognizer(parakeetManifest(), dir, parakeetModels),
 		newRecognizer(senseVoiceManifest(), dir, senseVoiceModels),
 		newRecognizer(moonshineManifest(), dir, moonshineModels),
+		newRecognizer(barkManifest(), dir, barkModels),
 	}
 }
 

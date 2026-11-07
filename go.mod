@@ -12,7 +12,7 @@ require (
 	github.com/ledongthuc/pdf v0.0.0-20250511090121-5959a4027728
 	github.com/mewkiz/flac v1.0.14
 	github.com/thesyncim/gopus v0.1.2
-	github.com/xmhrnx/giode v0.2.0-alpha.1
+	github.com/xmhrnx/giode v1.0.0-alpha.1
 	golang.org/x/image v0.26.0
 	golang.org/x/net v0.48.0
 	golang.org/x/sys v0.47.0
