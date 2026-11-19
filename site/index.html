@@ -306,6 +306,19 @@
   .terminal .c { color: #6b7088; }
   .terminal .p { color: #22d3ee; user-select: none; }
 
+  /* Privacy */
+  .privacy { scroll-margin-top: 72px; }
+  .privacy .head { margin-bottom: 28px; }
+  .policy { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .policy > div { padding: 24px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); min-width: 0; }
+  .policy h3 { margin: 0 0 8px; font-size: 17px; }
+  .policy p, .policy li { margin: 0; color: var(--muted); font-size: 14px; }
+  .policy ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 6px; }
+  .policy b { color: var(--text); font-weight: 600; }
+  .policy code { font-size: 12.5px; padding: 1px 5px; border-radius: 6px; background: var(--surface-2); border: 1px solid var(--border); overflow-wrap: anywhere; }
+  .policy .wide { grid-column: 1 / -1; }
+  .policy .policy-meta { margin-top: 12px; font-size: 13px; color: var(--muted); }
+
   footer { padding: 48px 0 56px; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; }
   footer .wrap { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
   footer a { color: var(--text); text-decoration-color: color-mix(in srgb, var(--violet) 60%, transparent); text-underline-offset: 3px; }
@@ -318,6 +331,7 @@
     .grid { grid-template-columns: repeat(2, 1fr); }
     .ways { grid-template-columns: repeat(2, 1fr); }
     .plats { grid-template-columns: repeat(2, 1fr); }
+    .policy { grid-template-columns: 1fr; }
     .phone-band { grid-template-columns: 1fr; padding: 36px; }
     .rings { max-width: 240px; order: -1; }
   }
@@ -629,6 +643,49 @@
       </div>
     </div>
   </section>
+  <section class="privacy" id="privacy" style="padding-top: 0">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Privacy policy</span>
+        <h2>Your voice stays yours.</h2>
+        <p>Sonora has no accounts, no analytics, no ads and no tracking. Its developer receives nothing from the app: not your text, your recordings, your transcripts or how you use it.</p>
+      </div>
+      <div class="policy">
+        <div>
+          <h3>What stays on your device</h3>
+          <p>Everything you make is kept in Sonora's data folder on your device, and nowhere else:</p>
+          <ul>
+            <li>your scripts, generated clips, recordings, transcripts and voice profiles;</li>
+            <li>the engines, models and Python environments you install;</li>
+            <li>your settings, including a Hugging Face token or API keys you enter (in <code>settings.json</code>, as plain text).</li>
+          </ul>
+          <p style="margin-top: 8px">Built-in and on-device engines run on your device: text and audio you give them don't leave it. Deleting Sonora's data folder (or uninstalling the app on Android, or the Microsoft Store version on Windows) removes all of it.</p>
+        </div>
+        <div>
+          <h3>What goes over the network</h3>
+          <p>Only downloads you start, and the servers you add:</p>
+          <ul>
+            <li><b>Installing an engine or model</b> downloads it from GitHub, Hugging Face, the Python Package Index or PyTorch's download server. Those sites see your IP address, as with any download; a Hugging Face token you add is sent to Hugging Face for gated models.</li>
+            <li><b>An API server or transcription API you add</b> receives the text or audio you send it, with the API key you entered. That service's own privacy policy applies.</li>
+            <li><b>Command-line engines and plugins you add</b> run with what you give them; what they do is up to them.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Microphone and files</h3>
+          <p>Sonora uses the microphone only while you record a voice profile or audio to transcribe, after the system asks you. It reads the files you open, drop or share to it, and saves only where you choose (on Android, Downloads/Sonora or the share sheet).</p>
+        </div>
+        <div>
+          <h3>Notifications and children</h3>
+          <p>Notifications are local: they tell you when a long job finishes. Sonora collects no personal data from anyone, children included, and shares or sells none.</p>
+        </div>
+        <div class="wide">
+          <h3>Changes and contact</h3>
+          <p>If this policy changes, the new version is published on this page with its date. Questions: open an issue at <a href="https://github.com/xmhrnx/sonora/issues">github.com/xmhrnx/sonora/issues</a>.</p>
+          <p class="policy-meta">Last updated 19 November 2026.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer>
@@ -640,7 +697,8 @@
     <div>
       <a href="https://github.com/xmhrnx/sonora">Source</a> ·
       <a href="https://github.com/xmhrnx/sonora/releases/latest">Releases</a> ·
-      <a href="https://github.com/xmhrnx/sonora/issues">Issues</a>
+      <a href="https://github.com/xmhrnx/sonora/issues">Issues</a> ·
+      <a href="#privacy">Privacy</a>
     </div>
   </div>
 </footer>
