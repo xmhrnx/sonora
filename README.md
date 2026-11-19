@@ -10,7 +10,7 @@ Python models through a small plugin, servers through the OpenAI-compatible spee
 transcription APIs, and command-line programs through a template.
 
 Built in Go with [giode](https://github.com/Mehran9675/giode). Runs on Windows, macOS,
-Linux and Android. The layout adapts to the window: narrow windows and phones get a
+Linux and Android. Website: [xmhrnx.github.io/sonora](https://xmhrnx.github.io/sonora/). The layout adapts to the window: narrow windows and phones get a
 single scrolling column with a bottom tab bar.
 
 **On Android** models run on the phone itself, offline: install **Kitten TTS Lite**,
