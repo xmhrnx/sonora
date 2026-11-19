@@ -211,7 +211,7 @@ python/
 assets/                fonts and the app icon
 tools/makeicon/        draws the app icon
 tools/fetchsherpa/     downloads the sherpa-onnx libraries for on-device engines
-tools/packapk/         adds those libraries to the APK the giode CLI builds
+tools/packapk/         adds those libraries to an APK built without android.libraries
 tools/setversion.sh    writes a release's version into giode.toml
 giode.toml             app ID, version, icon and Android manifest entries for the giode CLI
 docs/                  architecture, plugin guide, screenshots
@@ -224,25 +224,16 @@ See [docs/architecture.md](docs/architecture.md) for how the pieces fit together
 Publishing a GitHub release runs [`.github/workflows/release.yml`](.github/workflows/release.yml),
 which builds Windows, macOS and Linux for both x86_64 and arm64 plus an Android APK, and
 attaches the archives (`.zip` for Windows and the macOS `.app`, `.tar.gz` for Linux,
-`.apk` for Android) to the release.
-
-Android updates only install over an earlier version signed with the same key. To sign
-with your own key, add the base64 of a keystore as the `ANDROID_KEYSTORE` repository
-secret and its password as `ANDROID_KEYSTORE_PASSWORD`; without them each build is signed
-with a throwaway key:
-
-```sh
-keytool -genkey -keystore sonora.keystore -alias sonora -keyalg RSA -keysize 2048 -validity 10000
-base64 -w0 sonora.keystore   # paste into the ANDROID_KEYSTORE secret
-```
+`.apk` for Android) to the release, along with the store packages: Microsoft Store MSIX
+packages, a Google Play bundle and a notarized macOS `.dmg` when their secrets are set.
+[RELEASING.md](RELEASING.md) lists the secrets and how to set up each store.
 
 To build the APK locally, install the Android SDK and NDK (`giode doctor` checks them)
 and run:
 
 ```sh
-go run ./tools/fetchsherpa android                # sherpa-onnx libraries into third_party/
-giode build android                               # dist/android/Sonora.apk
-go run ./tools/packapk dist/android/Sonora.apk    # add the libraries, align, sign
+go run ./tools/fetchsherpa android   # sherpa-onnx libraries, and third_party/sherpa-onnx/android.aar
+giode build android                  # dist/android/Sonora.apk (giode build aab for the Play bundle)
 adb install -r dist/android/Sonora.apk
 ```
 
@@ -251,12 +242,11 @@ Use a CLI from 28 October 2026 or later (releases pin it as `GIODE_CLI` in
 clears a field) and renders at the display's full refresh rate.
 
 The CLI adds what `giode.toml` asks for to the manifest (the microphone, notifications and
-the foreground service that keeps long jobs running), but packs only Sonora's own
-`libgio.so`. That library links against sherpa-onnx, so the APK doesn't start until
-`tools/packapk` adds the sherpa-onnx libraries and signs it again (with the debug key, or
-`-ks` and `-pass-env` for a release key). For the same reason, `giode run android` can't
-be used as is. Android builds always include the on-device engines; on desktops they need
-the `sherpa` build tag.
+the foreground service that keeps long jobs running). Sonora's `libgio.so` links against
+sherpa-onnx, so `giode.toml` lists `third_party/sherpa-onnx/android.aar` (written by
+`tools/fetchsherpa`) under `android.libraries`, and giode packs its libraries into the APK
+and the bundle. `tools/packapk` still adds them to an APK built without it. Android builds
+always include the on-device engines; on desktops they need the `sherpa` build tag.
 
 The on-device engines can also be built into the Linux desktop app for testing:
 

@@ -2,9 +2,19 @@ name: release
 
 # Builds Sonora for every platform when a GitHub release is published
 # and attaches the archives to that release. Android and Linux are built
-# with the giode CLI from giode.toml; macOS and Windows with go build
-# (which embeds Sonora's own Windows resources from cmd/sonora/winres;
-# CLI builds use the CLI's instead).
+# with the giode CLI from giode.toml; the macOS and Windows archives with
+# go build (which embeds Sonora's own Windows resources from
+# cmd/sonora/winres; CLI builds use the CLI's instead).
+#
+# It also builds the store packages, attached to the same release (see
+# RELEASING.md for the secrets and the store setup):
+#   msix   - Microsoft Store packages, x64 and ARM64 (Partner Center signs them)
+#   dmg    - a universal disk image signed with Developer ID and notarized,
+#            when the MACOS_CERT_BASE64 secret is set
+#   android - the APK, and the Play bundle (.aab) when the release keystore
+#            secrets are set
+# The secret names are the ones giode ci's generated workflow uses. There
+# is no Mac App Store or iOS job: see RELEASING.md for why.
 on:
   release:
     types: [published]
@@ -166,31 +176,35 @@ jobs:
         run: |
           sdkmanager="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           yes | "$sdkmanager" --licenses >/dev/null || true
-          "$sdkmanager" --install "platforms;android-35" "build-tools;35.0.0" "ndk;${NDK_VERSION}"
+          "$sdkmanager" --install "platforms;android-36" "build-tools;36.0.0" "ndk;${NDK_VERSION}"
           ls "$ANDROID_HOME/ndk/${NDK_VERSION}" >/dev/null
 
-      # Sign with the keystore in the ANDROID_KEYSTORE secret (base64)
-      # when one is configured, so updates install over older versions.
-      # Without it the build is signed with a throwaway key.
+      # Sign with the release keystore in the ANDROID_KEYSTORE_BASE64
+      # secret (base64), password in GIODE_KEYSTORE_PASS, so updates install
+      # over older versions and Google Play accepts the bundle (the older
+      # ANDROID_KEYSTORE and ANDROID_KEYSTORE_PASSWORD names still work).
+      # Without it the APK is signed with a throwaway key and no bundle is
+      # attached. giode.toml's android.keystore points at release.keystore.
       - name: Signing key
         env:
-          KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
-          KEYSTORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 || secrets.ANDROID_KEYSTORE }}
+          KEYSTORE_PASS: ${{ secrets.GIODE_KEYSTORE_PASS || secrets.ANDROID_KEYSTORE_PASSWORD }}
         run: |
-          key="$RUNNER_TEMP/sonora.keystore"
           if [ -n "$KEYSTORE" ]; then
-            echo "$KEYSTORE" | base64 -d > "$key"
+            echo "$KEYSTORE" | base64 -d > release.keystore
             pass="$KEYSTORE_PASS"
+            echo "PLAY_BUNDLE=1" >> "$GITHUB_ENV"
           else
             pass="throwaway-$RANDOM$RANDOM"
-            keytool -genkey -keystore "$key" -storepass "$pass" -alias sonora \
+            keytool -genkey -keystore release.keystore -storepass "$pass" -alias sonora \
               -keyalg RSA -keysize 2048 -validity 10000 -noprompt -dname CN=Sonora
           fi
           echo "::add-mask::$pass"
-          echo "SIGN_KEY=$key" >> "$GITHUB_ENV"
-          echo "GOGIO_SIGNPASS=$pass" >> "$GITHUB_ENV"
+          echo "GIODE_KEYSTORE_PASS=$pass" >> "$GITHUB_ENV"
 
-      # sherpa-onnx runs the on-device engines.
+      # sherpa-onnx runs the on-device engines. fetchsherpa also writes
+      # third_party/sherpa-onnx/android.aar, which giode.toml's
+      # android.libraries packs into the APK and the bundle.
       - name: Download sherpa-onnx
         run: go run ./tools/fetchsherpa android
 
@@ -198,21 +212,104 @@ jobs:
         run: go install github.com/xmhrnx/giode-cli/cmd/giode@${GIODE_CLI}
 
       # giode adds the manifest entries in giode.toml (microphone,
-      # notifications, the KeepAlive service) and signs with the debug key.
-      - name: Build APK
+      # notifications, the KeepAlive service) and signs with the keystore.
+      - name: Build APK and bundle
         run: |
           export ANDROID_NDK_ROOT="$ANDROID_HOME/ndk/$NDK_VERSION"
           ./tools/setversion.sh "${VERSION#v}" "${{ github.run_number }}"
-          giode build android
-
-      # giode packs only libgio.so; add the sherpa-onnx libraries it links
-      # against, then align and sign with the release key.
-      - name: Add native libraries and sign
-        run: |
-          go run ./tools/packapk -ks "$SIGN_KEY" -pass-env GOGIO_SIGNPASS \
-            -o "sonora-${VERSION}-android.apk" dist/android/Sonora.apk
+          giode build -release android aab
+          cp dist/android/Sonora.apk "sonora-${VERSION}-android.apk"
+          if [ -n "$PLAY_BUNDLE" ]; then
+            cp dist/android/*.aab "sonora-${VERSION}-android.aab"
+          fi
 
       - name: Attach to release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload "$VERSION" "sonora-${VERSION}-android.apk" --clobber
+        run: gh release upload "$VERSION" sonora-${VERSION}-android.* --clobber
+
+  msix:
+    name: Microsoft Store (x64, ARM64)
+    runs-on: ubuntu-24.04
+    env:
+      VERSION: ${{ github.event.release.tag_name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Install the giode CLI
+        run: go install github.com/xmhrnx/giode-cli/cmd/giode@${GIODE_CLI}
+
+      # Unsigned: Partner Center signs Store packages. The identity comes
+      # from giode.toml's [windows.msix].
+      - name: Build MSIX
+        run: |
+          ./tools/setversion.sh "${VERSION#v}" "${{ github.run_number }}"
+          giode build -arch amd64 msix
+          giode build -arch arm64 msix
+          for arch in amd64 arm64; do
+            cp dist/windows/Sonora-*-$arch.msix "sonora-${VERSION}-windows-$arch.msix"
+          done
+
+      - name: Attach to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$VERSION" sonora-${VERSION}-windows-*.msix --clobber
+
+  dmg:
+    name: macOS disk image (signed, notarized)
+    runs-on: macos-15
+    # A hung signing or notarizing step fails in an hour rather than six.
+    timeout-minutes: 60
+    env:
+      VERSION: ${{ github.event.release.tag_name }}
+      MACOS_CERT_BASE64: ${{ secrets.MACOS_CERT_BASE64 }}
+    steps:
+      - uses: actions/checkout@v4
+        if: env.MACOS_CERT_BASE64 != ''
+
+      - uses: actions/setup-go@v5
+        if: env.MACOS_CERT_BASE64 != ''
+        with:
+          go-version-file: go.mod
+
+      - name: Install the giode CLI
+        if: env.MACOS_CERT_BASE64 != ''
+        run: go install github.com/xmhrnx/giode-cli/cmd/giode@${GIODE_CLI}
+
+      # The "Developer ID Application" certificate (.p12).
+      - name: Signing certificate
+        if: env.MACOS_CERT_BASE64 != ''
+        env:
+          MACOS_CERT_PASS: ${{ secrets.MACOS_CERT_PASS }}
+        run: |
+          echo "$MACOS_CERT_BASE64" | base64 -d > cert.p12
+          security create-keychain -p ci build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p ci build.keychain
+          security import cert.p12 -k build.keychain -P "$MACOS_CERT_PASS" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k ci build.keychain
+          rm cert.p12
+
+      # Signed with the certificate's Developer ID identity and notarized
+      # with the Apple ID, team and app-specific password below, so
+      # Gatekeeper opens it once downloaded.
+      - name: Build
+        if: env.MACOS_CERT_BASE64 != ''
+        env:
+          GIODE_NOTARY_ID: ${{ secrets.GIODE_NOTARY_ID }}
+          GIODE_NOTARY_TEAM_ID: ${{ secrets.GIODE_NOTARY_TEAM_ID }}
+          GIODE_NOTARY_PASS: ${{ secrets.GIODE_NOTARY_PASS }}
+        run: |
+          ./tools/setversion.sh "${VERSION#v}" "${{ github.run_number }}"
+          giode build -release dmg
+          cp dist/macos/*.dmg "sonora-${VERSION}-macos-universal.dmg"
+
+      - name: Attach to release
+        if: env.MACOS_CERT_BASE64 != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$VERSION" "sonora-${VERSION}-macos-universal.dmg" --clobber
