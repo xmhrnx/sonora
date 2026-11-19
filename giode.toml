@@ -1,22 +1,28 @@
 # Build settings for the giode CLI (https://github.com/xmhrnx/giode-cli):
 #   giode run                 run on this computer
 #   giode run android         build, install and run on a connected phone
-#   giode build android       dist/android/Sonora.apk (see README for the
-#                             sherpa-onnx libraries the APK also needs)
-#   giode build linux windows windows-installer
-# The release workflow sets version and build from the release tag.
+#   giode build android aab   dist/android: the APK and the Play bundle
+#                             (run go run ./tools/fetchsherpa android first:
+#                             android.libraries packs its libraries)
+#   giode build linux windows windows-installer msix
+# The release workflow sets version and build from the release tag
+# (tools/setversion.sh); see RELEASING.md for the store packages.
 
 [app]
 name = "Sonora"
 id = "com.sonora.app"
-version = "1.0.3"
+version = "1.1.0"
 build = 1
 icon = "assets/icon/icon.png"
 package = "./cmd/sonora"
+# Not iOS: the build has no on-device engines or recording there (no
+# sherpa-onnx libraries for iOS, and record/capture_mobile.go is a stub),
+# leaving only API servers the user runs elsewhere. See RELEASING.md.
+platforms = ["windows", "macos", "linux", "android"]
 publisher = "Sonora"
 description = "A speech studio: text to speech and speech to text."
 website = "https://xmhrnx.github.io/sonora/"
-ldflags = "-X github.com/mehran9675/sonora/ui/pages/settings.Version=1.0.3"
+ldflags = "-X github.com/mehran9675/sonora/ui/pages/settings.Version=1.1.0"
 # The launch screen, until the first frame: the window background of the
 # dark and light themes (theme.Dark and theme.Light), so the app opens
 # without a flash in either mode. Android 12+ draws the adaptive icon on
@@ -42,6 +48,10 @@ extensions = [".txt", ".md", ".markdown", ".srt", ".vtt", ".html", ".htm", ".xht
 
 [android]
 min_sdk = 26
+# Google Play requires Android 16 (API 36) for new apps and updates since
+# 31 Aug 2026 (the CLI's default is 35, which Play now rejects). The
+# release workflow installs platforms;android-36 to match.
+target_sdk = 36
 arch = ["arm64", "arm", "amd64"]
 # Recording voices and speech; the foreground service keeps generation,
 # transcription and model downloads running behind other apps
@@ -49,6 +59,15 @@ arch = ["arm64", "arm", "amd64"]
 permissions = ["microphone"]
 keep_alive = true
 notifications = true
+# The sherpa-onnx libraries the on-device engines link against, packed
+# beside libgio.so in the APK and the Play bundle. tools/fetchsherpa
+# writes the file (third_party/ is not committed).
+libraries = ["third_party/sherpa-onnx/android.aar"]
+# Signs giode build -release android aab. The release workflow writes it
+# from the ANDROID_KEYSTORE_BASE64 secret, with the password in
+# GIODE_KEYSTORE_PASS; keep it out of git. With Play App Signing this is
+# the upload key.
+keystore = "release.keystore"
 # The adaptive icon's layers (Android 8+), drawn by tools/makeicon: the S
 # inside the middle 66dp, over the navy of the tile; the monochrome
 # layer is its shape for themed icons (Android 13+).
@@ -56,6 +75,7 @@ icon_foreground = "assets/icon/android-foreground.png"
 icon_background = "#15163a"
 icon_monochrome = "assets/icon/android-monochrome.png"
 
+# iOS isn't in app.platforms (see above); kept for a future iOS build.
 [ios]
 # Opaque and square: iOS rounds the corners itself (tools/makeicon).
 icon = "assets/icon/icon-ios.png"
@@ -63,8 +83,22 @@ icon = "assets/icon/icon-ios.png"
 [ios.usage]
 microphone = "Sonora records your voice to clone it or to transcribe what you say."
 
+[macos]
+min_os = 11
+
 [macos.usage]
 microphone = "Sonora records your voice to clone it or to transcribe what you say."
+
+[macos.plist]
+LSApplicationCategoryType = "public.app-category.productivity"
+# Only HTTPS through the system and Go's standard library: no export
+# compliance documentation needed.
+ITSAppUsesNonExemptEncryption = false
+
+# No [macos.store]: Sonora isn't built for the Mac App Store. Its engines
+# run Python and uv that it downloads, which the App Sandbox can't run
+# and App Review guideline 2.5.2 doesn't allow; see RELEASING.md. macOS
+# gets the notarized .dmg on GitHub instead.
 
 [windows]
 arch = "amd64"
@@ -72,5 +106,18 @@ arch = "amd64"
 [windows.installer]
 desktop_shortcut = true
 
+# The Microsoft Store package (giode build msix). The Store signs it.
+# identity_name must match Partner Center -> Sonora -> Product identity
+# (Package/Identity/Name) once the name is reserved.
+[windows.msix]
+identity_name = "MehranZahir.Sonora"
+publisher = "CN=B40E8F57-A7E0-40BB-8E74-5D051D0B578B"
+publisher_display_name = "Mehran Zahiroddini"
+
 [linux]
 categories = ["AudioVideo", "Audio"]
+
+# The privacy manifest (PrivacyInfo.xcprivacy) for Apple's stores. Sonora
+# sends nothing to its developer: no analytics, no accounts, no tracking.
+[privacy]
+tracking = false

@@ -5,5 +5,9 @@ __pycache__/
 /dist/
 third_party/
 
-# Left behind by the giode CLI's windows target, which Sonora does not use
-/cmd/sonora/Sonora_windows_*.syso
+# Left behind by the giode CLI's windows and msix targets (the release's
+# Windows zips use go build and cmd/sonora/winres instead)
+/cmd/sonora/Sonora*_windows_*.syso
+
+# Android release keystore (written by the release workflow from a secret)
+/release.keystore

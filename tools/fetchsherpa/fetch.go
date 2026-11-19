@@ -72,6 +72,13 @@ func main() {
 		log.Fatal("no libraries found in the archive")
 	}
 	fmt.Printf("%d libraries in %s\n", n, out)
+	if target == "android" {
+		aar := out + ".aar"
+		if err := writeAAR(aar, out); err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("android.libraries: %s\n", aar)
+	}
 }
 
 func wanted(name string) bool {
