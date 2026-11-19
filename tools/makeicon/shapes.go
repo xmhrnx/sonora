@@ -5,11 +5,12 @@ import (
 )
 
 // tile says how to draw: the tile inset by margin pixels (with a drop
-// shadow), or no tile at all with the S scaled by scale, in color or as
-// a white shape.
+// shadow; square, without rounded corners), or no tile at all with the S
+// scaled by scale, in color or as a white shape.
 type tile struct {
 	margin int
 	shadow bool
+	square bool
 	none   bool
 	scale  float64
 	mono   bool

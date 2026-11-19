@@ -15,14 +15,14 @@ icon = "assets/icon/icon.png"
 package = "./cmd/sonora"
 publisher = "Sonora"
 description = "A speech studio: text to speech and speech to text."
-website = "https://github.com/Mehran9675/sonora"
+website = "https://xmhrnx.github.io/sonora/"
 ldflags = "-X github.com/mehran9675/sonora/ui/pages/settings.Version=1.0.3"
-# The launch screen, until the first frame: the icon's navy in dark and
-# light mode alike. Android 12+ draws the adaptive icon on it, whose navy
-# background (android.icon_background) melts into it, leaving the
-# glowing S; earlier Androids and iOS show the colour.
-splash_color = "#15163a"
-splash_color_light = "#15163a"
+# The launch screen, until the first frame: the window background of the
+# dark and light themes (theme.Dark and theme.Light), so the app opens
+# without a flash in either mode. Android 12+ draws the adaptive icon on
+# it; earlier Androids and iOS show the colour.
+splash_color = "#0b0c12"
+splash_color_light = "#f4f5fa"
 # In the share sheet: audio and video to transcribe, documents and text
 # to speak (Config.OnShareReceived).
 share_target = true
@@ -55,6 +55,10 @@ notifications = true
 icon_foreground = "assets/icon/android-foreground.png"
 icon_background = "#15163a"
 icon_monochrome = "assets/icon/android-monochrome.png"
+
+[ios]
+# Opaque and square: iOS rounds the corners itself (tools/makeicon).
+icon = "assets/icon/icon-ios.png"
 
 [ios.usage]
 microphone = "Sonora records your voice to clone it or to transcribe what you say."

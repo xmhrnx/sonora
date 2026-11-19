@@ -6,7 +6,8 @@
 //	go run ./tools/makeicon assets/icon
 //
 // writes icon.png (full bleed, for Windows, Linux and the window),
-// icon-macos.png (inset with a shadow, on macOS's icon grid) and the
+// icon-macos.png (inset with a shadow, on macOS's icon grid),
+// icon-ios.png (an opaque square: iOS rounds the corners itself) and the
 // layers of Android's adaptive icon: android-foreground.png (the S on a
 // transparent 108dp canvas, inside the middle 66dp) and
 // android-monochrome.png (its shape, tinted for themed icons). The
@@ -41,6 +42,8 @@ func main() {
 	save(filepath.Join(out, "icon.png"), render(tile{margin: 0}))
 	// macOS icons sit on an 824px body inside the 1024px canvas.
 	save(filepath.Join(out, "icon-macos.png"), render(tile{margin: 100, shadow: true}))
+	// iOS masks the icon itself and shows transparent pixels white.
+	save(filepath.Join(out, "icon-ios.png"), render(tile{square: true}))
 	// Android shows the middle 66 of the layer's 108dp: the S keeps to
 	// it, and the launcher draws the navy background and the shape.
 	save(filepath.Join(out, "android-foreground.png"), render(tile{none: true, scale: 66.0 / 108}))

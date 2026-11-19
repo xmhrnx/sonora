@@ -18,6 +18,9 @@ func render(t tile) image.Image {
 	m := float64(t.margin * ss)
 	side := float64(n) - 2*m
 	radius := side * 0.225
+	if t.square {
+		radius = 0
+	}
 	// The S's unit square: the tile, or the middle of an empty canvas.
 	art, ax := side, m
 	if t.none {
