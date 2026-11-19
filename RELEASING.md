@@ -72,6 +72,12 @@ Two settings in `giode.toml` matter here:
   apps and updates since 31 August 2026; the CLI's default (35) is
   rejected. The workflow installs `platforms;android-36` to match. Test
   the release on an Android 16 device or emulator before the first upload.
+- **`application_attributes = { enableOnBackInvokedCallback = "false" }`.**
+  Gio handles Back in `onBackPressed()`, which Android 16 no longer calls
+  for apps targeting 36 (predictive back). The opt-out keeps Back closing
+  dialogs and returning to the Studio. **Test the back gesture on an
+  Android 16 device**: open a dialog, swipe back (it should close), then
+  swipe back from another page (it should return to the Studio, not exit).
 - **`keystore = "release.keystore"`.** `giode build -release` refuses to
   run without `android.keystore`. The workflow writes `release.keystore`
   from `ANDROID_KEYSTORE_BASE64` and passes the password in
@@ -284,8 +290,8 @@ macOS). Microsoft and Google: no export-controlled encryption.
 - `go vet ./...` and `go test ./...` pass; `giode build msix` packs
   locally.
 - An Android 16 device or emulator runs the APK from the release: install
-  an on-device engine, generate, record, transcribe, and leave a long job
-  running in the background.
+  an on-device engine, generate, record, transcribe, leave a long job
+  running in the background, and check the back gesture (see above).
 - The Store MSIX installs on Windows (sideload it with
   `Add-AppxPackage -AllowUnsigned` from an admin PowerShell, Windows 11
   with developer mode), installs a Python engine and generates speech.

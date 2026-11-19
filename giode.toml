@@ -52,6 +52,10 @@ min_sdk = 26
 # 31 Aug 2026 (the CLI's default is 35, which Play now rejects). The
 # release workflow installs platforms;android-36 to match.
 target_sdk = 36
+# Gio's GioActivity handles Back in onBackPressed(), which Android 16
+# no longer calls for apps targeting 36 (predictive back): without this
+# opt-out the back gesture would close Sonora instead of its dialogs.
+application_attributes = { enableOnBackInvokedCallback = "false" }
 arch = ["arm64", "arm", "amd64"]
 # Recording voices and speech; the foreground service keeps generation,
 # transcription and model downloads running behind other apps
